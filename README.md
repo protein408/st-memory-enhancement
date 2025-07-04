@@ -35,10 +35,6 @@
 
 <h3>빠른 시작 가이드</h3>
 
-<blockquote>
-    <b>중요 팁:</b> 이 플러그인은 SillyTavern의 <b>채팅 완성 모드</b>에서만 작동합니다.
-</blockquote>
-
 <ol>
     <li><b>플러그인 설치:</b> SillyTavern 페이지에서 <code>확장</code> &gt; <code>확장 설치</code>를 클릭합니다.</li>
     <li><b>플러그인 주소 입력:</b> 팝업 창에서 플러그인의 GitHub 주소 <code>https://github.com/protein408/st-memory-enhancement.git</code>를 입력한 다음 <code>Install for all users</code>를 선택합니다.</li>
