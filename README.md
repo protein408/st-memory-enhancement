@@ -30,7 +30,7 @@
 </ul>
 
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/36997237-2c72-46b5-a8df-f5af3fa42171" alt="플러그인 인터페이스 예시" style="max-width:80%;">
+    <img src="https://github.com/user-attachments/assets/ea5a7403-a08e-46b6-a799-9cd73772061a" alt="플러그인 인터페이스 예시" style="max-width:80%;">
 </div>
 
 <h3>빠른 시작 가이드</h3>
@@ -45,9 +45,9 @@
 </ol>
 
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/9f39015f-63bb-4741-bb7f-740c02f1de17" alt="플러그인 설치 단계 2" style="max-width:70%;">
+    <img src="https://github.com/user-attachments/assets/d189a03d-9425-4d46-ac1a-5a0e7b243db0
+" alt="번역 진행중입니다" style="max-width:70%;">
 </div>
 </div>
-
-![image](https://github.com/user-attachments/assets/ea5a7403-a08e-46b6-a799-9cd73772061a)
+]
 
