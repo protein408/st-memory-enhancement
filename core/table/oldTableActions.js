@@ -77,7 +77,7 @@ export function insertRow(tableIndex, data) {
 }
 
 /**
- * 删除行
+ * 행 삭제
  * @deprecated
  * @param {number} tableIndex 表格索引
  * @param {number} rowIndex 行索引
@@ -102,7 +102,7 @@ export function deleteRow(tableIndex, rowIndex) {
                 return;
             }
 
-            // 获取要删除行的单元格并触发删除操作
+            // 获取要행 삭제的单元格并触发删除操作
             const cell = table.findCellByPosition(actualRowIndex, 0);
             if (cell) {
                 cell.newAction('deleteSelfRow');
@@ -111,7 +111,7 @@ export function deleteRow(tableIndex, rowIndex) {
                 console.error(`未找到行: ${rowIndex}`);
             }
         } catch (error) {
-            console.error('删除行失败:', error);
+            console.error('행 삭제失败:', error);
         }
     } else {
         // 旧系统：保持原有逻辑

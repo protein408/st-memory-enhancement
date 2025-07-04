@@ -1,103 +1,52 @@
+<div align="left">
+<blockquote style="background-color:#f0f0f0; border-left: 5px solid #ccc; padding: 10px;">
+    muyoou : <a href="https://github.com/muyoou/st-memory-enhancement/tree/master">st-memory-enhancement</a>의 한글 번역판입니다. 
+</blockquote>
+
+<blockquote>
+    번역이 되지 않은 경우, 데이터를 내보내기한 후 설정에서 초기화할 것을 권장합니다.
+</blockquote>
+    
+<b>기억력 향상 플러그인</b>은 롤플레잉에서 AI의 장기 기억 능력을 크게 향상시키는 것을 목표로 합니다.
+
+<h3>플러그인 소개</h3>
+기억력 향상 플러그인은 역할극 경험에 강력한 <b>구조화된 장기 기억</b>을 주입하여 캐릭터 설정, 주요 사건, 중요한 아이템 등 사용자 정의 콘텐츠를 지원합니다. AI가 대화 컨텍스트를 더 잘 이해하고 기억하여 <b>더 일관성 있고 상황에 맞는</b> 추론을 할 수 있도록 효과적3으로 도와줍니다.
+
+<b>플러그인 장점:</b>
+<ul>
+    <li>사용자 친화적: 직관적인 테이블을 통해 기억을 쉽게 보고 편집하여 캐릭터 기억을 제어할 수 있습니다.</li>
+    <li>창작자 친화적: 편리한 내보내기 및 구성 공유, JSON 파일로 테이블 구조를 유연하게 사용자 정의하여 다양한 창작 요구를 충족할 수 있습니다.</li>
+</ul>
+
+<h3>핵심 기능 하이라이트</h3>
+<ul>
+    <li><b>구조화된 기억 저장:</b> 테이블 기반의 강력한 기억 시스템으로, 향후 노드 편집기를 지원하여 테이블 유형과 구조를 자유롭게 정의할 수 있습니다.</li>
+    <li><b>유연한 콘텐츠 편집:</b> 테이블 내용을 완전히 편집할 수 있으며, 언제든지 찾아보고 수정하여 나만의 캐릭터 기억 라이브러리를 만들 수 있습니다.</li>
+    <li><b>자유로운 템플릿 관리:</b> 여러 범위의 템플릿을 관리하고 저장하여 테이블 구조를 유연하게 조정할 수 있습니다.</li>
+    <li><b>지능형 프롬프트 생성 및 주입:</b> 정확한 프롬프트를 자동으로 생성하고, 심층 주입 또는 전역 매크로를 통해 세계관 또는 프리셋과 원활하게 통합하여 AI 성능을 향상시킵니다.</li>
+    <li><b>사용자 정의 데이터 푸시 표시:</b> 테이블 내용을 채팅 인터페이스 DOM으로 푸시하고, 스타일을 사용자 정의하여 중요한 정보를 눈에 띄게 표시할 수 있습니다.</li>
+    <li><b>편리한 구성 내보내기 및 공유:</b> 풍부한 사용자 정의 옵션(프롬프트, 주입 방식 등)을 제공하며, 프리셋을 통해 테이블 구조와 설정을 쉽게 내보내고 공유할 수 있습니다.</li>
+    <li><b>단계별 작업:</b> 향후 주/부 API와 결합하여 작업 지능 할당(생성, 정리, 재구성 등)을 구현하고, 사용자 정의 트리거 시기를 지원하여 기억을 효율적으로 관리할 수 있습니다.</li>
+</ul>
+
 <div align="center">
-<h1>✨ SillyTavern 酒馆记忆增强插件 ✨</h1>
-
-<p>
-    <b>🧠 记忆增强插件</b> - 专为 <a href="https://github.com/SillyTavern/SillyTavern">SillyTavern酒馆</a> 设计，旨在显著提升角色扮演中 AI 的长期记忆能力！
-
-<p>
-    <a href="https://muyoo.com.cn/wiki/memory/">⚙️ 快速安装/更新</a>
-    |
-    <a href="https://muyoo.com.cn/wiki/memory/start.html">🔄 使用教程</a>
-    |
-    <a href="https://muyoo.com.cn/wiki/memory/installFaq.html">🔍 问题自查</a>
-</p>
-
-<p>
-    <a href="https://github.com/muyoou/st-memory-enhancement/stargazers">
-        <img src="https://img.shields.io/github/stars/muyoou/st-memory-enhancement?style=flat-square" alt="GitHub Stars">
-    </a>
-    <a href="https://github.com/muyoou/st-memory-enhancement/graphs/contributors">
-        <img src="https://img.shields.io/github/contributors/muyoou/st-memory-enhancement?style=flat-square" alt="Contributors">
-    </a>
-    <a href="https://github.com/muyoou/st-memory-enhancement/issues">
-        <img src="https://img.shields.io/github/issues/muyoou/st-memory-enhancement?style=flat-square" alt="GitHub Issues">
-    </a>
-    <a href="https://qm.qq.com/q/bBSIrwKty2">
-      <img src="https://img.shields.io/badge/Join-QQ_Group-ff69b4">
-    </a>
-    <a href="https://github.com/SillyTavern/SillyTavern">
-      <img src="https://img.shields.io/badge/SillyTavern-%3E=1.10.0-blue">
-    </a>
-</p>
-
-<p>
-    <b>🚀 最新版本: v2.0.3 🚀</b>
-</p>
+    <img src="https://github.com/user-attachments/assets/36997237-2c72-46b5-a8df-f5af3fa42171" alt="플러그인 인터페이스 예시" style="max-width:80%;">
 </div>
 
-<hr>
+<h3>빠른 시작 가이드</h3>
 
-## 🌟 插件简介
+<blockquote>
+    <b>중요 팁:</b> 이 플러그인은 SillyTavern의 <b>채팅 완성 모드</b>에서만 작동합니다.
+</blockquote>
 
-记忆增强插件为您的角色扮演体验注入强大的 **结构化长期记忆**，支持角色设定、关键事件、重要物品等自定义内容。它能有效帮助 AI 更好地理解和记住对话上下文，从而做出 **更连贯、更贴近情境** 的推演。
+<ol>
+    <li><b>플러그인 설치:</b> SillyTavern 페이지에서 <code>확장</code> &gt; <code>확장 설치</code>를 클릭합니다.</li>
+    <li><b>플러그인 주소 입력:</b> 팝업 창에서 플러그인의 GitHub 주소 <code>https://github.com/aminoacit408/st-memory-enhancement</code>를 입력한 다음 <code>Install for all users</code>를 선택합니다.</li>
+</ol>
 
-**插件优势：**
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/9f39015f-63bb-4741-bb7f-740c02f1de17" alt="플러그인 설치 단계 2" style="max-width:70%;">
+</div>
+</div>
 
-* 😊 **用户友好：**  通过直观的表格轻松查看和编辑记忆，掌控角色记忆。
-* 🛠️ **创作者友好：**  便捷导出和分享配置，JSON 文件灵活定制表格结构，满足各种创作需求。
 
-## ✨ 核心功能亮点
-
-* 📅 **结构化记忆储存：** 基于表格的强大记忆系统，未来更将支持节点编辑器，自由定义表格类型和结构。
-* ✏️ **灵活内容编辑：** 表格内容完全可编辑，随时浏览和修改，打造专属角色记忆库。
-* 🗃️ **自由模板管理：** 可以管理保存多个作用域的模板，以灵活调整表格结构。
-* 🤖 **智能提示词生成与注入：** 自动生成精准提示词，深度注入或全局宏，无缝集成世界书或预设，提升 AI 表现。
-* 🖼️ **自定义数据推送展示：**  表格内容推送至聊天界面 DOM，自定义样式，重要信息醒目可见。
-* 📦 **便捷配置导出与分享：**  提供丰富的自定义选项（提示词、注入方式等），预设轻松导出和分享表格结构和设置。
-* 🚀 **分步操作：**  未来结合主副 API，实现任务智能分配（生成、整理、重建等），支持自定义触发时机，高效管理记忆。
-
-<p align="center">
-    <img src="https://github.com/user-attachments/assets/36997237-2c72-46b5-a8df-f5af3fa42171" alt="插件界面示例" style="max-width:80%; border-radius: 5px;">
-</p>
-
-## 🚀 快速上手指南
-
-> \[!WARNING]
-> **重要提示：** 本插件仅在 SillyTavern 的 **聊天补全模式** 下工作。
-
-1. **安装插件：** 在 SillyTavern 页面，点击 `扩展` > `安装拓展`。
-
-   <p align="center">
-       <img src="https://github.com/user-attachments/assets/67904e14-dc8d-4d7c-a1a8-d24253b72621" alt="安装插件步骤 1" style="max-width:70%; border-radius: 5px;">
-   </p>
-
-2. **输入插件地址：** 在弹出的窗口中，输入插件的 GitHub 地址 `https://github.com/muyoou/st-memory-enhancement` ，然后选择 `Install for all users`
-
-   <p align="center">
-       <img src="https://github.com/user-attachments/assets/9f39015f-63bb-4741-bb7f-740c02f1de17" alt="安装插件步骤 2" style="max-width:70%; border-radius: 5px;">
-   </p>
-
-   **国内用户加速：**  如遇网络问题，可尝试国内 Gitee 源地址：`https://gitee.com/muyoou/st-memory-enhancement`
-
-## 💖 支持与交流
-
-**🤝 参与贡献：**  欢迎参与插件开发！请查阅 <a href="https://github.com/muyoou/st-memory-enhancement/blob/dev/README.md">贡献指南</a>，了解如何贡献代码和想法。
-
-**💬 社群交流：**  加入插件交流 & BUG 反馈 QQ 群：<a href="#">**1030109849**</a>，与更多用户交流心得，解决问题。
-
-## 🥰 贡献者们
-
-感谢所有为本项目做出贡献的朋友们！
-
-<p align="center">
-    <a href="https://github.com/muyoou/st-memory-enhancement/graphs/contributors">
-      <img src="https://contrib.rocks/image?repo=muyoou/st-memory-enhancement" style="max-width: 400px;" />
-    </a>
-</p>
-
-**Dev 分支贡献统计：**
-<p align="center">
-    <img src="https://repobeats.axiom.co/api/embed/eb3c2af1bcdb84704bb9ff8f61379fe38d634884.svg" alt="Dev 分支代码分析" style="max-width: 80%; border-radius: 5px;">
-</p>
-
-## 🤗 感谢所有人的使用与支持

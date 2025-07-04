@@ -7,10 +7,10 @@
     "Logs": "Logs",
     "Plugin settings": "Plugin settings",
     "Import, export and reset plugin": "Import, export and reset plugin",
-    "[title]Import table presets": "Import table presets",
-    "[title]Export table presets": "Export table presets",
-    "[title]Reset table presets": "Reset table presets",
-    "[title]Revert to previous version": "Revert to previous version",
+    "Import table presets": "Import table presets",
+    "Export table presets": "Export table presets",
+    "Reset table presets": "Reset table presets",
+    "Revert to previous version": "Revert to previous version",
     "Plugin switches": "Plugin switches",
     "Enable plugin": "Enable plugin",
     "Debug mode": "Debug mode",
@@ -63,7 +63,7 @@
 
 
     "appHeaderTableDrawer.html": "______________________________________________________________________________________________________________________________________________",
-    "[title]Event table": "Event table",
+    "Event table": "Event table",
     "Data": "Data",
     "Template": "Template",
     "Settings": "Settings",
@@ -71,20 +71,20 @@
 
     "manager.html": "______________________________________________________________________________________________________________________________________________",
     "managerDescription": "This is a table for storing data. The model can update the table based on the provided prompts and use the data in the table as a reference for generating the next conversation.",
-    "[title]View table data statistics": "View table data statistics",
-    "[title]View table edit history": "View table edit history",
-    "[title]Completely rebuild table": "Completely rebuild table",
-    "[title]Copy table": "Copy table",
-    "[title]Import table": "Import table",
-    "[title]Export table": "Export table",
-    "[title]Clear table": "Clear table",
+    "View table data statistics": "View table data statistics",
+    "View table edit history": "View table edit history",
+    "Completely rebuild table": "Completely rebuild table",
+    "Copy table": "Copy table",
+    "Import table": "Import table",
+    "Export table": "Export table",
+    "Clear table": "Clear table",
 
 
     "editor.html": "______________________________________________________________________________________________________________________________________________",
     "editorDescription": "This is the data table editor interface. You can use the following tools to edit and manage table data.",
     "Scope:": "Scope:",
     "ScopeGlobal": "Global",
-    "[title]New table template": "New table template",
+    "New table template": "New table template",
 
 
     "customSheetStyle.html": "______________________________________________________________________________________________________________________________________________",

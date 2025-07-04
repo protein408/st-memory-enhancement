@@ -12,7 +12,7 @@ export async function customSheetsStylePopup() {
     </div>
 </div>
 `
-    const customStylePopup = new EDITOR.Popup(customStyleEditor, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, okButton: "应用修改", cancelButton: "取消" });
+    const customStylePopup = new EDITOR.Popup(customStyleEditor, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, okButton: "수정 적용", cancelButton: "취소" });
     const styleContainer = $(customStylePopup.dlg)[0];
     const resultDataContainer = styleContainer.querySelector("#customStyleEditor");
     resultDataContainer.style.display = "flex";

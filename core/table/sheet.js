@@ -96,7 +96,7 @@ export class Sheet extends SheetBase {
 
             return this;
         } catch (e) {
-            EDITOR.error(`保存模板失败：${e}`);
+            EDITOR.error(`템플릿 저장 실패：${e}`);
             return false;
         }
     }
@@ -108,7 +108,7 @@ export class Sheet extends SheetBase {
     createNewSheet(column = 2, row = 2, isSave = true) {
         this.init(column, row);     // 初始化基本数据结构
         this.uid = `sheet_${SYSTEM.generateRandomString(8)}`;
-        this.name = `新表格_${this.uid.slice(-4)}`;
+        this.name = `새 테이블_${this.uid.slice(-4)}`;
         if (isSave) this.save();    // 保存新创建的 Sheet
         return this;                // 返回 Sheet 实例自身
     }
@@ -121,7 +121,7 @@ export class Sheet extends SheetBase {
         console.log('获取表格内容提示词', this)
         if (this.triggerSend && this.triggerSendDeep < 1) return ''; // 如果触发深度=0，则不发送，可以用作信息一览表
         const title = `* ${index}:${this.name}\n`;
-        const node = this.source.data.note && this.source.data.note !== '' ? '【说明】' + this.source.data.note + '\n' : '';
+        const node = this.source.data.note && this.source.data.note !== '' ? '【설명】' + this.source.data.note + '\n' : '';
         const headers = "rowIndex," + this.getCellsByRowIndex(0).slice(1).map((cell, index) => index + ':' + cell.data.value).join(',') + '\n';
         let rows = this.getSheetCSV()
         const editRules = this.#getTableEditRules() + '\n';
@@ -153,7 +153,7 @@ export class Sheet extends SheetBase {
             result += node;
         }
         if (customParts.includes('headers')) {
-            result += '【表格内容】\n' + headers;
+            result += '【테이블 내용】\n' + headers;
         }
         if (customParts.includes('rows')) {
             result += rows;
@@ -205,7 +205,7 @@ export class Sheet extends SheetBase {
                 this.loadJson(targetSheetData)
                 return this;
             }
-            throw new Error('未找到对应的模板');
+            throw new Error('해당하는 템플릿을 찾을 수 없습니다.');
         }
         if (typeof target === 'object') {
             if (target.domain === this.SheetDomain.global) {
@@ -213,7 +213,7 @@ export class Sheet extends SheetBase {
                 this.loadJson(target)
                 this.domain = 'chat'
                 this.uid = `sheet_${SYSTEM.generateRandomString(8)}`;
-                this.name = this.name.replace('模板', '表格');
+                this.name = this.name.replace('템플릿', '테이블');
                 this.template = target;
                 return this
             } else {
@@ -228,10 +228,10 @@ export class Sheet extends SheetBase {
      */
     #getTableEditRules() {
         const source = this.source;
-        if (this.required && this.isEmpty()) return '【增删改触发条件】\n插入：' + source.data.initNode + '\n'
+        if (this.required && this.isEmpty()) return '【추가/삭제/수정 트리거 조건】\n삽입：' + source.data.initNode + '\n'
         else {
-            let editRules = '【增删改触发条件】\n'
-            if (source.data.insertNode) editRules += ('插入：' + source.data.insertNode + '\n')
+            let editRules = '【추가/삭제/수정 트리거 조건】\n'
+            if (source.data.insertNode) editRules += ('삽입：' + source.data.insertNode + '\n')
             if (source.data.updateNode) editRules += ('更新：' + source.data.updateNode + '\n')
             if (source.data.deleteNode) editRules += ('删除：' + source.data.deleteNode + '\n')
             return editRules

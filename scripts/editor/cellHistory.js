@@ -69,13 +69,13 @@ const histories = `
 </style>
 
 <div class="cell-history">
-    <h3>表格单元格历史记录</h3>
+    <h3>表格셀 기록</h3>
 <!--    <div class="history-tabs">-->
 <!--        &lt;!&ndash; 动态生成tabs &ndash;&gt;-->
 <!--    </div>-->
     <div class="cell-history-content">
         <div class="history-sheets-content">
-            <!-- 动态生成的单元格历史记录内容 -->
+            <!-- 动态生成的셀 기록内容 -->
         </div>
     </div>
 </div>
@@ -113,14 +113,14 @@ async function reloadCellHistory(cell, historyCell, container) {
         }
     </style>
     <div class="cell-history">
-        <h3>确认回溯单元格历史记录</h3>
+        <h3>确认回溯셀 기록</h3>
         <div class="cell-history-confirm">
             <textarea class="cell-history-confirm-last" readonly>${currentValue}</textarea>
             <span>修改为:</span>
             <textarea class="cell-history-confirm-value" rows="8">${targetValue}</textarea>
         </div>
     </div>
-    `, EDITOR.POPUP_TYPE.CONFIRM, '', { wide: true, allowVerticalScrolling: false, okButton: "继续", cancelButton: "取消" });
+    `, EDITOR.POPUP_TYPE.CONFIRM, '', { wide: true, allowVerticalScrolling: false, okButton: "계속하기", cancelButton: "취소" });
 
     // 监听cell-history-confirm-value的输入事件
     const confirmValue = $(tracebackCellHistoryPopup.dlg).find('.cell-history-confirm-value');

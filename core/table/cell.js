@@ -303,7 +303,7 @@ export class Cell {
         this.parent.markPositionCacheDirty();
     }
     #deleteRow(rowIndex) {
-        console.log("删除行", rowIndex, this.parent.hashSheet.length)
+        console.log("행 삭제", rowIndex, this.parent.hashSheet.length)
         if (rowIndex === 0) return;
         if (this.parent.hashSheet.length < 2) return;
         this.parent.hashSheet.splice(rowIndex, 1);

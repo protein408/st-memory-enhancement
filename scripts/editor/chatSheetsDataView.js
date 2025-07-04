@@ -32,7 +32,7 @@ export async function copyTable() {
     if(!copyTableData) return
     $('#table_drawer_icon').click()
 
-    EDITOR.confirm(`正在复制表格数据 (#${SYSTEM.generateRandomString(4)})`, '取消', '粘贴到当前对话').then(async (r) => {
+    EDITOR.confirm(`표 데이터 복사 중 (#${SYSTEM.generateRandomString(4)})`, '취소', '현재 대화에 붙여넣기').then(async (r) => {
         if (r) {
             await pasteTable()
         }
@@ -45,23 +45,23 @@ export async function copyTable() {
 /**
  * 粘贴表格
  * @param {number} mesId 需要粘贴到的消息id
- * @param {Element} viewSheetsContainer 表格容器DOM
+ * @param {Element} viewSheetsContainer 표 컨테이너 DOM
  */
 async function pasteTable() {
     if (USER.getContext().chat.length === 0) {
-        EDITOR.error("请至少让ai回复一条消息作为表格载体")
+        EDITOR.error("표를 위한 최소한의 내용으로 AI가 한 개 이상의 메시지를 응답하도록 해주세요.")
         return
     }
-    const confirmation = await EDITOR.callGenericPopup('粘贴会清空原有的表格数据，是否继续？', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+    const confirmation = await EDITOR.callGenericPopup('붙여넣기는 기존 표 데이터를 모두 삭제합니다. 계속하시겠습니까?', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
     if (confirmation) {
         if (copyTableData) {
             const tables = JSON.parse(copyTableData)
-            if(!tables.mate === 'chatSheets')  return EDITOR.error("导入失败：文件格式不正确")
+            if(!tables.mate === 'chatSheets')  return EDITOR.error("가져오기 실패: 파일 형식이 올바르지 않습니다.")
             BASE.applyJsonToChatSheets(tables)
             await renderSheetsDOM()
-            EDITOR.success('粘贴成功')
+            EDITOR.success('붙여넣기 성공')
         } else {
-            EDITOR.error("粘贴失败：剪切板没有表格数据")
+            EDITOR.error("붙여넣기 실패: 클립보드에 표 데이터가 없습니다.")
         }
     }
 }
@@ -72,7 +72,7 @@ async function pasteTable() {
  */
 async function importTable(mesId, viewSheetsContainer) {
     if (mesId === -1) {
-        EDITOR.error("请至少让ai回复一条消息作为表格载体")
+        EDITOR.error("표의 기본 내용으로 AI가 최소 한 개의 메시지를 응답하도록 해주세요.")
         return
     }
 
@@ -98,19 +98,19 @@ async function importTable(mesId, viewSheetsContainer) {
             // 4. 定义 FileReader 的 onload 事件处理函数
             // 当文件读取成功后，会触发 onload 事件
             reader.onload = async function (loadEvent) {
-                const button = { text: '导入模板及数据', result: 3 }
-                const popup = new EDITOR.Popup("请选择导入的部分", EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "导入模板及数据", cancelButton: "取消"});
+                const button = { text: '템플릿 및 데이터 가져오기', result: 3 }
+                const popup = new EDITOR.Popup("가져올 부분을 선택해주세요.", EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "템플릿 및 데이터 가져오기", cancelButton: "취소"});
                 const result = await popup.show()
                 if (result) {
                         const tables = JSON.parse(loadEvent.target.result)
-                        console.log("导入内容", tables, tables.mate, !(tables.mate === 'chatSheets'))
-                        if(!(tables.mate?.type === 'chatSheets'))  return EDITOR.error("导入失败：文件格式不正确", "请检查你导入的是否是表格数据")
+                        console.log("가져오기 내용", tables, tables.mate, !(tables.mate === 'chatSheets'))
+                        if(!(tables.mate?.type === 'chatSheets'))  return EDITOR.error("가져오기 실패: 파일 형식이 올바르지 않습니다.", "가져오신 데이터가 표 데이터인지 확인해 주세요.")
                         if(result === 3)
                             BASE.applyJsonToChatSheets(tables, "data")
                         else
                             BASE.applyJsonToChatSheets(tables)
                         await renderSheetsDOM()
-                        EDITOR.success('导入成功')
+                        EDITOR.success('가져오기 성공')
                 }
             };
             reader.readAsText(file, 'UTF-8'); // 建议指定 UTF-8 编码，确保中文等字符正常读取
@@ -146,7 +146,7 @@ async function exportTable() {
  */
 function getTableJson(mate) {
     if (!DERIVED.any.renderingSheets || DERIVED.any.renderingSheets.length === 0) {
-        EDITOR.warning('当前表格没有数据，无法导出');
+        EDITOR.warning('현재 표에 데이터가 없어 내보낼 수 없습니다.');
         return;
     }
     const sheets = DERIVED.any.renderingSheets.filter(sheet => sheet.enable)
@@ -161,12 +161,12 @@ function getTableJson(mate) {
 
 /**
  * 清空表格
- * @param {number} mesId 需要清空表格的消息id
- * @param {Element} viewSheetsContainer 表格容器DOM
+ * @param {number} mesId 표를 비우기 위한 메시지 ID 필요
+ * @param {Element} viewSheetsContainer 표 컨테이너 DOM
  */
 async function clearTable(mesId, viewSheetsContainer) {
     if (mesId === -1) return
-    const confirmation = await EDITOR.callGenericPopup('清空当前对话的所有表格数据，并重置历史记录，该操作无法回退，是否继续？', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+    const confirmation = await EDITOR.callGenericPopup('현재 대화의 모든 표 데이터를 삭제하고 기록을 초기화합니다. 이 작업은 되돌릴 수 없습니다. 계속하시겠습니까?', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
     if (confirmation) {
         await USER.getContext().chat.forEach((piece => {
             if (piece.hash_sheets) {
@@ -178,7 +178,7 @@ async function clearTable(mesId, viewSheetsContainer) {
             USER.saveSettings()
             USER.saveChat();
             BASE.refreshContextView()
-            EDITOR.success("表格数据清除成功")
+            EDITOR.success("표 데이터 삭제 성공")
             console.log("已清除表格数据")
         }, 100)
     }
@@ -208,7 +208,7 @@ function setTableEditTips(tableEditTips) {
 }
 
 async function cellDataEdit(cell) {
-    const result = await EDITOR.callGenericPopup("编辑单元格", EDITOR.POPUP_TYPE.INPUT, cell.data.value, { rows: 3 })
+    const result = await EDITOR.callGenericPopup("셀 편집", EDITOR.POPUP_TYPE.INPUT, cell.data.value, { rows: 3 })
     if (result) {
         cell.editCellData({ value: result })
         refreshContextView();
@@ -221,17 +221,17 @@ async function columnDataEdit(cell) {
     const columnEditor = `
 <div class="column-editor">
     <div class="column-editor-header">
-        <h3>编辑列数据</h3>
+        <h3>열 데이터 편집</h3>
     </div>
     <div class="column-editor-body">
         <div class="column-editor-content">
-            <label for="column-editor-input">列数据:</label>
+            <label for="column-editor-input">열 테이터:</label>
             <textarea id="column-editor-input" rows="5"></textarea>
         </div>
     </div>
 </div>
 `
-    const columnCellDataPopup = new EDITOR.Popup(columnEditor, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "应用修改", cancelButton: "取消" });
+    const columnCellDataPopup = new EDITOR.Popup(columnEditor, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "수정 적용", cancelButton: "취소" });
     const historyContainer = $(columnCellDataPopup.dlg)[0];
 
     await columnCellDataPopup.show();
@@ -245,7 +245,7 @@ async function columnDataEdit(cell) {
 function batchEditMode(cell) {
     DERIVED.any.batchEditMode = true;
     DERIVED.any.batchEditModeSheet = cell.parent;
-    EDITOR.confirm(`正在编辑 #${cell.parent.name} 的行`, '取消', '完成').then((r) => {
+    EDITOR.confirm(`편집 중 #${cell.parent.name} 의 행`, '취소', '완료').then((r) => {
         DERIVED.any.batchEditMode = false;
         DERIVED.any.batchEditModeSheet = null;
         renderSheetsDOM();
@@ -319,8 +319,8 @@ export function cellClickEditModeEvent(cell) {
     })
 }
 
-async function confirmAction(event, text = '是否继续该操作？') {
-    const confirmation = new EDITOR.Popup(text, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+async function confirmAction(event, text = '이 작업을 계속하시겠습니까?') {
+    const confirmation = new EDITOR.Popup(text, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
 
     await confirmation.show();
     if (!confirmation.result) return { filterData: null, confirmation: false };
@@ -391,7 +391,7 @@ async function cellHistoryView(cell) {
 }
 
 /**
- * 自定义表格样式事件
+ * 사용자 정의 표 스타일事件
  * @param {*} cell
  */
 async function customSheetStyle(cell) {
@@ -429,23 +429,23 @@ function cellClickEvent(cell) {
         const sheetType = cell.parent.type;
 
         if (rowIndex === 0 && colIndex === 0) {
-            menu.add('<i class="fa-solid fa-bars-staggered"></i> 批量行编辑', () => batchEditMode(cell));
-            menu.add('<i class="fa fa-arrow-right"></i> 向右插入列', () => handleAction(cell, cell.CellAction.insertRightColumn));
-            menu.add('<i class="fa fa-arrow-down"></i> 向下插入行', () => handleAction(cell, cell.CellAction.insertDownRow));
-            menu.add('<i class="fa-solid fa-wand-magic-sparkles"></i> 自定义表格样式', async () => customSheetStyle(cell));
+            menu.add('<i class="fa-solid fa-bars-staggered"></i> 일괄 행 편집', () => batchEditMode(cell));
+            menu.add('<i class="fa fa-arrow-right"></i> 오른쪽에 열 삽입', () => handleAction(cell, cell.CellAction.insertRightColumn));
+            menu.add('<i class="fa fa-arrow-down"></i> 아래에 행 삽입', () => handleAction(cell, cell.CellAction.insertDownRow));
+            menu.add('<i class="fa-solid fa-wand-magic-sparkles"></i> 사용자 정의 표 스타일', async () => customSheetStyle(cell));
         } else if (colIndex === 0) {
-            menu.add('<i class="fa-solid fa-bars-staggered"></i> 批量行编辑', () => batchEditMode(cell));
-            menu.add('<i class="fa fa-arrow-up"></i> 向上插入行', () => handleAction(cell, cell.CellAction.insertUpRow));
-            menu.add('<i class="fa fa-arrow-down"></i> 向下插入行', () => handleAction(cell, cell.CellAction.insertDownRow));
-            menu.add('<i class="fa fa-trash-alt"></i> 删除行', () => handleAction(cell, cell.CellAction.deleteSelfRow), menu.ItemType.warning)
+            menu.add('<i class="fa-solid fa-bars-staggered"></i> 일괄 행 편집', () => batchEditMode(cell));
+            menu.add('<i class="fa fa-arrow-up"></i> 위에 행 삽입', () => handleAction(cell, cell.CellAction.insertUpRow));
+            menu.add('<i class="fa fa-arrow-down"></i> 아래에 행 삽입', () => handleAction(cell, cell.CellAction.insertDownRow));
+            menu.add('<i class="fa fa-trash-alt"></i> 행 삭제', () => handleAction(cell, cell.CellAction.deleteSelfRow), menu.ItemType.warning)
         } else if (rowIndex === 0) {
-            menu.add('<i class="fa fa-i-cursor"></i> 编辑该列', async () => await cellDataEdit(cell));
-            menu.add('<i class="fa fa-arrow-left"></i> 向左插入列', () => handleAction(cell, cell.CellAction.insertLeftColumn));
-            menu.add('<i class="fa fa-arrow-right"></i> 向右插入列', () => handleAction(cell, cell.CellAction.insertRightColumn));
-            menu.add('<i class="fa fa-trash-alt"></i> 删除列', () => confirmAction(() => { handleAction(cell, cell.CellAction.deleteSelfColumn) }, '确认删除列？'), menu.ItemType.warning);
+            menu.add('<i class="fa fa-i-cursor"></i> 해당 열 편집', async () => await cellDataEdit(cell));
+            menu.add('<i class="fa fa-arrow-left"></i> 왼쪽에 열 삽입', () => handleAction(cell, cell.CellAction.insertLeftColumn));
+            menu.add('<i class="fa fa-arrow-right"></i> 오른쪽에 열 삽입', () => handleAction(cell, cell.CellAction.insertRightColumn));
+            menu.add('<i class="fa fa-trash-alt"></i> 열 삭제', () => confirmAction(() => { handleAction(cell, cell.CellAction.deleteSelfColumn) }, '열을 삭제하시겠습니까？'), menu.ItemType.warning);
         } else {
-            menu.add('<i class="fa fa-i-cursor"></i> 编辑该单元格', async () => await cellDataEdit(cell));
-            menu.add('<i class="fa-solid fa-clock-rotate-left"></i> 单元格历史记录', async () => await cellHistoryView(cell));
+            menu.add('<i class="fa fa-i-cursor"></i> 해당 셀 편집', async () => await cellDataEdit(cell));
+            menu.add('<i class="fa-solid fa-clock-rotate-left"></i> 셀 기록', async () => await cellHistoryView(cell));
         }
 
         // 设置弹出菜单后的一些非功能性派生操作，这里必须使用setTimeout，否则会导致菜单无法正常显示
@@ -539,17 +539,17 @@ export async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer, _ce
 
 /**
  * 恢复表格
- * @param {number} mesId 需要清空表格的消息id
- * @param {Element} tableContainer 表格容器DOM
+ * @param {number} mesId 표를 비우기 위한 메시지 ID 필요
+ * @param {Element} tableContainer 표 컨테이너 DOM
  */
 async function undoTable(mesId, tableContainer) {
     if (mesId === -1) return
     //const button = { text: '撤销10轮', result: 3 }
-    const popup = new EDITOR.Popup("撤销指定轮次内的所有手动修改及重整理数据，恢复表格", EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "撤销本轮", cancelButton: "取消" });
+    const popup = new EDITOR.Popup("지정된 회차 내의 모든 수동 수정 및 재정리 데이터를 취소하고, 표를 복원합니다.", EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "이번 회차 취소", cancelButton: "취소" });
     const result = await popup.show()
     if (result) {
         await undoSheets(0)
-        EDITOR.success('恢复成功')
+        EDITOR.success('복원 성공')
     }
 }
 
@@ -600,18 +600,18 @@ async function initTableView(mesId) {
     // 设置编辑提示
     // 点击打开查看表格数据统计
     $(document).on('click', '#table_data_statistics_button', function () {
-        EDITOR.tryBlock(openTableStatisticsPopup, "打开表格统计失败")
+        EDITOR.tryBlock(openTableStatisticsPopup, "표 통계 열기 실패")
     })
     // 点击打开查看表格历史按钮
     $(document).on('click', '#dataTable_history_button', function () {
-        EDITOR.tryBlock(openTableHistoryPopup, "打开表格历史失败")
+        EDITOR.tryBlock(openTableHistoryPopup, "표 기록 열기 실패")
     })
     // 点击清空表格按钮
     $(document).on('click', '#clear_table_button', function () {
-        EDITOR.tryBlock(clearTable, "清空表格失败", userTableEditInfo.chatIndex, viewSheetsContainer);
+        EDITOR.tryBlock(clearTable, "표 비우기 실패", userTableEditInfo.chatIndex, viewSheetsContainer);
     })
     $(document).on('click', '#table_rebuild_button', function () {
-        EDITOR.tryBlock(rebuildSheets, "重建表格失败");
+        EDITOR.tryBlock(rebuildSheets, "표 재구성 실패");
     })
     // 点击编辑表格按钮
     $(document).on('click', '#table_edit_mode_button', function () {
@@ -619,19 +619,19 @@ async function initTableView(mesId) {
     })
     // 点击恢复表格按钮
     $(document).on('click', '#table_undo', function () {
-        EDITOR.tryBlock(undoTable, "恢复表格失败");
+        EDITOR.tryBlock(undoTable, "표 복원 실패");
     })
     // 点击复制表格按钮
     $(document).on('click', '#copy_table_button', function () {
-        EDITOR.tryBlock(copyTable, "复制表格失败");
+        EDITOR.tryBlock(copyTable, "표 복사 실패");
     })
     // 点击导入表格按钮
     $(document).on('click', '#import_table_button', function () {
-        EDITOR.tryBlock(importTable, "导入表格失败", userTableEditInfo.chatIndex, viewSheetsContainer);
+        EDITOR.tryBlock(importTable, "표 가져오기 실패", userTableEditInfo.chatIndex, viewSheetsContainer);
     })
     // 点击导出表格按钮
     $(document).on('click', '#export_table_button', function () {
-        EDITOR.tryBlock(exportTable, "导出表格失败");
+        EDITOR.tryBlock(exportTable, "표 내보내기 실패");
     })
 
     return initializedTableView;

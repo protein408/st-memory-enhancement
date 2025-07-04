@@ -13,75 +13,75 @@ let scope = 'chat'
 
 const formConfigs = {
     sheet_origin: {
-        formTitle: "编辑表格",
-        formDescription: "单表格的整体设置。",
+        formTitle: "표 편집",
+        formDescription: "단일 표의 전체 설정.",
         fields: [
 
         ]
     },
     column_header: {
-        formTitle: "编辑列",
-        formDescription: "设置列的标题和描述信息。",
+        formTitle: "열 편집",
+        formDescription: "열의 제목과 설명 정보 설정.",
         fields: [
-            { label: '列标题', type: 'text', dataKey: 'value' },
-            { label: '不允许值重复', type: 'checkbox', dataKey: 'valueIsOnly' },
+            { label: '열 제목', type: 'text', dataKey: 'value' },
+            { label: '값 중복 불가', type: 'checkbox', dataKey: 'valueIsOnly' },
             {
-                label: '数据类型', type: 'select', dataKey: 'columnDataType',
+                label: '데이터 타입', type: 'select', dataKey: 'columnDataType',
                 options: [
-                    { value: 'text', text: '文本' },
-                    // { value: 'number', text: '数字' },
-                    // { value: 'option', text: '选项' },
+                    { value: 'text', text: '텍스트' },
+                    // { value: 'number', text: '숫자' },
+                    // { value: 'option', text: '옵션' },
                 ]
             },
-            { label: '列描述', description: '', type: 'textarea', rows: 4, dataKey: 'columnNote' },
+            { label: '열 설명', description: '', type: 'textarea', rows: 4, dataKey: 'columnNote' },
         ],
     },
     row_header: {
-        formTitle: "编辑行",
-        formDescription: "设置行的标题和描述信息。",
+        formTitle: "행 편집",
+        formDescription: "행의 제목과 설명 정보 설정.",
         fields: [
-            { label: '行标题', type: 'text', dataKey: 'value' },
-            { label: '行描述', description: '(给AI解释此行的作用)', type: 'textarea', rows: 4, dataKey: 'rowNote' },
+            { label: '행 제목', type: 'text', dataKey: 'value' },
+            { label: '행 설명', description: '(AI에게 이 행의 용도 설명)', type: 'textarea', rows: 4, dataKey: 'rowNote' },
         ],
     },
     cell: {
-        formTitle: "编辑单元格",
-        formDescription: "编辑单元格的具体内容。",
+        formTitle: "셀 편집",
+        formDescription: "셀의 구체적인 내용 편집.",
         fields: [
-            { label: '单元格内容', type: 'textarea', dataKey: 'value' },
-            { label: '单元格描述', description: '(给AI解释此单元格内容的作用)', type: 'textarea', rows: 4, dataKey: 'cellPrompt' },
+            { label: '셀 내용', type: 'textarea', dataKey: 'value' },
+            { label: '셀 설명', description: '(AI에게 이 셀 내용의 용도 설명)', type: 'textarea', rows: 4, dataKey: 'cellPrompt' },
         ],
     },
     sheetConfig: {
-        formTitle: "编辑表格属性",
-        formDescription: "设置表格的域、类型和名称。",
+        formTitle: "표 속성 편집",
+        formDescription: "표의 도메인, 유형 및 이름을 설정합니다.",
         fields: [
             /* {
-                label: '默认保存位置', type: 'select', dataKey: 'domain',
+                label: '기본 저장 위치', type: 'select', dataKey: 'domain',
                 options: [
-                    // { value: 'global', text: `<i class="fa-solid fa-earth-asia"></i> Global（该模板储存于用户数据中）` },
-                    // { value: 'role', text: `<i class="fa-solid fa-user-tag"></i> Role（该模板储存于当前所选角色）` },
-                    { value: 'chat', text: `<i class="fa-solid fa-comment"></i> Chat（该模板储存于当前对话）` },
+                    // { value: 'global', text: `<i class="fa-solid fa-earth-asia"></i> Global（이 템플릿은 사용자 데이터에 저장됨）` },
+                    // { value: 'role', text: `<i class="fa-solid fa-user-tag"></i> Role（이 템플릿은 현재 선택된 역할에 저장됨）` },
+                    { value: 'chat', text: `<i class="fa-solid fa-comment"></i> Chat（이 템플릿은 현재 대화에 저장됨）` },
                 ],
             }, */
             {
-                label: '类型', type: 'select', dataKey: 'type',
+                label: '유형', type: 'select', dataKey: 'type',
                 options: [
-                    // { value: 'free', text: `<i class="fa-solid fa-table"></i> Free（AI 可以任意修改此表格）` },
-                    { value: 'dynamic', text: `<i class="fa-solid fa-arrow-down-wide-short"></i> Dynamic（AI 可进行插入列外的所有操作）` },
-                    // { value: 'fixed', text: `<i class="fa-solid fa-thumbtack"></i> Fixed（AI 无法删除或插入行与列）` },
-                    // { value: 'static', text: `<i class="fa-solid fa-link"></i> Static（该表对 AI 为只读）` }
+                    // { value: 'free', text: `<i class="fa-solid fa-table"></i> Free（AI가 이 표를 자유롭게 수정 가능）` },
+                    { value: 'dynamic', text: `<i class="fa-solid fa-arrow-down-wide-short"></i> Dynamic（AI가 열 삽입을 제외한 모든 작업 가능）` },
+                    // { value: 'fixed', text: `<i class="fa-solid fa-thumbtack"></i> Fixed（AI가 행과 열을 삭제하거나 삽입할 수 없음）` },
+                    // { value: 'static', text: `<i class="fa-solid fa-link"></i> Static（AI에게 읽기 전용）` }
                 ],
             },
-            { label: '表格名', type: 'text', dataKey: 'name' },
-            { label: '表格说明（提示词）', type: 'textarea', rows: 6, dataKey: 'note', description: '(作为该表总体提示词，给AI解释此表格的作用)' },
-            { label: '是否必填', type: 'checkbox', dataKey: 'required' },
-            { label: '是否触发发送', type: 'checkbox', dataKey: 'triggerSend', },
-            { label: '触发发送深度', type: 'number', dataKey: 'triggerSendDeep' },
-            { label: '初始化提示词', type: 'textarea', rows: 4, dataKey: 'initNode', description: '（当该表格为必填，且表格为空时，会发送此提示词催促AI填表）' },
-            { label: '插入提示词', type: 'textarea', rows: 4, dataKey: 'insertNode', description: '' },
-            { label: '删除提示词', type: 'textarea', rows: 4, dataKey: 'deleteNode', description: '' },
-            { label: '更新提示词', type: 'textarea', rows: 4, dataKey: 'updateNode', description: '' },
+            { label: '표 이름', type: 'text', dataKey: 'name' },
+            { label: '표 설명(프롬프트)', type: 'textarea', rows: 6, dataKey: 'note', description: '(이 표의 전체 프롬프트로서, AI에게 이 표의 용도 설명)' },
+            { label: '필수 입력', type: 'checkbox', dataKey: 'required' },
+            { label: '전송 트리거', type: 'checkbox', dataKey: 'triggerSend', },
+            { label: '트리거 깊이', type: 'number', dataKey: 'triggerSendDeep' },
+            { label: '초기화 프롬프트', type: 'textarea', rows: 4, dataKey: 'initNode', description: '(이 표가 필수이고 비어있을 때, AI에게 표 작성을 요청하는 프롬프트)' },
+            { label: '삽입 프롬프트', type: 'textarea', rows: 4, dataKey: 'insertNode', description: '' },
+            { label: '삭제 프롬프트', type: 'textarea', rows: 4, dataKey: 'deleteNode', description: '' },
+            { label: '업데이트 프롬프트', type: 'textarea', rows: 4, dataKey: 'updateNode', description: '' },
         ],
     },
 };
@@ -89,7 +89,7 @@ const formConfigs = {
 
 async function updateDropdownElement() {
     const templates = getSheets();
-    // console.log("下滑模板", templates)
+    // console.log("드롭다운 템플릿", templates)
     if (dropdownElement === null) {
         dropdownElement = document.createElement('select');
         dropdownElement.id = 'table_template';
@@ -128,7 +128,7 @@ function initChatScopeSelectedSheets() {
 function updateSelectedSheetUids() {
     if (scope === 'chat') {
         USER.saveChat()
-        console.log("这里触发的")
+        console.log("여기서 트리거됨")
         BASE.refreshContextView()
     }
     else USER.saveSettings();
@@ -160,13 +160,13 @@ function initializeSelect2Dropdown(dropdownElement) {
 
     $(dropdownElement).on('change', function (e, silent) {
         //if(silent || scope === 'chat') return
-        console.log("选择了",silent,$(this).val())
+        console.log("선택됨",silent,$(this).val())
         if (silent) return
         setSelectedSheetUids($(this).val())
         updateSelectedSheetUids()
     });
 
-    // 创建父级复选框与下拉框的关联
+    // 부모 체크박스와 드롭다운 박스의 연결 생성
     const firstOptionText = $(dropdownElement).find('option:first-child').text();
     const tableMultipleSelectionDropdown = $('<span class="select2-option" style="width: 100%"></span>');
     const checkboxForParent = $('<input type="checkbox" class="select2-option-checkbox"/>');
@@ -210,8 +210,8 @@ function bindSheetSetting(sheet, index) {
     titleBar.style.fontSize = '0.8rem';
     titleBar.style.fontWeight = 'normal';
 
-    // 表格基础设置按钮
-    const settingButton = $(`<i class="menu_button menu_button_icon fa-solid fa-wrench" style="cursor: pointer; height: 28px; width: 28px;" title="编辑表格属性"></i>`);
+    // 표 기본 설정 버튼
+    const settingButton = $(`<i class="menu_button menu_button_icon fa-solid fa-wrench" style="cursor: pointer; height: 28px; width: 28px;" title="표 속성 편집"></i>`);
     settingButton.on('click', async () => {
         const initialData = {
             domain: sheet.domain,
@@ -227,24 +227,24 @@ function bindSheetSetting(sheet, index) {
             triggerSendDeep: sheet.triggerSendDeep
         };
         const formInstance = new Form(formConfigs.sheetConfig, initialData);
-        const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "保存", allowVerticalScrolling: true, cancelButton: "取消" });
+        const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "저장", allowVerticalScrolling: true, cancelButton: "취소" });
 
         await popup.show();
         if (popup.result) {
             const diffData = compareDataDiff(formInstance.result(), initialData)
             console.log(diffData)
             let needRerender = false
-            // 将比较数据差异的结果更新至表格
+            // 데이터 차이 비교 결과를 표에 업데이트
             Object.keys(diffData).forEach(key => {
                 console.log(key)
                 if (['domain', 'type', 'name', 'required', 'triggerSend'].includes(key) && diffData[key] != null) {
-                    console.log("对比成功将更新" + key)
+                    console.log("비교 성공, 업데이트 예정: " + key)
                     sheet[key] = diffData[key];
                     if (key === 'name') needRerender = true
                 } else if (['note', 'initNode', 'insertNode', 'deleteNode', 'updateNode'].includes(key) && diffData[key] != null) {
                     sheet.data[key] = diffData[key];
                 } else if (['triggerSendDeep'].includes(key) && diffData[key] != null) {
-                    console.log("对比成功将更新" + key)
+                    console.log("비교 성공, 업데이트 예정: " + key)
                     sheet[key] = Math.max(0, Math.floor(diffData[key]));
                 }
             })
@@ -253,25 +253,25 @@ function bindSheetSetting(sheet, index) {
         }
     });
 
-    // 表格自定义样式按钮
-    const styleButton = $(`<i class="menu_button menu_button_icon fa-solid fa-wand-magic-sparkles" style="cursor: pointer; height: 28px; width: 28px;" title="编辑表格显示样式"></i>`);
+    // 표 사용자 정의 스타일 버튼
+    const styleButton = $(`<i class="menu_button menu_button_icon fa-solid fa-wand-magic-sparkles" style="cursor: pointer; height: 28px; width: 28px;" title="표 표시 스타일 편집"></i>`);
     styleButton.on('click', async () => {
         await openSheetStyleRendererPopup(sheet);
     })
     const nameSpan = $(`<span style="margin-left: 0px;">#${index} ${sheet.name ? sheet.name : 'Unnamed Table'}</span>`);
 
-    // 新增：发送到上下文的复选框
+    // 신규: 컨텍스트로 전송 체크박스
     const sendToContextCheckbox = $(`
         <label class="checkbox_label" style="margin-left: 10px; font-weight: normal; color: var(--text_primary);">
             <input type="checkbox" class="send_to_context_switch" ${sheet.sendToContext !== false ? 'checked' : ''} />
-            <span data-i18n="Send to context">发送到上下文</span>
+            <span data-i18n="Send to context">컨텍스트로 전송</span>
         </label>
     `);
 
     sendToContextCheckbox.find('.send_to_context_switch').on('change', function() {
         sheet.sendToContext = $(this).prop('checked');
         sheet.save();
-        console.log(`表格 "${sheet.name}" 的 sendToContext 状态已更新为: ${sheet.sendToContext}`);
+        console.log(`표 "${sheet.name}"의 sendToContext 상태가 업데이트됨: ${sheet.sendToContext}`);
     });
 
     titleBar.appendChild(settingButton[0]);
@@ -288,11 +288,11 @@ async function templateCellDataEdit(cell) {
     const formInstance = new Form(formConfigs[cell.type], initialData);
 
     formInstance.on('editRenderStyleEvent', (formData) => {
-        alert('编辑表格样式功能待实现' + JSON.stringify(formData));
+        alert('표 스타일 편집 기능 구현 예정' + JSON.stringify(formData));
     });
 
 
-    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, { large: true, allowVerticalScrolling: true }, { okButton: "保存修改", cancelButton: "取消" });
+    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, { large: true, allowVerticalScrolling: true }, { okButton: "변경사항 저장", cancelButton: "취소" });
 
     await popup.show();
     if (popup.result) {
@@ -311,11 +311,11 @@ async function templateCellDataEdit(cell) {
 }
 
 function handleAction(cell, action) {
-    console.log("开始执行操作")
+    console.log("작업 실행 시작")
     cell.newAction(action)
-    console.log("执行操作然后刷新")
+    console.log("작업 실행 후 새로고침")
     refreshTempView();
-    // 如果是chat域，则刷新表格
+    // chat 영역인 경우 표 새로고침
     if (scope === 'chat') BASE.refreshContextView()
 }
 
@@ -333,37 +333,37 @@ function bindCellClickEvent(cell) {
         const sheetType = cell.parent.type;
 
         if (rowIndex === 0 && colIndex === 0) {
-            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-right"></i> 向右插入列', (e) => { handleAction(cell, cell.CellAction.insertRightColumn) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-right"></i> 오른쪽에 열 삽입', (e) => { handleAction(cell, cell.CellAction.insertRightColumn) });
             if (sheetType === cell.parent.SheetType.free || sheetType === cell.parent.SheetType.static) {
-                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-down"></i> 向下插入行', (e) => { handleAction(cell, cell.CellAction.insertDownRow) });
+                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-down"></i> 아래에 행 삽입', (e) => { handleAction(cell, cell.CellAction.insertDownRow) });
             }
         } else if (rowIndex === 0) {
-            cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 编辑该列', async (e) => { await templateCellDataEdit(cell) });
-            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-left"></i> 向左插入列', (e) => { handleAction(cell, cell.CellAction.insertLeftColumn) });
-            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-right"></i> 向右插入列', (e) => { handleAction(cell, cell.CellAction.insertRightColumn) });
-            cell.parent.currentPopupMenu.add('<i class="fa fa-trash-alt"></i> 删除列', (e) => { handleAction(cell, cell.CellAction.deleteSelfColumn) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 선택 열 편집', async (e) => { await templateCellDataEdit(cell) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-left"></i> 왼쪽에 열 삽입', (e) => { handleAction(cell, cell.CellAction.insertLeftColumn) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-right"></i> 오른쪽에 열 삽입', (e) => { handleAction(cell, cell.CellAction.insertRightColumn) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-trash-alt"></i> 열 삭제', (e) => { handleAction(cell, cell.CellAction.deleteSelfColumn) });
         } else if (colIndex === 0) {
             // if (sheetType === cell.parent.SheetType.dynamic) {
             //     cell.element.delete();
             //     return;
             // }
 
-            cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 编辑该行', async (e) => { await templateCellDataEdit(cell) });
+            cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 선택 행 편집', async (e) => { await templateCellDataEdit(cell) });
             if (sheetType === cell.parent.SheetType.free || sheetType === cell.parent.SheetType.static) {
-                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-up"></i> 向上插入行', (e) => { handleAction(cell, cell.CellAction.insertUpRow) });
-                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-down"></i> 向下插入行', (e) => { handleAction(cell, cell.CellAction.insertDownRow) });
-                cell.parent.currentPopupMenu.add('<i class="fa fa-trash-alt"></i> 删除行', (e) => { handleAction(cell, cell.CellAction.deleteSelfRow) });
+                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-up"></i> 위에 행 삽입', (e) => { handleAction(cell, cell.CellAction.insertUpRow) });
+                cell.parent.currentPopupMenu.add('<i class="fa fa-arrow-down"></i> 아래에 행 삽입', (e) => { handleAction(cell, cell.CellAction.insertDownRow) });
+                cell.parent.currentPopupMenu.add('<i class="fa fa-trash-alt"></i> 행 삭제', (e) => { handleAction(cell, cell.CellAction.deleteSelfRow) });
             }
         } else {
             if (sheetType === cell.parent.SheetType.static) {
-                cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 编辑该单元格', async (e) => { await templateCellDataEdit(cell) });
+                cell.parent.currentPopupMenu.add('<i class="fa fa-i-cursor"></i> 선택 셀 편집', async (e) => { await templateCellDataEdit(cell) });
             } else {
                 return;
             }
         }
 
         const element = event.target
-        // 备份当前cell的style，以便在菜单关闭时恢复
+        // 현재 셀의 스타일을 백업하여 메뉴가 닫힐 때 복원
         const style = element.style.cssText;
         const rect = element.getBoundingClientRect();
         const dragSpaceRect = drag.dragSpace.getBoundingClientRect();
@@ -416,21 +416,21 @@ async function updateDragTables() {
     }
 
     container.empty();
-    console.log("dragSpace是什么", drag.dragSpace)
+    console.log("dragSpace 값 확인", drag.dragSpace)
 
     selectedSheetUids.forEach((uid, index) => {
 
         let sheetDataExists;
         if (scope === 'chat') {
-            // 检查 uid 是否存在于 BASE.sheetsData.context
+            // uid가 BASE.sheetsData.context에 존재하는지 확인
             sheetDataExists = BASE.sheetsData.context?.some(sheetData => sheetData.uid === uid);
         } else {
-            // 检查 uid 是否存在于 BASE.templates
+            // uid가 BASE.templates에 존재하는지 확인
             sheetDataExists = BASE.templates?.some(templateData => templateData.uid === uid);
         }
-        // 如果数据不存在，则记录警告并跳过此 uid
+        // 데이터가 존재하지 않으면 경고를 기록하고 이 uid를 건너뜀
         if (!sheetDataExists) {
-            console.warn(`在 updateDragTables 中未找到 UID 为 ${uid} 的表格数据 (scope: ${scope})。跳过此表格。`);
+            console.warn(`updateDragTables에서 UID가 ${uid}인 표 데이터를 찾을 수 없습니다 (scope: ${scope}). 이 표를 건너뜁니다.`);
             return;
         }
 
@@ -440,7 +440,7 @@ async function updateDragTables() {
         sheet.currentPopupMenu = currentPopupMenu;
 
         // if (!sheet || !sheet.hashSheet) {
-        //     console.warn(`无法加载模板或模板数据为空，UID: ${uid}`);
+        //     console.warn(`템플릿을 불러올 수 없거나 템플릿 데이터가 비어있습니다, UID: ${uid}`);
         //     return
         // }
 
@@ -449,7 +449,7 @@ async function updateDragTables() {
         renderedTables.set(uid, tableElement);
         container.append(tableElement);
 
-        // 在添加表格后，添加 hr 元素
+        // 표를 추가한 후 hr 요소 추가
         const hr = document.createElement('hr');
         tableElement.appendChild(hr);
 
@@ -470,7 +470,7 @@ export function updateTableContainerPosition() {
     // console.log("contentContainer", contentContainer)
     const sendFormHeight = document.querySelector('#send_form')?.getBoundingClientRect().height || 0;
     const rect = contentContainer.getBoundingClientRect();
-    // console.log("contentContainer 位置变化", rect, windowHeight, sendFormHeight)
+    // console.log("contentContainer 위치 변화", rect, windowHeight, sendFormHeight)
     contentContainer.style.position = 'flex';
     contentContainer.style.bottom = '0';
     contentContainer.style.left = '0';
@@ -479,8 +479,8 @@ export function updateTableContainerPosition() {
 }
 
 export async function refreshTempView(ignoreGlobal = false) {
-    if (ignoreGlobal && scope === 'global') return
-    console.log("刷新表格模板视图")
+    if (ignoreGlobal && scope === 'global') return        
+    console.log("표 템플릿 뷰 새로고침")
     await updateDropdownElement()
     initializeSelect2Dropdown(dropdownElement);
     await updateDragTables();
@@ -503,18 +503,18 @@ async function initTableEdit(mesId) {
     contentContainer.append(draggable);
     drag.add('tableContainer', tableContainer);
 
-    // 添加事件监听器
+    // 이벤트 리스너 추가
     contentContainer.addEventListener('mouseenter', updateTableContainerPosition);
     contentContainer.addEventListener('focus', updateTableContainerPosition);
 
     $(scopeSelect).val(scope).on('change', async function () {
         scope = $(this).val();
-        console.log("切换到", scope)
+        console.log("전환됨", scope)
         await refreshTempView()
     })
 
     $(document).on('click', '#add_table_template_button', async function () {
-        console.log("触发")
+        console.log("트리거됨")
         let newTemplateUid = null
         let newTemplate = null
         if (scope === 'chat') {
@@ -532,7 +532,7 @@ async function initTableEdit(mesId) {
         else USER.saveSettings();
         await updateDropdownElement();
         //updateDragTables();
-        console.log("测试", [...currentSelectedValues, newTemplateUid])
+        console.log("테스트", [...currentSelectedValues, newTemplateUid])
         $(dropdownElement).val([...currentSelectedValues, newTemplateUid]).trigger("change", [true]);
         updateSelectedSheetUids()
     });
@@ -564,9 +564,9 @@ async function initTableEdit(mesId) {
 }
 
 export async function getEditView(mesId = -1) {
-    // 如果已经初始化过，直接返回缓存的容器，避免重复创建
+    // 이미 초기화된 경우 캐시된 컨테이너를 반환하여 중복 생성 방지
     if (table_editor_container) {
-        // 更新下拉菜单和表格，但不重新创建整个容器
+        // 드롭다운 메뉴와 표를 업데이트하되, 전체 컨테이너는 다시 생성하지 않음
         await refreshTempView(false);
         return table_editor_container;
     }

@@ -219,7 +219,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
     // if (!force) {
     //     // 显示配置状态
     //     const tableRefreshPopup = getRefreshTableConfigStatus(1);
-    //     const confirmation = await EDITOR.callGenericPopup(tableRefreshPopup, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+    //     const confirmation = await EDITOR.callGenericPopup(tableRefreshPopup, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
     //     if (!confirmation) return;
     // }
 
@@ -411,7 +411,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
                 if (!silentUpdate) {
                     // 将uniqueActions内容推送给用户确认是否继续
                     const confirmContent = confirmTheOperationPerformed(clonedTables);
-                    const tableRefreshPopup = new EDITOR.Popup(confirmContent, EDITOR.POPUP_TYPE.TEXT, '', { okButton: "继续", cancelButton: "取消" });
+                    const tableRefreshPopup = new EDITOR.Popup(confirmContent, EDITOR.POPUP_TYPE.TEXT, '', { okButton: "계속하기", cancelButton: "취소" });
                     EDITOR.clear();
                     await tableRefreshPopup.show();
                     if (!tableRefreshPopup.result) {
@@ -465,7 +465,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
     // if (!force) {
     //     // 显示配置状态
     //     const tableRefreshPopup = getRefreshTableConfigStatus();
-    //     const confirmation = await EDITOR.callGenericPopup(tableRefreshPopup, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+    //     const confirmation = await EDITOR.callGenericPopup(tableRefreshPopup, EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
     //     if (!confirmation) return;
     // }
 
@@ -634,7 +634,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
         if (!silentUpdate) {
             // 将uniqueActions内容推送给用户确认是否继续
             const confirmContent = confirmTheOperationPerformed(uniqueActions);
-            const tableRefreshPopup = new EDITOR.Popup(confirmContent, EDITOR.POPUP_TYPE.TEXT, '', { okButton: "继续", cancelButton: "取消" });
+            const tableRefreshPopup = new EDITOR.Popup(confirmContent, EDITOR.POPUP_TYPE.TEXT, '', { okButton: "계속하기", cancelButton: "취소" });
             EDITOR.clear();
             await tableRefreshPopup.show();
             if (!tableRefreshPopup.result) {
@@ -797,8 +797,8 @@ export async function rebuildSheets() {
 
 
     const confirmation = new EDITOR.Popup(container, EDITOR.POPUP_TYPE.CONFIRM, '', {
-        okButton: "继续",
-        cancelButton: "取消"
+        okButton: "계속하기",
+        cancelButton: "취소"
     });
 
     await confirmation.show();
@@ -1344,7 +1344,7 @@ export async function modifyRebuildTemplate() {
     else
         initialData = USER.tableBaseSetting.rebuild_message_template_list[selectedTemplate]
     const formInstance = new Form(sheetConfig, initialData);
-    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "保存", allowVerticalScrolling: true, cancelButton: "取消" });
+    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "保存", allowVerticalScrolling: true, cancelButton: "취소" });
     await popup.show();
     if (popup.result) {
         const result = formInstance.result();
@@ -1379,7 +1379,7 @@ export async function newRebuildTemplate() {
         user_prompt_begin: USER.tableBaseSetting.rebuild_default_message_template,
     };
     const formInstance = new Form(sheetConfig, initialData);
-    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "保存", allowVerticalScrolling: true, cancelButton: "取消" });
+    const popup = new EDITOR.Popup(formInstance.renderForm(), EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "保存", allowVerticalScrolling: true, cancelButton: "취소" });
     await popup.show();
     if (popup.result) {
         const result = formInstance.result();
@@ -1417,7 +1417,7 @@ export async function deleteRebuildTemplate() {
     if (selectedTemplate === 'rebuild_base') {
         return EDITOR.warning('默认模板不能删除');
     }
-    const confirmation = await EDITOR.callGenericPopup('是否删除此模板？', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "继续", cancelButton: "取消" });
+    const confirmation = await EDITOR.callGenericPopup('是否删除此模板？', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
     if (confirmation) {
         const newTemplates = {};
         Object.values(USER.tableBaseSetting.rebuild_message_template_list).forEach((template) => {

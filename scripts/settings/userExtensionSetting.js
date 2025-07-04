@@ -43,7 +43,7 @@ function updateTableView() {
         $(extensionsMenu).append(`
 <div id="drawer_in_extension_list_button" class="list-group-item flex-container flexGap5 interactable">
     <div class="fa-solid fa-table extensionsMenuExtensionButton"></div>
-    <span>增强记忆表格</span>
+    <span>메모리 향상 테이블</span>
 </div>
 `);
         // 设置点击事件
@@ -157,12 +157,12 @@ async function importTableSet() {
                 keyListHTML += '</ul>';
 
                 const tableInitPopup = $(`<div>
-                    <p>即将导入的设置项 (第一级):</p>
+                    <p>곧 가져올 설정 항목 (1단계):</p>
                     ${keyListHTML}
-                    <p>是否继续导入并重置这些设置？</p>
+                    <p>이 설정들을 계속 가져오고 초기화하시겠습니까？</p>
                 </div>`);
 
-                const confirmation = await EDITOR.callGenericPopup(tableInitPopup, EDITOR.POPUP_TYPE.CONFIRM, '导入设置确认', { okButton: "继续导入", cancelButton: "取消" });
+                const confirmation = await EDITOR.callGenericPopup(tableInitPopup, EDITOR.POPUP_TYPE.CONFIRM, '导入设置确认', { okButton: "继续导入", cancelButton: "취소" });
                 if (!confirmation) return; // 用户取消导入
 
                 // 用户确认导入后，进行数据应用
@@ -176,16 +176,16 @@ async function importTableSet() {
                 // 重新转换模板
                 initTableStructureToTemplate()
                 BASE.refreshTempView(true) // 刷新模板视图
-                EDITOR.success('导入成功并已重置所选设置'); // 提示用户导入成功
+                EDITOR.success('가져오기 성공, 선택한 설정이 초기화되었습니다.'); // 提示用户导入成功
 
             } catch (error) {
-                EDITOR.error('JSON 文件解析失败，请检查文件格式是否正确。'); // 提示 JSON 解析失败
-                console.error("文件读取或解析错误:", error); // 打印详细错误信息到控制台
+                EDITOR.error('JSON 파일 분석에 실패했습니다. 파일 형식이 올바른지 확인해주세요.'); // 提示 JSON 解析失败
+                console.error("파일 읽기 또는 분석 오류:", error); // 打印详细错误信息到控制台
             }
         };
 
         reader.onerror = (error) => {
-            EDITOR.error(`文件读取失败: ${error}`); // 提示文件读取失败
+            EDITOR.error(`파일 읽기 실패: ${error}`); // 提示文件读取失败
         };
 
         reader.readAsText(file); // 以文本格式读取文件内容
@@ -200,7 +200,7 @@ async function importTableSet() {
  */
 async function exportTableSet() {
     templateToTableStructure()
-    const { filterData, confirmation } = await filterTableDataPopup(USER.tableBaseSetting,"请选择需要导出的数据","")
+    const { filterData, confirmation } = await filterTableDataPopup(USER.tableBaseSetting,"내보낼 데이터를 선택해주세요","")
     if (!confirmation) return;
 
     try {
@@ -211,9 +211,9 @@ async function exportTableSet() {
         a.download = `tableCustomConfig-${SYSTEM.generateRandomString(8)}.json`;
         a.click();
         URL.revokeObjectURL(url);
-        EDITOR.success('导出成功');
+        EDITOR.success('내보내기 성공');
     } catch (error) {
-        EDITOR.error(`导出失败: ${error}`);
+        EDITOR.error(`내보내기 실패: ${error}`);
     }
 }
 
@@ -221,7 +221,7 @@ async function exportTableSet() {
  * 重置设置
  */
 async function resetSettings() {
-    const { filterData, confirmation } = await filterTableDataPopup(USER.tableBaseDefaultSettings, "请选择需要重置的数据","建议重置前先备份数据")
+    const { filterData, confirmation } = await filterTableDataPopup(USER.tableBaseDefaultSettings, "초기화할 데이터를 선택해주세요","초기화하기 전에 데이터를 백업하는 것을 권장합니다")
     if (!confirmation) return;
 
     try {
@@ -233,9 +233,9 @@ async function resetSettings() {
             initTableStructureToTemplate()
             BASE.refreshTempView(true)
         }
-        EDITOR.success('已重置所选设置');
+        EDITOR.success('선택한 설정이 초기화되었습니다');
     } catch (error) {
-        EDITOR.error(`重置设置失败: ${error}`);
+        EDITOR.error(`설정 초기화 실패: ${error}`);
     }
 }
 

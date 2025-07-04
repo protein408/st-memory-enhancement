@@ -106,7 +106,7 @@ const histories = `
 }
 </style>
 <div class="table-history">
-    <h3>表格单元格历史记录</h3>
+    <h3>表格셀 기록</h3>
     <div class="history-tabs">
         <!-- 动态生成tabs -->
     </div>

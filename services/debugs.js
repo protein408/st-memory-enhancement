@@ -56,7 +56,7 @@ export function functionToBeRegistered() {
     // SYSTEM.f(async ()=>{
     //     EDITOR.confirm(
     //         '执行操作?',
-    //         '取消',
+    //         '취소',
     //         '确认'
     //     ).then((r)=>{
     //         console.log(r)

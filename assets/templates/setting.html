@@ -2,42 +2,42 @@
 <div class="wide100p padding5 dataBankAttachments">
     <h2 class="marginBot5">
         <span>
-            修改表格结构
+            테이블 구조 수정
         </span>
     </h2>
     <div>
-        在这里可以调整表格的说明以及各种编辑操作的提示词
+        여기에서 테이블의 설명과 각종 편집 작업의 프롬프트를 조정할 수 있습니다
     </div>
     <div class="dataTable_tablePrompt_list">
-        <label>表格名</label>
+        <label>테이블 이름</label>
         <input type="text" id="dataTable_tableSetting_tableName" class="margin0 text_pole" style=" margin-bottom: 20px;"/>
-        <label>表格说明</label><small> (给AI解释此表格的作用)</small>
+        <label>테이블 설명</label><small> (AI에게 이 테이블의 용도를 설명)</small>
         <textarea id="dataTable_tableSetting_note" class="wide100p" rows="2"></textarea>
         <div class="checkbox flex-container" style="margin-bottom: 10px;">
-            <input type="checkbox" id="dataTable_tableSetting_required"><span>是否必填</span>
+            <input type="checkbox" id="dataTable_tableSetting_required"><span>필수 입력 여부</span>
         </div>
-        <label>初始化提示词</label><small> (当表格为必填表时，但是又为空时，给AI的提示)</small>
+        <label>초기화 프롬프트</label><small> (테이블이 필수이지만 비어있을 때 AI에게 주는 프롬프트)</small>
         <textarea id="dataTable_tableSetting_initNode" class="wide100p" rows="2"></textarea>
-        <label>插入提示词</label><small> (解释什么时候应该插入行)</small>
+        <label>삽입 프롬프트</label><small> (언제 행을 삽입해야 하는지 설명)</small>
         <textarea id="dataTable_tableSetting_insertNode" class="wide100p" rows="2"></textarea>
-        <label>更新提示词</label><small> (解释什么时候应该更新行)</small>
+        <label>업데이트 프롬프트</label><small> (언제 행을 업데이트해야 하는지 설명)</small>
         <textarea id="dataTable_tableSetting_updateNode" class="wide100p" rows="2"></textarea>
-        <label>删除提示词</label><small> (解释什么时候应该删除行)</small>
+        <label>삭제 프롬프트</label><small> (언제 행을 삭제해야 하는지 설명)</small>
         <textarea id="dataTable_tableSetting_deleteNode" class="wide100p" rows="2"></textarea>
 
         <!-- 开启时将该表格推送至对话 -->
         <div class="checkbox flex-container" style="margin-bottom: 10px;">
             <input type="checkbox" id="dataTable_tableSetting_toChat">
-            <span>推送至对话</span>
-            <small> (开启时将该表格推送至对话)</small>
+            <span>대화로 푸시</span>
+            <small> (활성화 시 해당 테이블을 대화로 푸시합니다)</small>
         </div>
         <div class="checkbox flex-container">
-            <label>推送样式</label><small> (编辑推送至对话的表格样式)</small>
+            <label>푸시 스타일</label><small> (대화로 푸시되는 테이블 스타일 편집)</small>
         </div>
         <textarea id="dataTable_tableSetting_tableRender" class="wide100p" rows="2"></textarea>
-        <!-- 编辑推送至对话的表格样式 -->
+        <!-- 대화로 푸시되는 테이블 스타일 편집 -->
         <i class="menu_button menu_button_icon fa-solid fa-bug tableEditor_renderButton" data-index="${tableIndex}">
-            <a>在测试模式中编辑本表格样式</a>
+            <a>테스트 모드에서 이 테이블 스타일 편집</a>
         </i>
     </div>
 </div>
@@ -45,16 +45,16 @@
 <div class="wide100p padding5 dataBankAttachments">
     <h2 class="marginBot5">
         <span>
-            分步填表设置
+            단계별 테이블 채우기 설정
         </span>
     </h2>
     <div>
-        在这里可以调整分步填表的相关参数
+        여기에서 단계별 테이블 채우기와 관련된 매개변수를 조정할 수 있습니다
     </div>
     <div class="dataTable_tablePrompt_list">
-        <label for="separateReadContextLayers">上下文层数</label><small> (控制分步填表读取的上下文层数)</small>
+        <label for="separateReadContextLayers">컨텍스트 레이어 수</label><small> (단계별 테이블 채우기에서 읽는 컨텍스트 레이어 수 제어)</small>
         <input type="number" id="separateReadContextLayers" class="margin0 text_pole" style="margin-bottom: 20px; width: 80px;" min="0" value="1"/>
-        <label for="step_by_step_user_prompt">分步填表提示词</label><small> (用于分步填表时的提示词)</small>
+        <label for="step_by_step_user_prompt">단계별 테이블 채우기 프롬프트</label><small> (단계별 테이블 채우기에 사용되는 프롬프트)</small>
         <textarea id="step_by_step_user_prompt" class="wide100p" rows="10"></textarea>
     </div>
 </div>

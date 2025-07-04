@@ -442,7 +442,7 @@ async function initializeEditor() {
 export async function openSheetStyleRendererPopup(originInstance) {
     // 初始化弹窗
     const manager = await SYSTEM.getTemplate('customSheetStyle');
-    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "保存修改", cancelButton: "取消" });
+    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "保存修改", cancelButton: "취소" });
     const $dlg = $(tableRendererPopup.dlg);
     templateInstance = originInstance;
 

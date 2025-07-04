@@ -14,7 +14,7 @@ import { parseLooseDict, replaceUserTag } from "./utils/stringUtil.js";
 import {executeTranslation} from "./services/translate.js";
 
 
-console.log("______________________记忆插件：开始加载______________________")
+console.log("______________________메모리 플러그인: 로딩 시작______________________")
 
 const VERSION = '2.1.1'
 
@@ -24,7 +24,7 @@ const editErrorInfo = {
 }
 
 /**
- * 修复值中不正确的转义单引号
+ * 값 중의 잘못된 이스케이프 단일 따옴표 수정
  * @param {*} value
  * @returns
  */
@@ -43,22 +43,22 @@ function fixUnescapedSingleQuotes(value) {
 }
 
 /**
- * 通过表格索引查找表格结构
- * @param {number} index 表格索引
- * @returns 此索引的表格结构
+ * 테이블 인덱스를 통해 테이블 구조 찾기
+ * @param {number} index 테이블 인덱스
+ * @returns 이 인덱스의 테이블 구조
  */
 export function findTableStructureByIndex(index) {
     return USER.tableBaseSetting.tableStructure[index];
 }
 
 /**
- * 检查数据是否为Sheet实例，不是则转换为新的Sheet实例
- * @param {Object[]} dataTable 所有表格对象数组
+ * 데이터가 Sheet 인스턴스인지 확인하고, 아니면 새 Sheet 인스턴스로 변환
+ * @param {Object[]} dataTable 모든 테이블 객체 배열
  */
 function checkPrototype(dataTable) {
-    // 旧的Table实例检查逻辑已被移除
-    // 现在使用新的Sheet类处理表格数据
-    // 这个函数保留是为了兼容旧代码调用，但内部逻辑已更新
+    // 기존 Table 인스턴스 확인 로직이 제거됨
+    // 이제 새로운 Sheet 클래스를 사용하여 테이블 데이터 처리
+    // 이 함수는 기존 코드 호출과의 호환성을 위해 유지되지만 내부 로직은 업데이트됨
     return dataTable;
 }
 
@@ -69,16 +69,16 @@ export function buildSheetsByTemplates(targetPiece) {
     templates.forEach(template => {
         if(template.enable === false) return
 
-        // 检查 template 结构
+        // template 구조 확인
         if (!template || !template.hashSheet || !Array.isArray(template.hashSheet) || template.hashSheet.length === 0 || !Array.isArray(template.hashSheet[0]) || !template.cellHistory || !Array.isArray(template.cellHistory)) {
-            console.error(`[Memory Enhancement] 在 buildSheetsByTemplates 中遇到无效的模板结构 (缺少 hashSheet 或 cellHistory)。跳过模板:`, template);
-            return; // 跳过处理此模板
+            console.error(`[Memory Enhancement] buildSheetsByTemplates에서 잘못된 템플릿 구조 발견 (hashSheet 또는 cellHistory 누락). 템플릿 건너뛰기:`, template);
+            return; // 이 템플릿 처리 건너뛰기
         }
         try {
             const newSheet = BASE.createChatSheetByTemp(template);
             newSheet.save(targetPiece);
         } catch (error) {
-            EDITOR.error(`[Memory Enhancement] 从模板创建或保存 sheet 时出错:`, "", error);
+            EDITOR.error(`[Memory Enhancement] 템플릿에서 sheet 생성 또는 저장 중 오류:`, "", error);
         }
     })
     BASE.updateSelectBySheetStatus()
@@ -86,8 +86,8 @@ export function buildSheetsByTemplates(targetPiece) {
 }
 
 /**
- * 转化旧表格为sheets
- * @param {DERIVED.Table[]} oldTableList 旧表格数据
+ * 기존 테이블을 sheets로 변환
+ * @param {DERIVED.Table[]} oldTableList 기존 테이블 데이터
  */
 export function convertOldTablesToNewSheets(oldTableList, targetPiece) {
     //USER.getChatPiece().hash_sheets = {};
@@ -98,16 +98,16 @@ export function convertOldTablesToNewSheets(oldTableList, targetPiece) {
         const rows = valueSheet.length
         const targetSheetUid = BASE.sheetsData.context.find(sheet => sheet.name === oldTable.tableName)?.uid
         if (targetSheetUid) {
-            // 如果表格已存在，则更新表格数据
+            // 테이블이 이미 존재하면 테이블 데이터 업데이트
             const targetSheet = BASE.getChatSheet(targetSheetUid)
-            console.log("表格已存在，更新表格数据", targetSheet)
+            console.log("테이블이 이미 존재함, 테이블 데이터 업데이트", targetSheet)
             targetSheet.rebuildHashSheetByValueSheet(valueSheet)
             targetSheet.save(targetPiece)
             addOldTablePrompt(targetSheet)
             sheets.push(targetSheet)
             continue
         }
-        // 如果表格未存在，则创建新的表格
+        // 테이블이 존재하지 않으면 새 테이블 생성
         const newSheet = BASE.createChatSheet(cols, rows);
         newSheet.name = oldTable.tableName
         newSheet.domain = newSheet.SheetDomain.chat
@@ -132,17 +132,17 @@ export function convertOldTablesToNewSheets(oldTableList, targetPiece) {
         sheets.push(newSheet)
     }
     // USER.saveChat()
-    console.log("转换旧表格数据为新表格数据", sheets)
+    console.log("기존 테이블 데이터를 새 테이블 데이터로 변환", sheets)
     return sheets
 }
 
 /**
- * 添加旧表格结构中的提示词到新的表格中
- * @param {*} sheet 表格对象
+ * 기존 테이블 구조의 프롬프트를 새 테이블에 추가
+ * @param {*} sheet 테이블 객체
  */
 function addOldTablePrompt(sheet) {
     const tableStructure = USER.tableBaseSetting.tableStructure.find(table => table.tableName === sheet.name)
-    console.log("添加旧表格提示词", tableStructure, USER.tableBaseSetting.tableStructure, sheet.name)
+    console.log("기존 테이블 프롬프트 추가", tableStructure, USER.tableBaseSetting.tableStructure, sheet.name)
     if (!tableStructure) return false
     const source = sheet.source
     source.required = tableStructure.Required
@@ -154,10 +154,10 @@ function addOldTablePrompt(sheet) {
 }
 
 /**
- * 寻找下一个含有表格数据的消息，如寻找不到，则返回null
- * @param startIndex 开始寻找的索引
- * @param isIncludeStartIndex 是否包含开始索引
- * @returns 寻找到的mes数据
+ * 테이블 데이터를 포함한 다음 메시지 찾기, 찾을 수 없으면 null 반환
+ * @param startIndex 검색을 시작할 인덱스
+ * @param isIncludeStartIndex 시작 인덱스를 포함할지 여부
+ * @returns 찾은 mes 데이터
  */
 export function findNextChatWhitTableData(startIndex, isIncludeStartIndex = false) {
     if (startIndex === -1) return { index: - 1, chat: null }
@@ -172,47 +172,47 @@ export function findNextChatWhitTableData(startIndex, isIncludeStartIndex = fals
 }
 
 /**
- * 搜寻最后一个含有表格数据的消息，并生成提示词
- * @returns 生成的完整提示词
+ * 테이블 데이터를 포함한 마지막 메시지를 검색하고 프롬프트 생성
+ * @returns 생성된 완전한 프롬프트
  */
 export function initTableData(eventData) {
     const allPrompt = USER.tableBaseSetting.message_template.replace('{{tableData}}', getTablePrompt(eventData))
-    const promptContent = replaceUserTag(allPrompt)  //替换所有的<user>标签
-    console.log("完整提示", promptContent)
+    const promptContent = replaceUserTag(allPrompt)  //모든 <user> 태그 교체
+    console.log("완전한 프롬프트", promptContent)
     return promptContent
 }
 
 /**
- * 获取表格相关提示词
- * @returns {string} 表格相关提示词
+ * 테이블 관련 프롬프트 가져오기
+ * @returns {string} 테이블 관련 프롬프트
  */
 export function getTablePrompt(eventData, isPureData = false) {
     const lastSheetsPiece = BASE.getReferencePiece()
     if(!lastSheetsPiece) return ''
-    console.log("获取到的参考表格数据", lastSheetsPiece)
+    console.log("가져온 참조 테이블 데이터", lastSheetsPiece)
     return getTablePromptByPiece(lastSheetsPiece, isPureData)
 }
 
 /**
- * 通过piece获取表格相关提示词
- * @param {Object} piece 聊天片段
- * @returns {string} 表格相关提示词
+ * piece를 통해 테이블 관련 프롬프트 가져오기
+ * @param {Object} piece 채팅 조각
+ * @returns {string} 테이블 관련 프롬프트
  */
 export function getTablePromptByPiece(piece, isPureData = false) {
     const {hash_sheets} = piece
     const sheets = BASE.hashSheetsToSheets(hash_sheets)
         .filter(sheet => sheet.enable)
         .filter(sheet => sheet.sendToContext !== false);
-    console.log("构建提示词时的信息 (已过滤)", hash_sheets, sheets)
+    console.log("프롬프트 구성 시 정보 (필터링됨)", hash_sheets, sheets)
     const customParts = isPureData ? ['title', 'headers', 'rows'] : ['title', 'node', 'headers', 'rows', 'editRules'];
     const sheetDataPrompt = sheets.map((sheet, index) => sheet.getTableText(index, customParts, piece)).join('\n')
     return sheetDataPrompt
 }
 
 /**
- * 将匹配到的整体字符串转化为单个语句的数组
- * @param {string[]} matches 匹配到的整体字符串
- * @returns 单条执行语句数组
+ * 매칭된 전체 문자열을 개별 명령문 배열로 변환
+ * @param {string[]} matches 매칭된 전체 문자열
+ * @returns 단일 실행 명령문 배열
  */
 function handleTableEditTag(matches) {
     const functionRegex = /(updateRow|insertRow|deleteRow)\(/g;
@@ -223,11 +223,11 @@ function handleTableEditTag(matches) {
         while ((match = functionRegex.exec(input)) !== null) {
             positions.push({
                 index: match.index,
-                name: match[1].replace("Row", "") // 转换成 update/insert/delete
+                name: match[1].replace("Row", "") // update/insert/delete로 변환
             });
         }
 
-        // 合并函数片段和位置
+        // 함수 조각과 위치 병합
         for (let i = 0; i < positions.length; i++) {
             const start = positions[i].index;
             const end = i + 1 < positions.length ? positions[i + 1].index : input.length;
@@ -235,7 +235,7 @@ function handleTableEditTag(matches) {
             const lastParenIndex = fullCall.lastIndexOf(")");
 
             if (lastParenIndex !== -1) {
-                const sliced = fullCall.slice(0, lastParenIndex); // 去掉最后一个 )
+                const sliced = fullCall.slice(0, lastParenIndex); // 마지막 ) 제거
                 const argsPart = sliced.slice(sliced.indexOf("(") + 1);
                 const args = argsPart.match(/("[^"]*"|\{.*\}|[0-9]+)/g)?.map(s => s.trim());
                 if(!args) continue
@@ -252,9 +252,9 @@ function handleTableEditTag(matches) {
 }
 
 /**
- * 检查表格编辑字符串是否改变
- * @param {Chat} chat 单个聊天对象
- * @param {string[]} matches 新的匹配对象
+ * 테이블 편집 문자열이 변경되었는지 확인
+ * @param {Chat} chat 단일 채팅 객체
+ * @param {string[]} matches 새로운 매치 객체
  * @returns
  */
 function isTableEditStrChanged(chat, matches) {
@@ -266,7 +266,7 @@ function isTableEditStrChanged(chat, matches) {
 }
 
 /**
- * 清除表格中的所有空行
+ * 테이블의 모든 빈 행 제거
  */
 function clearEmpty() {
     DERIVED.any.waitingTable.forEach(table => {
@@ -277,97 +277,97 @@ function clearEmpty() {
 
 
 /**
- * 处理文本内的表格编辑事件
- * @param {Chat} chat 单个聊天对象
- * @param {number} mesIndex 修改的消息索引
- * @param {boolean} ignoreCheck 是否跳过重复性检查
+ * 텍스트 내의 테이블 편집 이벤트 처리
+ * @param {Chat} chat 단일 채팅 객체
+ * @param {number} mesIndex 수정된 메시지 인덱스
+ * @param {boolean} ignoreCheck 중복 검사를 건너뛸지 여부
  * @returns
  */
 export function handleEditStrInMessage(chat, mesIndex = -1, ignoreCheck = false) {
     parseTableEditTag(chat, mesIndex, ignoreCheck)
-    updateSystemMessageTableStatus();   // 新增代码，将表格数据状态更新到系统消息中
+    updateSystemMessageTableStatus();   // 새로운 코드, 테이블 데이터 상태를 시스템 메시지에 업데이트
     //executeTableEditTag(chat, mesIndex)
 }
 
 /**
- * 解析回复中的表格编辑标签
- * @param {*} piece 单个聊天对象
- * @param {number} mesIndex 修改的消息索引
- * @param {boolean} ignoreCheck 是否跳过重复性检查
+ * 응답 중의 테이블 편집 태그 파싱
+ * @param {*} piece 단일 채팅 객체
+ * @param {number} mesIndex 수정된 메시지 인덱스
+ * @param {boolean} ignoreCheck 중복 검사를 건너뛸지 여부
  */
 export function parseTableEditTag(piece, mesIndex = -1, ignoreCheck = false) {
     const { matches } = getTableEditTag(piece.mes)
     if (!ignoreCheck && !isTableEditStrChanged(piece, matches)) return false
     const tableEditActions = handleTableEditTag(matches)
     tableEditActions.forEach((action, index) => tableEditActions[index].action = classifyParams(formatParams(action.param)))
-    console.log("解析到的表格编辑指令", tableEditActions)
+    console.log("파싱된 테이블 편집 명령", tableEditActions)
 
-    // 获取上一个表格数据
+    // 이전 테이블 데이터 가져오기
     const { piece: prePiece } = mesIndex === -1 ? BASE.getLastSheetsPiece(1) : BASE.getLastSheetsPiece(mesIndex - 1, 1000, false)
     const sheets = BASE.hashSheetsToSheets(prePiece.hash_sheets).filter(sheet => sheet.enable)
-    console.log("执行指令时的信息", sheets)
+    console.log("명령 실행 시 정보", sheets)
     for (const EditAction of sortActions(tableEditActions)) {
         executeAction(EditAction, sheets)
     }
     sheets.forEach(sheet => sheet.save(piece, true))
-    console.log("聊天模板：", BASE.sheetsData.context)
-    console.log("获取到的表格数据", prePiece)
-    console.log("测试总chat", USER.getContext().chat)
+    console.log("채팅 템플릿:", BASE.sheetsData.context)
+    console.log("가져온 테이블 데이터", prePiece)
+    console.log("테스트 전체 chat", USER.getContext().chat)
     return true
 }
 
 /**
- * 直接通过编辑指令字符串执行操作
- * @param {string[]} matches 编辑指令字符串
+ * 편집 명령 문자열을 통해 직접 작업 실행
+ * @param {string[]} matches 편집 명령 문자열
  */
 export function executeTableEditActions(matches, referencePiece) {
     const tableEditActions = handleTableEditTag(matches)
     tableEditActions.forEach((action, index) => tableEditActions[index].action = classifyParams(formatParams(action.param)))
-    console.log("解析到的表格编辑指令", tableEditActions)
+    console.log("파싱된 테이블 편집 명령", tableEditActions)
 
-    // 核心修复：不再信任传入的 referencePiece.hash_sheets，而是直接从 BASE 获取当前激活的、唯一的 Sheet 实例。
+    // 핵심 수정: 전달받은 referencePiece.hash_sheets를 더 이상 신뢰하지 않고, BASE에서 직접 현재 활성화된 유일한 Sheet 인스턴스를 가져옴.
     const sheets = BASE.getChatSheets().filter(sheet => sheet.enable)
     if (!sheets || sheets.length === 0) {
-        console.error("executeTableEditActions: 未找到任何启用的表格实例，操作中止。");
+        console.error("executeTableEditActions: 활성화된 테이블 인스턴스를 찾을 수 없음, 작업 중단.");
         return false;
     }
 
-    console.log("执行指令时的信息 (来自 BASE.getChatSheets)", sheets)
+    console.log("명령 실행 시 정보 (BASE.getChatSheets에서)", sheets)
     for (const EditAction of sortActions(tableEditActions)) {
         executeAction(EditAction, sheets)
     }
     
-    // 核心修复：确保修改被保存到当前最新的聊天片段中。
+    // 핵심 수정: 수정 사항이 현재 최신 채팅 조각에 저장되도록 확인.
     const { piece: currentPiece } = USER.getChatPiece();
     if (!currentPiece) {
-        console.error("executeTableEditActions: 无法获取当前聊天片段，保存操作失败。");
+        console.error("executeTableEditActions: 현재 채팅 조각을 가져올 수 없음, 저장 작업 실패.");
         return false;
     }
     sheets.forEach(sheet => sheet.save(currentPiece, true))
 
-    console.log("聊天模板：", BASE.sheetsData.context)
-    console.log("测试总chat", USER.getContext().chat)
-    return true // 返回 true 表示成功
+    console.log("채팅 템플릿:", BASE.sheetsData.context)
+    console.log("테스트 전체 chat", USER.getContext().chat)
+    return true // true 반환은 성공을 의미
 }
 
 /**
- * 执行单个action指令
+ * 단일 action 명령 실행
  */
 function executeAction(EditAction, sheets) {
     const action = EditAction.action
     const sheet = sheets[action.tableIndex]
     if (!sheet) {
-        console.error("表格不存在，无法执行编辑操作", EditAction);
+        console.error("테이블이 존재하지 않음, 편집 작업 실행 불가", EditAction);
         return -1;
     }
 
-    // 在所有操作前，深度清理一次action.data
+    // 모든 작업 전에 action.data를 한 번 깊이 정리
     if (action.data) {
         action.data = fixUnescapedSingleQuotes(action.data);
     }
     switch (EditAction.type) {
         case 'update':
-            // 执行更新操作
+            // 업데이트 작업 실행
             const rowIndex = action.rowIndex ? parseInt(action.rowIndex):0
             if(rowIndex >= sheet.getRowCount()-1) return executeAction({...EditAction, type:'insert'}, sheets)
             if(!action?.data) return
@@ -378,7 +378,7 @@ function executeAction(EditAction, sheets) {
             })
             break
         case 'insert': {
-            // 执行插入操作
+            // 삽입 작업 실행
             const cell = sheet.findCellByPosition(sheet.getRowCount() - 1, 0)
             cell.newAction(cell.CellAction.insertDownRow, {}, false)
             const lastestRow = sheet.getRowCount() - 1
@@ -391,25 +391,25 @@ function executeAction(EditAction, sheets) {
         }
             break
         case 'delete':
-            // 执行删除操作
+            // 삭제 작업 실행
             const deleteRow = parseInt(action.rowIndex) + 1
             const cell = sheet.findCellByPosition(deleteRow, 0)
             if (!cell) return -1
             cell.newAction(cell.CellAction.deleteSelfRow, {}, false)
             break
     }
-    console.log("执行表格编辑操作", EditAction)
+    console.log("테이블 편집 작업 실행", EditAction)
     return 1
 }
 
 
 /**
- * 为actions排序
- * @param {Object[]} actions 要排序的actions
- * @returns 排序后的actions
+ * actions 정렬
+ * @param {Object[]} actions 정렬할 actions
+ * @returns 정렬된 actions
  */
 function sortActions(actions) {
-    // 定义排序优先级
+    // 정렬 우선순위 정의
     const priority = {
         update: 0,
         insert: 1,
@@ -419,8 +419,8 @@ function sortActions(actions) {
 }
 
 /**
- * 格式化参数
- * @description 将参数数组中的字符串转换为数字或对象
+ * 매개변수 포맷팅
+ * @description 매개변수 배열의 문자열을 숫자나 객체로 변환
  * @param {string[]} paramArray
  * @returns
  */
@@ -434,15 +434,15 @@ function formatParams(paramArray) {
             return parseLooseDict(trimmed);
         }
 
-        // 其他情况都返回字符串
+        // 기타 경우는 모두 문자열 반환
         return trimmed;
     });
 }
 
 /**
- * 分类参数
- * @param {string[]} param 参数
- * @returns {Object} 分类后的参数对象
+ * 매개변수 분류
+ * @param {string[]} param 매개변수
+ * @returns {Object} 분류된 매개변수 객체
  */
 function classifyParams(param) {
     const action = {};
@@ -458,13 +458,13 @@ function classifyParams(param) {
 }
 
 /**
- * 执行回复中得编辑标签
- * @param {Chat} chat 单个聊天对象
- * @param {number} mesIndex 修改的消息索引
+ * 응답 실행 중 편집 태크
+ * @param {Chat} chat 단일 채팅 대상
+ * @param {number} mesIndex 수정된 메시지 인덱스
  */
 function executeTableEditTag(chat, mesIndex = -1, ignoreCheck = false) {
 
-    // 如果不是最新的消息，则更新接下来的表格
+    // 최신 메시지가 아닌 경우, 다음 표를 업데이트
     if (mesIndex !== -1) {
         const { index, chat: nextChat } = findNextChatWhitTableData(mesIndex)
         if (index !== -1) handleEditStrInMessage(nextChat, index, true)
@@ -472,15 +472,15 @@ function executeTableEditTag(chat, mesIndex = -1, ignoreCheck = false) {
 }
 
 /**
- * 干运行获取插入action的插入位置和表格插入更新内容
+ * 드라이 런으로 삽입 action의 삽입 위치와 테이블 삽입 업데이트 내용 가져오기
  */
 function dryRunExecuteTableEditTag() {
-    // TODO 使用新的Sheet系统处理表格编辑
+    // TODO 새로운 Sheet 시스템을 사용하여 테이블 편집 처리
 }
 
 /**
- * 获取生成的操作函数字符串
- * @returns 生成的操作函数字符串
+ * 생성된 작업 함수 문자열 가져오기
+ * @returns 생성된 작업 함수 문자열
  */
 export function getTableEditActionsStr() {
     const tableEditActionsStr = DERIVED.any.tableEditActions.filter(action => action.able && action.type !== 'Comment').map(tableEditAction => tableEditAction.format()).join('\n')
@@ -488,17 +488,17 @@ export function getTableEditActionsStr() {
 }
 
 /**
- * 替换聊天中的TableEdit标签内的内容
- * @param {*} chat 聊天对象
+ * 채팅의 TableEdit 태그 내 내용 교체
+ * @param {*} chat 채팅 객체
  */
 export function replaceTableEditTag(chat, newContent) {
-    // 处理 mes
+    // mes 처리
     if (/<tableEdit>.*?<\/tableEdit>/gs.test(chat.mes)) {
         chat.mes = chat.mes.replace(/<tableEdit>(.*?)<\/tableEdit>/gs, `<tableEdit>${newContent}</tableEdit>`);
     } else {
         chat.mes += `\n<tableEdit>${newContent}</tableEdit>`;
     }
-    // 处理 swipes
+    // swipes 처리
     if (chat.swipes != null && chat.swipe_id != null)
         if (/<tableEdit>.*?<\/tableEdit>/gs.test(chat.swipes[chat.swipe_id])) {
             chat.swipes[chat.swipe_id] = chat.swipes[chat.swipe_id].replace(/<tableEdit>(.*?)<\/tableEdit>/gs, `<tableEdit>\n${newContent}\n</tableEdit>`);
@@ -509,8 +509,8 @@ export function replaceTableEditTag(chat, newContent) {
 }
 
 /**
- * 读取设置中的注入角色
- * @returns 注入角色
+ * 설정에서 주입 역할 읽기
+ * @returns 주입 역할
  */
 function getMesRole() {
     switch (USER.tableBaseSetting.injection_mode) {
@@ -524,31 +524,31 @@ function getMesRole() {
 }
 
 /**
- * 注入表格总体提示词
+ * 테이블 전체 프롬프트 주입
  * @param {*} eventData
  * @returns
  */
 async function onChatCompletionPromptReady(eventData) {
     try {
-        // 优先处理分步填表模式
+        // 단계별 테이블 작성 모드 우선 처리
         if (USER.tableBaseSetting.step_by_step === true) {
-            // 仅当插件和AI读表功能开启时才注入
+            // 플러그인과 AI 테이블 읽기 기능이 활성화된 경우에만 주입
             if (USER.tableBaseSetting.isExtensionAble === true && USER.tableBaseSetting.isAiReadTable === true) {
-                const tableData = getTablePrompt(eventData, true); // 获取纯净数据
-                if (tableData) { // 确保有内容可注入
-                    const finalPrompt = `以下是通过表格记录的当前场景信息以及历史记录信息，你需要以此为参考进行思考：\n${tableData}`;
+                const tableData = getTablePrompt(eventData, true); // 순수 데이터 가져오기
+                if (tableData) { // 주입할 내용이 있는지 확인
+                    const finalPrompt = `다음은 테이블로 기록된 현재 시나리오 정보와 히스토리 정보입니다. 이를 참고하여 생각해야 합니다:\n${tableData}`;
                     if (USER.tableBaseSetting.deep === 0) {
                         eventData.chat.push({ role: getMesRole(), content: finalPrompt });
                     } else {
                         eventData.chat.splice(-USER.tableBaseSetting.deep, 0, { role: getMesRole(), content: finalPrompt });
                     }
-                    console.log("分步填表模式：注入只读表格数据", eventData.chat);
+                    console.log("단계별 테이블 작성 모드: 읽기 전용 테이블 데이터 주입", eventData.chat);
                 }
             }
-            return; // 处理完分步模式后直接退出，不执行后续的常规注入
+            return; // 단계별 모드 처리 완료 후 직접 종료, 후속 일반 주입 실행하지 않음
         }
 
-        // 常规模式的注入逻辑
+        // 일반 모드의 주입 로직
         if (eventData.dryRun === true ||
             USER.tableBaseSetting.isExtensionAble === false ||
             USER.tableBaseSetting.isAiReadTable === false ||
@@ -556,7 +556,7 @@ async function onChatCompletionPromptReady(eventData) {
             return;
         }
 
-        console.log("生成提示词前", USER.getContext().chat)
+        console.log("프롬프트 생성 전", USER.getContext().chat)
         const promptContent = initTableData(eventData)
         if (USER.tableBaseSetting.deep === 0)
             eventData.chat.push({ role: getMesRole(), content: promptContent })
@@ -565,31 +565,31 @@ async function onChatCompletionPromptReady(eventData) {
 
         updateSheetsView()
     } catch (error) {
-        EDITOR.error(`记忆插件：表格数据注入失败\n原因：`,error.message, error);
+        EDITOR.error(`메모리 플러그인: 테이블 데이터 주입 실패\n원인:`,error.message, error);
     }
-    console.log("注入表格总体提示词", eventData.chat)
+    console.log("테이블 전체 프롬프트 주입", eventData.chat)
 }
 
 /**
-  * 宏获取提示词
+  * 매크로 프롬프트 가져오기
   */
 function getMacroPrompt() {
     try {
         if (USER.tableBaseSetting.isExtensionAble === false || USER.tableBaseSetting.isAiReadTable === false) return ""
         if (USER.tableBaseSetting.step_by_step === true) {
             const promptContent = replaceUserTag(getTablePrompt(undefined, true))
-            return `以下是通过表格记录的当前场景信息以及历史记录信息，你需要以此为参考进行思考：\n${promptContent}`
+            return `다음은 테이블로 기록된 현재 시나리오 정보와 히스토리 정보입니다. 이를 참고하여 생각해야 합니다:\n${promptContent}`
         }
         const promptContent = initTableData()
         return promptContent
     }catch (error) {
-        EDITOR.error(`记忆插件：宏提示词注入失败\n原因：`, error.message, error);
+        EDITOR.error(`메모리 플러그인: 매크로 프롬프트 주입 실패\n원인:`, error.message, error);
         return ""
     }
 }
 
 /**
-  * 宏获取表格提示词
+  * 매크로 테이블 프롬프트 가져오기
   */
 function getMacroTablePrompt() {
     try {
@@ -601,14 +601,14 @@ function getMacroTablePrompt() {
         const promptContent = replaceUserTag(getTablePrompt())
         return promptContent
     }catch (error) {
-        EDITOR.error(`记忆插件：宏提示词注入失败\n原因：`, error.message, error);
+        EDITOR.error(`메모리 플러그인: 매크로 프롬프트 주입 실패\n원인:`, error.message, error);
         return ""
     }
 }
 
 /**
- * 去掉编辑指令两端的空格和注释标签
- * @param {string} str 输入的编辑指令字符串
+ * 편집 명령 양 끝의 공백과 주석 태그 제거
+ * @param {string} str 입력된 편집 명령 문자열
  * @returns
  */
 function trimString(str) {
@@ -622,9 +622,9 @@ function trimString(str) {
 }
 
 /**
- * 获取表格的tableEdit标签内的内容
- * @param {string} mes 消息正文字符串
- * @returns {matches} 匹配到的内容数组
+ * 테이블의 tableEdit 태그 내 내용 가져오기
+ * @param {string} mes 메시지 본문 문자열
+ * @returns {matches} 매칭된 내용 배열
  */
 
 export function getTableEditTag(mes) {
@@ -639,8 +639,8 @@ export function getTableEditTag(mes) {
 }
 
 /**
- * 消息编辑时触发
- * @param this_edit_mes_id 此消息的ID
+ * 메시지 편집 시 트리거
+ * @param this_edit_mes_id 이 메시지의 ID
  */
 async function onMessageEdited(this_edit_mes_id) {
     if (USER.tableBaseSetting.isExtensionAble === false || USER.tableBaseSetting.step_by_step === true) return
@@ -649,27 +649,27 @@ async function onMessageEdited(this_edit_mes_id) {
     try {
         handleEditStrInMessage(chat, parseInt(this_edit_mes_id))
     } catch (error) {
-        EDITOR.error("记忆插件：表格编辑失败\n原因：", error.message, error)
+        EDITOR.error("메모리 플러그인: 테이블 편집 실패\n원인:", error.message, error)
     }
     updateSheetsView()
 }
 
 /**
- * 消息接收时触发
- * @param {number} chat_id 此消息的ID
+ * 메시지 수신 시 트리거
+ * @param {number} chat_id 이 메시지의 ID
  */
 async function onMessageReceived(chat_id) {
     if (USER.tableBaseSetting.isExtensionAble === false) return
     if (USER.tableBaseSetting.step_by_step === true && USER.getContext().chat.length > 2) {
-        TableTwoStepSummary("auto");  // 请勿使用await，否则会导致主进程阻塞引起的连锁bug
+        TableTwoStepSummary("auto");  // await를 사용하지 마세요. 메인 프로세스 블로킹으로 인한 연쇄 버그를 방지하기 위함.
     } else {
         if (USER.tableBaseSetting.isAiWriteTable === false) return
         const chat = USER.getContext().chat[chat_id];
-        console.log("收到消息", chat_id)
+        console.log("메시지 수신", chat_id)
         try {
             handleEditStrInMessage(chat)
         } catch (error) {
-            EDITOR.error("记忆插件：表格自动更改失败\n原因：", error.message, error)
+            EDITOR.error("메모리 플러그인: 테이블 자동 변경 실패\n원인:", error.message, error)
         }
     }
 
@@ -677,9 +677,9 @@ async function onMessageReceived(chat_id) {
 }
 
 /**
- * 解析字符串中所有 {{GET::...}} 宏
- * @param {string} text - 需要解析的文本
- * @returns {string} - 解析并替换宏之后的文本
+ * 문자열의 모든 {{GET::...}} 매크로 파싱
+ * @param {string} text - 파싱할 텍스트
+ * @returns {string} - 매크로를 파싱하고 교체한 후의 텍스트
  */
 function resolveTableMacros(text) {
     if (typeof text !== 'string' || !text.includes('{{GET::')) {
@@ -691,29 +691,29 @@ function resolveTableMacros(text) {
         const targetTable = sheets.find(t => t.name.trim() === tableName.trim());
 
         if (!targetTable) {
-            return `<span style="color: red">[GET: 未找到表格 "${tableName}"]</span>`;
+            return `<span style="color: red">[GET: 테이블 "${tableName}"을 찾을 수 없음]</span>`;
         }
 
         try {
             const cell = targetTable.getCellFromAddress(cellAddress);
             const cellValue = cell ? cell.data.value : undefined;
-            return cellValue !== undefined ? cellValue : `<span style="color: orange">[GET: 在 "${tableName}" 中未找到单元格 "${cellAddress}"]</span>`;
+            return cellValue !== undefined ? cellValue : `<span style="color: orange">[GET: "${tableName}"에서 셀 "${cellAddress}"을 찾을 수 없음]</span>`;
         } catch (error) {
             console.error(`Error resolving GET macro for ${tableName}:${cellAddress}`, error);
-            return `<span style="color: red">[GET: 处理时出错]</span>`;
+            return `<span style="color: red">[GET: 처리 중 오류]</span>`;
         }
     });
 }
 
 /**
- * 聊天变化时触发
+ * 채팅 변경 시 트리거
  */
 async function onChatChanged() {
     try {
-        // 更新表格视图
+        // 테이블 뷰 업데이트
         updateSheetsView();
 
-        // 在聊天消息中渲染宏
+        // 채팅 메시지에서 매크로 렌더링
         document.querySelectorAll('.mes_text').forEach(mes => {
             if (mes.dataset.macroProcessed) return;
 
@@ -727,69 +727,68 @@ async function onChatChanged() {
         });
 
     } catch (error) {
-        EDITOR.error("记忆插件：处理聊天变更失败\n原因：", error.message, error)
+        EDITOR.error("메모리 플러그인: 채팅 변경 처리 실패\n원인:", error.message, error)
     }
 }
 
 
 /**
- * 滑动切换消息事件
+ * 스와이프 메시지 전환 이벤트
  */
 async function onMessageSwiped(chat_id) {
     if (USER.tableBaseSetting.isExtensionAble === false || USER.tableBaseSetting.isAiWriteTable === false) return
     const chat = USER.getContext().chat[chat_id];
-    console.log("滑动切换消息", chat)
+    console.log("스와이프 메시지 전환", chat)
     if (!chat.swipe_info[chat.swipe_id]) return
     try {
         handleEditStrInMessage(chat)
     } catch (error) {
-        EDITOR.error("记忆插件：swipe切换失败\n原因：", error.message, error)
+        EDITOR.error("메모리 플러그인: swipe 전환 실패\n원인:", error.message, error)
     }
 
     updateSheetsView()
 }
 
 /**
- * 恢复指定层数的表格
+ * 지정된 레이어 수의 테이블 복원
  */
 export async function undoSheets(deep) {
     const {piece, deep:findDeep} = BASE.getLastSheetsPiece(deep)
     if(findDeep === -1) return 
-    console.log("撤回表格数据", piece, findDeep)
+    console.log("테이블 데이터 되돌리기", piece, findDeep)
     handleEditStrInMessage(piece, findDeep, true)
     updateSheetsView()
 }
 
 /**
- * 更新新表格视图
- * @description 更新表格视图，使用新的Sheet系统
+ * 새로운 테이블 뷰 업데이트
+ * @description 새로운 Sheet 시스템을 사용하여 테이블 뷰 업데이트
  * @returns {Promise<*[]>}
  */
 async function updateSheetsView() {
     const task = new SYSTEM.taskTiming('openAppHeaderTableDrawer_task')
     try{
-       // 刷新表格视图
-        console.log("========================================\n更新表格视图")
+       // 테이블 뷰 새로고침
+        console.log("========================================\n테이블 뷰 업데이트")
         refreshTempView(true).then(() => task.log());
-        console.log("========================================\n更新表格内容视图")
+        console.log("========================================\n테이블 내용 뷰 업데이트")
         refreshContextView().then(() => task.log());
 
-        // 更新系统消息中的表格状态
+        // 시스템 메시지의 테이블 상태 업데이트
         updateSystemMessageTableStatus(); 
     }catch (error) {
-        EDITOR.error("记忆插件：更新表格视图失败\n原因：", error.message, error)
+        EDITOR.error("메모리 플러그인: 테이블 뷰 업데이트 실패\n원인:", error.message, error)
     }
 }
 
 jQuery(async () => {
-    // 注册API
+    // API 등록
     window.stMemoryEnhancement = {
         ext_getAllTables,
         ext_exportAllTablesAsJson,
-        VERSION,
     };
 
-    // 版本检查
+    // 버전 확인
     fetch("http://api.muyoo.com.cn/check-version", {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ clientVersion: VERSION, user: USER.getContext().name1 })
     }).then(res => res.json()).then(res => {
@@ -800,81 +799,81 @@ jQuery(async () => {
         }
     })
 
-    // 注意：已移除旧表格系统的初始化代码，现在使用新的Sheet系统
+    // 주의: 기존 테이블 시스템의 초기화 코드가 제거됨, 이제 새로운 Sheet 시스템 사용
 
-    // 分离手机和电脑事件
+    // 모바일과 PC 이벤트 분리
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        console.log("手机端")
-        // 手机端事件
+        console.log("모바일")
+        // 모바일 이벤트
     } else {
-        console.log("电脑端")
-        // 电脑端事件
+        console.log("PC")
+        // PC 이벤트
         initTest();
     }
 
-    // 开始添加各部分的根DOM
-    // 添加表格编辑工具栏
+    // 각 부분의 루트 DOM 추가 시작
+    // 테이블 편집 툴바 추가
     $('#translation_container').after(await SYSTEM.getTemplate('index'));
-    // 添加顶部表格管理工具弹窗
+    // 상단 테이블 관리 도구 팝업 추가
     $('#extensions-settings-button').after(await SYSTEM.getTemplate('appHeaderTableDrawer'));
 
-    // 应用程序启动时加载设置
+    // 애플리케이션 시작 시 설정 로드
     loadSettings();
 
-    // 注册宏
+    // 매크로 등록
     USER.getContext().registerMacro("tablePrompt", () =>getMacroPrompt())
     USER.getContext().registerMacro("tableData", () =>getMacroTablePrompt())
     USER.getContext().registerMacro("GET_ALL_TABLES_JSON", () => {
         try {
             const jsonData = ext_exportAllTablesAsJson();
             if (Object.keys(jsonData).length === 0) {
-                return "{}"; // 如果没有数据，返回一个空的JSON对象
+                return "{}"; // 데이터가 없으면 빈 JSON 객체 반환
             }
-            // 返回JSON字符串，不带额外的格式化，以便在代码中直接使用
+            // 코드에서 직접 사용할 수 있도록 추가 포맷팅 없이 JSON 문자열 반환
             return JSON.stringify(jsonData);
         } catch (error) {
-            console.error("GET_ALL_TABLES_JSON 宏执行出错:", error);
-            EDITOR.error("导出所有表格数据时出错。");
-            return "{}"; // 出错时返回空JSON对象
+            console.error("GET_ALL_TABLES_JSON 매크로 실행 오류:", error);
+            EDITOR.error("모든 테이블 데이터 내보내기 중 오류 발생.");
+            return "{}"; // 오류 시 빈 JSON 객체 반환
         }
     });
 
-    // 设置表格编辑按钮
+    // 테이블 편집 버튼 설정
     $(document).on('click', '#table_drawer_icon', function () {
         openAppHeaderTableDrawer();
         // updateTableContainerPosition();
     })
-    // // 设置表格编辑按钮
+    // // 테이블 편집 버튼 설정
     // $(document).on('click', '.tableEditor_editButton', function () {
-    //     let index = $(this).data('index'); // 获取当前点击的索引
+    //     let index = $(this).data('index'); // 현재 클릭된 인덱스 가져오기
     //     openTableSettingPopup(index);
     // })
-    // 点击表格渲染样式设置按钮
+    // 테이블 렌더링 스타일 설정 버튼 클릭
     $(document).on('click', '.tableEditor_renderButton', function () {
         openTableRendererPopup();
     })
-    // 点击打开查看表格日志按钮
+    // 테이블 로그 보기 버튼 클릭
     $(document).on('click', '#table_debug_log_button', function () {
         openTableDebugLogPopup();
     })
-    // 对话数据表格弹出窗
+    // 대화 데이터 테이블 팝업창
     $(document).on('click', '.open_table_by_id', function () {
         const messageId = $(this).closest('.mes').attr('mesid');
         initRefreshTypeSelector();
     })
-    // 设置表格开启开关
+    // 테이블 활성화 스위치 설정
     $(document).on('change', '.tableEditor_switch', function () {
-        let index = $(this).data('index'); // 获取当前点击的索引
+        let index = $(this).data('index'); // 현재 클릭된 인덱스 가져오기
         const tableStructure = findTableStructureByIndex(index);
         tableStructure.enable = $(this).prop('checked');
     })
 
-    initAppHeaderTableDrawer().then();  // 初始化表格编辑器
-    functionToBeRegistered()    // 注册用于调试的各种函数
+    initAppHeaderTableDrawer().then();  // 테이블 편집기 초기화
+    functionToBeRegistered()    // 디버깅용 다양한 함수 등록
 
-    executeTranslation(); // 执行翻译函数
+    executeTranslation(); // 번역 함수 실행
 
-    // 监听主程序事件
+    // 메인 프로그램 이벤트 리스닝
     APP.eventSource.on(APP.event_types.MESSAGE_RECEIVED, onMessageReceived);
     APP.eventSource.on(APP.event_types.CHAT_COMPLETION_PROMPT_READY, onChatCompletionPromptReady);
     APP.eventSource.on(APP.event_types.CHAT_CHANGED, onChatChanged);
@@ -883,5 +882,5 @@ jQuery(async () => {
     APP.eventSource.on(APP.event_types.MESSAGE_DELETED, onChatChanged);
 
     
-    console.log("______________________记忆插件：加载完成______________________")
+    console.log("______________________메모리 플러그인: 로딩 완료______________________")
 });

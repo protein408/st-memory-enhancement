@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>恋爱冒险地图</title>
+    <title>러브 어드벤처 맵</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
     <style>
@@ -61,12 +61,12 @@
             <h2 id="map-title"></h2>
             <div class="header-info"><span id="map-time"></span></div>
              <div class="top-right-buttons">
-                <button class="partner-button" id="shop-button"><i class="fas fa-store"></i> 商店</button>
-                <button class="partner-button" id="inventory-button"><i class="fas fa-briefcase"></i> 背包</button>
+                <button class="partner-button" id="shop-button"><i class="fas fa-store"></i> 상점</button>
+                <button class="partner-button" id="inventory-button"><i class="fas fa-briefcase"></i> 인벤토리</button>
             </div>
         </div>
         <div id="current-important-characters" class="current-partners-section hidden">
-             <div class="section-title"><i class="fas fa-star"></i> 当前地图重要人物</div>
+             <div class="section-title"><i class="fas fa-star"></i> 현재 지도 중요 인물</div>
              <div id="important-character-buttons" class="partner-button-list"></div>
         </div>
         <div id="visual-map-container"><svg id="visual-map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg></div>
@@ -75,7 +75,7 @@
             <div class="detail-header"><i class="fas fa-map-marker-alt"></i> <span id="selected-location"></span></div>
             <div class="detail-content">
                 <div class="character-section">
-                    <div class="section-title"><i class="fas fa-users"></i> 可能遇见的人</div>
+                    <div class="section-title"><i class="fas fa-users"></i> 만날 수 있는 인물</div>
                     <div id="location-characters" class="character-list"></div>
                 </div>
             </div>
@@ -93,14 +93,14 @@
     <div id="shop-modal" class="modal-overlay hidden">
         <div class="shop-modal-dialog">
             <button id="close-shop-btn" class="close-modal-button">&times;</button>
-            <h4><i class="fas fa-store"></i> 商店</h4>
+            <h4><i class="fas fa-store"></i> 상점</h4>
             <div id="shop-items-container"></div>
         </div>
     </div>
     <div id="inventory-modal" class="modal-overlay hidden">
         <div class="inventory-modal-dialog">
             <button id="close-inventory-btn" class="close-modal-button">&times;</button>
-            <h4><i class="fas fa-briefcase"></i> 背包</h4>
+            <h4><i class="fas fa-briefcase"></i> 인벤토리</h4>
             <div id="inventory-items-container"></div>
         </div>
     </div>
@@ -110,21 +110,21 @@
         let mapData = null, selectedMain = null, selectedSub = null;
         function processJsonData(json) {
             const data = { title: '', time: '', locations: [], importantCharacters: [], roads: [], currentUserPosition: {}, shop: [], inventory: [] };
-            const globalSheetUid = Object.keys(json).find(key => json[key].name === '全局数据表');
+            const globalSheetUid = Object.keys(json).find(key => json[key].name === '글로벌 데이터 표');
             const global = json[globalSheetUid].content[1];
             data.title = global[1];
             data.time = global[2];
             data.currentUserPosition = { x: parseInt(global[5]), y: parseInt(global[6]) };
 
-            const protagonistSheetUid = Object.keys(json).find(key => json[key].name === '主角信息');
+            const protagonistSheetUid = Object.keys(json).find(key => json[key].name === '주인공 정보');
             const protagonist = json[protagonistSheetUid].content[1];
             data.importantCharacters.push({ name: protagonist[1], description: protagonist[2], interactions: [protagonist[4], protagonist[5], protagonist[6], protagonist[7]] });
-            
-            const importantCharacterSheetUid = Object.keys(json).find(key => json[key].name === '重要人物表');
+
+            const importantCharacterSheetUid = Object.keys(json).find(key => json[key].name === '중요 인물 표');
             json[importantCharacterSheetUid].content.slice(1).forEach(row => {
                 data.importantCharacters.push({ name: row[1], description: row[2], interactions: [row[5], row[6], row[7], row[8]] });
             });
-            const shopSheetUid = Object.keys(json).find(key => json[key].name === '商店物品表');
+            const shopSheetUid = Object.keys(json).find(key => json[key].name === '상점 아이템 표');
             json[shopSheetUid].content.slice(1).forEach(row => data.shop.push({ name: row[1], price: parseInt(row[2]), description: row[3] }));
             
             const inventorySheetUid = Object.keys(json).find(key => json[key].name === '背包物品表');
