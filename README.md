@@ -45,8 +45,7 @@
 </ol>
 
 <div align="center">
-    <img src="https://github.com/user-attachments/assets/d189a03d-9425-4d46-ac1a-5a0e7b243db0
-" alt="번역 진행중입니다" style="max-width:70%;">
+    <img src="https://github.com/user-attachments/assets/d189a03d-9425-4d46-ac1a-5a0e7b243db0" alt="번역 진행중" style="max-width:70%;">
 </div>
 </div>
 ]
