@@ -1,11 +1,11 @@
 {
-    "display_name": "기억력 향상",
+    "display_name": "메모리",
     "loading_order": 100,
     "requires": [],
     "optional": [],
     "js": "index.js",
     "css": "assets/styles/style.css",
-    "author": "aminoacid408",
+    "author": "protein408",
     "version": "2.1.1",
-    "homePage": "https://github.com/aminoacid408/st-memory-enhancement"
+    "homePage": "https://github.com/protein408/st-memory-enhancement"
 }
