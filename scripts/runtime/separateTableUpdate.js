@@ -82,7 +82,7 @@ export async function TableTwoStepSummary(mode) {
 
     if (todoPiece === undefined) {
         console.log('未找到待填表的对话片段');
-        EDITOR.error('未找到待填表的对话片段，请检查当前对话是否正确。');
+        EDITOR.error('작성할 양식의 채팅 기록을 찾을 수 없습니다. 현재 채팅이 올바른지 확인해주세요.');
         return;
     }
     let todoChats = todoPiece.mes;
@@ -90,17 +90,17 @@ export async function TableTwoStepSummary(mode) {
     console.log('待填表的对话片段:', todoChats);
 
     // 检查是否开启执行前确认
-    const popupContentHtml = `<p>累计 ${todoChats.length} 长度的文本，是否开始独立填表？</p>`;
+    const popupContentHtml = `<p>총 \${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?</p>`;
     // 移除了模板选择相关的HTML和逻辑
 
     const popupId = 'stepwiseSummaryConfirm';
     const confirmResult = await newPopupConfirm(
         popupContentHtml,
-        "取消",
-        "执行填表",
+        "취소",
+        "표 작성 실행",
         popupId,
-        "不再提示", // dontRemindText: Permanently disables the popup
-        "一直选是"  // alwaysConfirmText: Confirms for the session
+        "더 이상 알림 표시 안 함", // dontRemindText: Permanently disables the popup
+        "항상 확인"  // alwaysConfirmText: Confirms for the session
     );
 
     console.log('newPopupConfirm result for stepwise summary:', confirmResult);
@@ -112,7 +112,7 @@ export async function TableTwoStepSummary(mode) {
         // This block executes if confirmResult is true OR 'dont_remind_active'
         if (confirmResult === 'dont_remind_active') {
             console.log('独立填表弹窗已被禁止，自动执行。');
-            EDITOR.info('已选择“一直选是”，操作将在后台自动执行...'); // <--- 增加后台执行提示
+            EDITOR.info('“항상 예 선택”이 선택되었습니다. 작업은 백그라운드에서 자동으로 실행됩니다...'); // <--- 增加后台执行提示
         } else { // confirmResult === true
             console.log('用户确认执行独立填表 (或首次选择了“一直选是”并确认)');
         }
@@ -133,7 +133,7 @@ export async function manualSummaryChat(todoChats, confirmResult) {
     // 首先获取当前的聊天片段，以判断表格状态
     const { piece: initialPiece } = USER.getChatPiece();
     if (!initialPiece) {
-        EDITOR.error("无法获取当前的聊天片段，操作中止。");
+        EDITOR.error("현재 채팅 기록을 가져올 수 없습니다. 작업이 중단됩니다.");
         return;
     }
 
@@ -142,10 +142,10 @@ export async function manualSummaryChat(todoChats, confirmResult) {
         console.log('[Memory Enhancement] 立即填表：检测到表格中有数据，执行恢复操作...');
         try {
             await undoSheets(0);
-            EDITOR.success('表格已恢复到上一版本。');
+            EDITOR.success('테이블이 이전 버전으로 복원되었습니다.');
             console.log('[Memory Enhancement] 表格恢复成功，准备执行填表。');
         } catch (e) {
-            EDITOR.error('恢复表格失败，操作中止。');
+            EDITOR.error('테이블 복원 실패, 작업이 중단되었습니다.');
             console.error('[Memory Enhancement] 调用 undoSheets 失败:', e);
             return;
         }
@@ -157,7 +157,7 @@ export async function manualSummaryChat(todoChats, confirmResult) {
     // 重新获取 piece，确保我们使用的是最新状态（无论是原始状态还是恢复后的状态）
     const { piece: referencePiece } = USER.getChatPiece();
     if (!referencePiece) {
-        EDITOR.error("无法获取用于操作的聊天片段，操作中止。");
+        EDITOR.error("작업을 위한 채팅 기록을 가져올 수 없습니다. 작업이 중단됩니다.");
         return;
     }
     
