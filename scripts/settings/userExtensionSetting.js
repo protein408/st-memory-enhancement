@@ -46,11 +46,13 @@ function updateTableView() {
     <span>메모리 향상 테이블</span>
 </div>
 `);
-        // 设置点击事件
-        $('#drawer_in_extension_list_button').on('click', () => {
-            // $('#table_drawer_icon').click()
-            openAppHeaderTableDrawer('database');
-        });
+    
+    // 设置点击事件
+    $('#drawer_in_extension_list_button').on('click', () => {
+        $('#table_drawer_icon').click();
+        $('#table_drawer_content #setting_button').trigger('click');
+        // openAppHeaderTableDrawer('database');
+    });
     } else {
         document.querySelector('#drawer_in_extension_list_button')?.remove();
     }
