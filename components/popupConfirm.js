@@ -33,7 +33,7 @@ export class PopupConfirm {
         this.toastElement = null;
         this.resolvePromise = null;
         this._text = '';
-        this.messageText = null; // 保存文本元素的引用
+        this.messageText = null; // 저장文本元素的引用
         this.id = null; // To store the popup ID
     }
 
@@ -110,7 +110,7 @@ export class PopupConfirm {
         // Create message container
         const messageEl = $('<div class="toast-message"></div>')[0];
         const messageIcon = $('<i class="fa-solid fa-code-branch""></i>')[0];
-        this.messageText = $('<span id="toast_message_text"></span>')[0]; // 保存为类属性
+        this.messageText = $('<span id="toast_message_text"></span>')[0]; // 저장为类属性
         messageEl.style.display = 'flex';
         messageEl.style.flexDirection = 'row';
         messageEl.style.alignItems = 'center';
@@ -206,7 +206,7 @@ export class PopupConfirm {
         this.toastElement.appendChild(messageEl);
         this.toastElement.appendChild(buttons);
         // this.toastContainer.appendChild(this.toastElement);
-        // 插入到容器的顶部而不是底部
+        // 삽입到容器的顶部而不是底部
         this.toastContainer.insertBefore(this.toastElement, this.toastContainer.firstChild);
 
         // Trigger animation
@@ -284,7 +284,7 @@ export class PopupConfirm {
 //     const colorValue = getComputedStyle(document.documentElement)
 //         .getPropertyValue(target).trim();
 //
-//     // 创建临时元素来解析颜色
+//     // 创建临时元素来파싱颜色
 //     const tempEl = document.createElement('div');
 //     tempEl.style.color = colorValue;
 //     document.body.appendChild(tempEl);

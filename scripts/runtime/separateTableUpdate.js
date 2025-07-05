@@ -90,7 +90,7 @@ export async function TableTwoStepSummary(mode) {
     console.log('待填表的对话片段:', todoChats);
 
     // 检查是否开启执行前确认
-    const popupContentHtml = `<p>총 \${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?</p>`;
+    const popupContentHtml = `총 \${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?`;
     // 移除了模板选择相关的HTML和逻辑
 
     const popupId = 'stepwiseSummaryConfirm';
@@ -123,30 +123,30 @@ export async function TableTwoStepSummary(mode) {
 /**
  * 手动总结聊天（立即填表）
  * 重构逻辑：
- * 1. 恢复：首先调用内建的 `undoSheets` 函数，将表格状态恢复到上一版本。
- * 2. 执行：以恢复后的干净状态为基础，调用标准增量更新流程，向AI请求新的操作并执行。
+ * 1. 恢复：首先调用内建的 `undoSheets` 函数，将테이블状态恢复到上一版本。
+ * 2. 执行：以恢复后的干净状态为基础，调用标准增量更新流程，向AI请求新的 작업并执行。
  * @param {Array} todoChats - 需要用于填表的聊天记录。
  * @param {string|boolean} confirmResult - 用户的确认结果。
  */
 export async function manualSummaryChat(todoChats, confirmResult) {
-    // 步骤一：检查是否需要执行“撤销”操作
-    // 首先获取当前的聊天片段，以判断表格状态
+    // 步骤一：检查是否需要执行“撤销” 작업
+    // 首先获取当前的聊天片段，以判断테이블状态
     const { piece: initialPiece } = USER.getChatPiece();
     if (!initialPiece) {
         EDITOR.error("현재 채팅 기록을 가져올 수 없습니다. 작업이 중단됩니다.");
         return;
     }
 
-    // 只有当表格中已经有内容时，才执行“撤销并重做”
+    // 只有当테이블中已经有内容时，才执行“撤销并重做”
     if (initialPiece.hash_sheets && Object.keys(initialPiece.hash_sheets).length > 0) {
-        console.log('[Memory Enhancement] 立即填表：检测到表格中有数据，执行恢复操作...');
+        console.log('[Memory Enhancement] 立即填表：检测到테이블中有数据，执行恢复 작업...');
         try {
             await undoSheets(0);
             EDITOR.success('테이블이 이전 버전으로 복원되었습니다.');
-            console.log('[Memory Enhancement] 表格恢复成功，准备执行填表。');
+            console.log('[Memory Enhancement] 테이블恢复성공，准备执行填表。');
         } catch (e) {
             EDITOR.error('테이블 복원 실패, 작업이 중단되었습니다.');
-            console.error('[Memory Enhancement] 调用 undoSheets 失败:', e);
+            console.error('[Memory Enhancement] 调用 undoSheets 실패:', e);
             return;
         }
     } else {
@@ -161,11 +161,11 @@ export async function manualSummaryChat(todoChats, confirmResult) {
         return;
     }
     
-    // 表格数据
+    // 테이블数据
     const originText = getTablePrompt(referencePiece);
 
-    // 表格总体提示词
-    const finalPrompt = initTableData(); // 获取表格相关提示词
+    // 테이블总体提示词
+    const finalPrompt = initTableData(); // 获取테이블相关提示词
     
     // 设置
     const useMainApiForStepByStep = USER.tableBaseSetting.step_by_step_use_main_api ?? true;
@@ -183,20 +183,20 @@ export async function manualSummaryChat(todoChats, confirmResult) {
 
     console.log('执行独立填表（增量更新）结果:', r);
     if (r === 'success') {
-        // 由于直接在 referencePiece 引用上操作，修改已自动同步，无需手动回写 hash_sheets。
+        // 由于直接在 referencePiece 引用上 작업，修改已自动同步，无需手动回写 hash_sheets。
         toBeExecuted.forEach(chat => {
             const chatSwipeUid = getSwipeUid(chat);
             chat.two_step_links[chatSwipeUid].push(swipeUid);   // 标记已执行的两步总结
         });
         toBeExecuted = [];
 
-        // 保存并刷新UI
+        // 저장并새로고침UI
         await USER.saveChat();
-        // 根据用户要求，使用整页刷新来确保包括宏在内的所有数据都得到更新。
+        // 根据用户要求，使用整页새로고침来确保包括宏在内的所有数据都得到更新。
         reloadCurrentChat();
         return true;
     } else if (r === 'suspended' || r === 'error' || !r) {
-        console.log('执行增量独立填表失败或取消: ', `(${todoChats.length}) `, toBeExecuted);
+        console.log('执行增量独立填表실패或取消: ', `(${todoChats.length}) `, toBeExecuted);
         return false;
     }
     

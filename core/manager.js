@@ -1,6 +1,6 @@
 import { TTable } from "./tTableManager.js";
 import applicationFunctionManager from "../services/appFuncManager.js";
-// 移除旧表格系统引用
+// 移除旧테이블系统引用
 import { consoleMessageToEditor } from "../scripts/settings/devConsole.js";
 import { calculateStringHash, generateRandomNumber, generateRandomString, lazy, readonly, } from "../utils/utility.js";
 import { defaultSettings } from "../data/pluginSetting.js";
@@ -75,13 +75,13 @@ export const USER = {
 /**
  * @description `BASE` 数据库基础数据管理器
  * @description 该管理器提供了对库的用户数据、模板数据的访问，但不提供对数据的修改
- * @description 请注意，对库的操作应通过 `BASE.object()` 创建 `Sheet` 实例进行，任何对库的编辑都不应该直接暴露到该管理器中
+ * @description 请注意，对库的 작업应通过 `BASE.object()` 创建 `Sheet` 实例进行，任何对库的编辑都不应该直接暴露到该管理器中
  */
 export const BASE = {
     /**
      * @description `Sheet` 数据表单实例
-     * @description 该实例用于对数据库的数据进行访问、修改、查询等操作
-     * @description 请注意，对数据库的任何操作都应该通过该实例进行，而不应该直接访问数据库
+     * @description 该实例用于对数据库的数据进行访问、修改、查询等 작업
+     * @description 请注意，对数据库的任何 작업都应该通过该实例进行，而不应该直接访问数据库
      */
     Sheet: TTable.Sheet,
     SheetTemplate: TTable.Template,
@@ -193,14 +193,14 @@ export const BASE = {
         if(type === 'data') return BASE.saveChatSheets()
         const oldSheets = BASE.getChatSheets().filter(sheet => !newSheets.some(newSheet => newSheet.uid === sheet.uid))
         oldSheets.forEach(sheet => sheet.enable = false)
-        console.log("应用表格数据", newSheets, oldSheets)
+        console.log("应用테이블数据", newSheets, oldSheets)
         const mergedSheets = [...newSheets, ...oldSheets]
         BASE.reSaveAllChatSheets(mergedSheets)
     },
     saveChatSheets(saveToPiece = true) {
         if(saveToPiece){
             const {piece} = USER.getChatPiece()
-            if(!piece) return EDITOR.error("表格数据没有记录载体，请聊过一轮后再试")
+            if(!piece) return EDITOR.error("테이블数据没有记录载体，请聊过一轮后再试")
             BASE.getChatSheets(sheet => sheet.save(piece, true))
         }else BASE.getChatSheets(sheet => sheet.save(undefined, true))
         USER.saveChat()
@@ -220,8 +220,8 @@ export const BASE = {
         updateSelectBySheetStatus()
     },
     getLastSheetsPiece(deep = 0, cutoff = 1000, startAtLastest = true) {
-        console.log("向上查询表格数据，深度", deep, "截断", cutoff, "从最新开始", startAtLastest)
-        // 如果没有找到新系统的表格数据，则尝试查找旧系统的表格数据（兼容模式）
+        console.log("向上查询테이블数据，深度", deep, "截断", cutoff, "从最新开始", startAtLastest)
+        // 如果没有找到新系统的테이블数据，则尝试查找旧系统的테이블数据（兼容模式）
         const chat = APP.getContext().chat
         if (!chat || chat.length === 0 || chat.length <= deep) {
             return { deep: -1, piece: BASE.initHashSheet() }
@@ -230,14 +230,14 @@ export const BASE = {
         for (let i = startIndex; i >= 0 && i >= startIndex - cutoff; i--) {
             if (chat[i].is_user === true) continue; // 跳过用户消息
             if (chat[i].hash_sheets) {
-                console.log("向上查询表格数据，找到表格数据", chat[i])
+                console.log("向上查询테이블数据，找到테이블数据", chat[i])
                 return { deep: i, piece: chat[i] }
             }
-            // 如果没有找到新系统的表格数据，则尝试查找旧系统的表格数据（兼容模式）
+            // 如果没有找到新系统的테이블数据，则尝试查找旧系统的테이블数据（兼容模式）
             // 请注意不再使用旧的Table类
             if (chat[i].dataTable) {
                 // 为了兼容旧系统，将旧数据转换为新的Sheet格式
-                console.log("找到旧表格数据", chat[i])
+                console.log("找到旧테이블数据", chat[i])
                 convertOldTablesToNewSheets(chat[i].dataTable, chat[i])
                 return { deep: i, piece: chat[i] }
             }
@@ -267,11 +267,11 @@ export const BASE = {
     },
     initHashSheet() {
         if (BASE.sheetsData.context.length === 0) {
-            console.log("尝试从模板中构建表格数据")
+            console.log("尝试从模板中构建테이블数据")
             const {piece: currentPiece} = USER.getChatPiece()
             buildSheetsByTemplates(currentPiece)
             if (currentPiece?.hash_sheets) {
-                // console.log('使用模板创建了新的表格数据', currentPiece)
+                // console.log('使用模板创建了新的테이블数据', currentPiece)
                 return currentPiece
             }
         }
@@ -303,7 +303,7 @@ export const EDITOR = {
         try {
             return cb(...args);
         } catch (e) {
-            EDITOR.error(errorMsg ?? '执行代码块失败', e.message, e);
+            EDITOR.error(errorMsg ?? '执行代码块실패', e.message, e);
             return null;
         }
     },

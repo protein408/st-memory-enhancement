@@ -2,7 +2,7 @@
 import {BASE, DERIVED, EDITOR, SYSTEM, USER} from '../core/manager.js';
 
 /**
- * @description 拖拽管理器 - 用于管理拖拽操作
+ * @description 拖拽管理器 - 用于管理拖拽 작업
  */
 export class Drag {
     constructor() {

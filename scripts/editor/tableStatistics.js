@@ -22,7 +22,7 @@ const statistics = `
 </style>
 <div class="table-statistics">
     <div id="dialogue_popup_text">
-        <h3>表格数据统计</h3>
+        <h3>테이블数据统计</h3>
         <div class="table-statistics-header">
             <div class="menu_button_icon menu_button interactable gap5" id="clear_table_statistics_button" tabindex="0">
                 <i class="fa-solid fa-broom"></i>
@@ -30,7 +30,7 @@ const statistics = `
             </div>
         </div>
         <div class="table-statistics-content">
-            <!-- 动态内容将在这里插入 -->
+            <!-- 动态内容将在这里삽입 -->
         </div>
     </div>
 </div>
@@ -48,11 +48,11 @@ async function updataTableStatisticsData(container) {
 
     // 定义要显示的统计数据
     const statsData = [
-        { label: '已开启表格数量', value: sheets.length },
+        { label: '已开启테이블数量', value: sheets.length },
         { label: '历史总单元格数量', value: cellHistories.reduce((acc, cellHistory) => acc + cellHistory.length, 0) },
         { label: '历史数据总大小', value: `${(JSON.stringify(sheetsData).length / 1024).toFixed(2)} KB` },
-        { label: '当前表格模糊计算的Token数', value: Math.round(sheetsValueCount * 0.6) },
-        { label: '当前表格最后一次修改位置', value: lastChangeFloor }
+        { label: '当前테이블模糊计算的Token数', value: Math.round(sheetsValueCount * 0.6) },
+        { label: '当前테이블最后一次修改位置', value: lastChangeFloor }
     ];
 
     // 获取内容容器
@@ -107,7 +107,7 @@ async function clearTableStatisticsButton(statisticsContainer) {
     setTimeout(() => {
         if (lastCellHistoryHashNum === cellHistoryHashNum) {
             updataTableStatisticsData(statisticsContainer);
-            EDITOR.success(`清理历史单元格操作完成, 有效单元格数量: ${cellHistoryHashNum}`);
+            EDITOR.success(`清理历史单元格 작업完成, 有效单元格数量: ${cellHistoryHashNum}`);
             USER.saveChat()
             return;
         } else {
@@ -118,7 +118,7 @@ async function clearTableStatisticsButton(statisticsContainer) {
 }
 
 /**
- * 打开表格编辑历史记录弹窗
+ * 打开테이블编辑历史记录弹窗
  * */
 export async function openTableStatisticsPopup(){
     const manager = statistics;

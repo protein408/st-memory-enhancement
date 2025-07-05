@@ -4,9 +4,9 @@ let config = {};
 let selectedCustomStyle = null;
 
 function staticPipeline(target) {
-    console.log("进入静态渲染表格");
+    console.log("进入静态渲染테이블");
     let regexReplace = selectedCustomStyle.replace || '';
-    if (!regexReplace || regexReplace === '') return target?.element || '<div>表格数据未加载</div>';
+    if (!regexReplace || regexReplace === '') return target?.element || '<div>테이블数据未加载</div>';
     if (!target) return regexReplace;
 
     // 新增：处理 {{GET::...}} 宏
@@ -14,7 +14,7 @@ function staticPipeline(target) {
         const sheets = BASE.getChatSheets();
         const sheet = sheets.find(s => s.name === tableName);
         if (!sheet) {
-            return `<span style="color: red">[GET: 未找到表格 "${tableName}"]</span>`;
+            return `<span style="color: red">[GET: 未找到테이블 "${tableName}"]</span>`;
         }
 
         try {
@@ -32,7 +32,7 @@ function staticPipeline(target) {
         const sheets = BASE.getChatSheets();
         const sheet = sheets.find(s => s.name === tableName);
         if (!sheet) {
-            return `<span style="color: red">未找到表格: ${tableName}</span>`;
+            return `<span style="color: red">未找到테이블: ${tableName}</span>`;
         }
         
         const cell = sheet.getCellFromAddress(cellAddress);
@@ -51,10 +51,10 @@ function staticPipeline(target) {
             `<span style="color: red">无单元格</span>`;
     });
 }
-/** 从表格实例中提取数据值
+/** 从테이블实例中提取数据值
  *
- * @param {*} instance - 表格实例对象
- * @returns  -二维数组表格数据
+ * @param {*} instance - 테이블实例对象
+ * @returns  -二维数组테이블数据
  */
 export function loadValueSheetBySheetHashSheet(instance) {
     if (!instance) return;
@@ -77,7 +77,7 @@ function toArray(valueSheet, skipTop) {
  */
 function toHtml(valueSheet, skipTop = false) {
     if (!Array.isArray(valueSheet)) {
-        return "<table></table>"; // 返回空表格
+        return "<table></table>"; // 返回空테이블
     }
 
     let html = '<table>';
@@ -117,7 +117,7 @@ function toCSV(valueSheet, skipTop = false) {
 }
 
 function toMarkdown(valueSheet) {
-    // 将 valueSheet 转换为 Markdown 表格
+    // 将 valueSheet 转换为 Markdown 테이블
     let markdown = '| ' + valueSheet[0].join(' | ') + ' |\n';
     markdown += '| ' + valueSheet[0].map(() => '---').join(' | ') + ' |\n';
     for (let i = 1; i < valueSheet.length; i++) {
@@ -140,8 +140,8 @@ function toJSON(valueSheet) {
     return JSON.stringify(json, null, 2);
 }
 /**
- * 使用正则解析表格渲染样式
- * @param {Object} instance 表格对象
+ * 使用正则파싱테이블渲染样式
+ * @param {Object} instance 테이블对象
  * @param {Object} rendererConfig 渲染配置
  * @returns {string} 渲染后的HTML
  */
@@ -246,17 +246,17 @@ function triggerValueSheet(valueSheet = [], skipTop, alternateTable) {
     }
     return triggerArray;
 }
-/** 用于初始化文本数据的函数，根据不同的格式要求将表格数据转换为指定格式的文本。
+/** 用于初始化文本数据的函数，根据不同的格式要求将테이블数据转换为指定格式的文本。
  *
- * @param {*table} target - 单个表格对象
+ * @param {*table} target - 单个테이블对象
  * @param {*string} selectedStyle  - 格式配置的对象
- * @returns {*string}  -表格处理后的文本
+ * @returns {*string}  -테이블处理后的文本
  */
 export function initializeText(target, selectedStyle) {
     let initialize = '';
     // console.log("瞅瞅target是："+target.config.triggerSendToChat); //调试用，正常不开启
-    let valueSheet = target.tableSheet;  // 获取表格数据，二维数组
-    // console.log(target.name,"初始化文本表格：" , valueSheet);
+    let valueSheet = target.tableSheet;  // 获取테이블数据，二维数组
+    // console.log(target.name,"初始化文本테이블：" , valueSheet);
     // 新增，判断是否需要触发sendToChat
     if (target.config.triggerSendToChat) {
         // console.log(target.name + "开启触发推送" + valueSheet);
@@ -289,7 +289,7 @@ export function initializeText(target, selectedStyle) {
 
 /**用于处理正则表达式替换流程的管道函数
  *
- * @param {Object} target - 单个表格对象
+ * @param {Object} target - 单个테이블对象
  * @param {Object} rendererConfig 渲染配置
  * @returns {string} 渲染后的HTML
  */
@@ -304,13 +304,13 @@ function regexPipeline(target, selectedStyle = selectedCustomStyle) {
 }
 /** 根据不同的自定义样式模式来渲染目标元素的函数
  *
- * @param {*table} target - 单个表格，要渲染的目标对象，包含需要渲染的元素
+ * @param {*table} target - 单个테이블，要渲染的目标对象，包含需要渲染的元素
  * @returns {*Html} 处理后的HTML字符串
  */
 function executeRendering(target) {
-    let resultHtml = target?.element || '<div>表格数据未加载</div>';
+    let resultHtml = target?.element || '<div>테이블数据未加载</div>';
     if (config.useCustomStyle === false) {
-        // resultHtml = target?.element || '<div>表格数据未加载</div>';
+        // resultHtml = target?.element || '<div>테이블数据未加载</div>';
         throw new Error('未启用自定义样式，你需要在 parseSheetRender 外部排除 config.useCustomStyle === false 的情况');
     }
     if (selectedCustomStyle.mode === 'regex') {
@@ -322,8 +322,8 @@ function executeRendering(target) {
 }
 
 /**
- * 解析表格渲染样式
- * @param {Object} instance 表格对象
+ * 파싱테이블渲染样式
+ * @param {Object} instance 테이블对象
  * @param {Object} rendererConfig 渲染配置
  * @returns {string} 渲染后的HTML
  */

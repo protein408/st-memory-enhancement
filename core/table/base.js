@@ -17,7 +17,7 @@ const customStyleConfig = {
     basedOn: 'html',
     regex: '/(^[\\s\\S]*$)/g',
     replace: `$1`,
-    replaceDivide: '',  //用于临时保存分离后的css代码
+    replaceDivide: '',  //用于临时저장分离后的css代码
 }
 
 export class SheetBase {
@@ -38,15 +38,15 @@ export class SheetBase {
 
         // 以下为持久化数据
         this.cellHistory = [];                  // cellHistory 持久保持，只增不减
-        this.hashSheet = [];                    // 每回合的 hashSheet 结构，用于渲染出表格
+        this.hashSheet = [];                    // 每回合的 hashSheet 结构，用于渲染出테이블
 
         this.config = {
             // 以下为其他的属性
             toChat: true,                     // 用于标记是否发送到聊天
             useCustomStyle: false,            // 用于标记是否使用自定义样式
             triggerSendToChat: false,            // 用于标记是否触发发送到聊天
-            alternateTable: false,            // 用于标记是否该表格是否参与穿插模式，同时可暴露原设定层级
-            insertTable: false,                  // 用于标记是否需要插入表格，默认为false，不插入表格
+            alternateTable: false,            // 用于标记是否该테이블是否参与穿插模式，同时可暴露原设定层级
+            insertTable: false,                  // 用于标记是否需要삽입테이블，默认为false，不삽입테이블
             alternateLevel: 0,                     // 用于标记是穿插并到一起,为0表示不穿插，大于0按同层级穿插
             skipTop: false,                     // 用于标记是否跳过表头
             selectedCustomStyleKey: '',       // 用于存储选中的自定义样式，当selectedCustomStyleUid没有值时，使用默认样式
@@ -54,11 +54,11 @@ export class SheetBase {
         }
 
         // 临时属性
-        this.tableSheet = [];                        // 用于存储表格数据，以便进行合并和穿插
+        this.tableSheet = [];                        // 用于存储테이블数据，以便进行合并和穿插
 
         // 以下为派生数据
         this.cells = new Map();                 // cells 在每次 Sheet 初始化时从 cellHistory 加载
-        this.data = new Proxy({}, {     // 用于存储用户自定义的表格数据
+        this.data = new Proxy({}, {     // 用于存储用户自定义的테이블数据
             get: (target, prop) => {
                 return this.source.data[prop];
             },
@@ -157,7 +157,7 @@ export class SheetBase {
                 this.cells.set(cell.uid, cell);
             });
         } catch (e) {
-            console.error(`加载失败：${e}`);
+            console.error(`加载실패：${e}`);
             return false;
         }
 
@@ -182,7 +182,7 @@ export class SheetBase {
                 });
             }
         } catch (e) {
-            console.error(`加载失败：${e}`);
+            console.error(`加载실패：${e}`);
             return false;
         }
     }
@@ -222,11 +222,11 @@ export class SheetBase {
         return this.hashSheet[rowIndex].map(uid => this.cells.get(uid));
     }
     /**
-     * 获取表格csv格式的内容
+     * 获取테이블csv格式的内容
      * @returns
      */
     getSheetCSV( removeHeader = true,key = 'value') {
-        if (this.isEmpty()) return '（此表格当前为空）\n'
+        if (this.isEmpty()) return '（此테이블当前为空）\n'
         console.log("测试获取map", this.cells)
         const content = this.hashSheet.slice(removeHeader?1:0).map((row, index) => row.map(cellUid => {
             const cell = this.cells.get(cellUid)
@@ -236,7 +236,7 @@ export class SheetBase {
         return content + "\n";
     }
     /**
-     * 表格是否为空
+     * 테이블是否为空
      * @returns 是否为空
      */
     isEmpty() {

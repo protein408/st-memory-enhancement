@@ -106,13 +106,13 @@ const histories = `
 }
 </style>
 <div class="table-history">
-    <h3>表格셀 기록</h3>
+    <h3>테이블셀 기록</h3>
     <div class="history-tabs">
         <!-- 动态生成tabs -->
     </div>
     <div class="table-history-content">
         <div class="history-sheets-content">
-            <!-- 动态生成的表格历史记录内容 -->
+            <!-- 动态生成的테이블历史记录内容 -->
         </div>
     </div>
 </div>
@@ -138,20 +138,20 @@ async function updateTableHistoryData(container) {
     tabsContainer.empty();
     sheetsContainer.empty();
 
-    // 如果没有表格数据，显示提示
+    // 如果没有테이블数据，显示提示
     if (!sheetsData || sheetsData.length === 0) {
         sheetsContainer.append('<div class="history-empty">没有可显示的历史数据</div>');
         return;
     }
 
-    // 有效的表格计数（用于处理首个激活标签）
+    // 有效的테이블计数（用于处理首个激活标签）
     let validSheetCount = 0;
 
-    // 遍历所有表格
+    // 遍历所有테이블
     sheetsData.forEach((sheetData, index) => {
         if (!sheetData.cellHistory || sheetData.cellHistory.length === 0) return;
 
-        const sheetName = sheetData.name || `表格${index + 1}`;
+        const sheetName = sheetData.name || `테이블${index + 1}`;
         const sheetId = `history-sheet-${index}`;
         validSheetCount++;
 
@@ -162,7 +162,7 @@ async function updateTableHistoryData(container) {
         }
         tabsContainer.append(tab);
 
-        // 创建表格内容区域
+        // 创建테이블内容区域
         const sheetContainer = $(`<div id="${sheetId}" class="history-sheet-container ${validSheetCount === 1 ? 'active' : ''}"></div>`);
         const cellListContainer = $('<div class="history-cell-list"></div>');
 
@@ -177,13 +177,13 @@ async function updateTableHistoryData(container) {
             // 只显示有值的单元格
             if (!cell.data || !cell.data.value) return;
 
-            // // 跳过第一行第一列（表格原始单元格）
+            // // 跳过第一行第一列（테이블原始单元格）
             // if (rowIndex === 0 && colIndex === 0) return;
 
             // 创建位置显示
             const positionDisplay = () => {
                 if (rowIndex === 0 && colIndex === 0) {
-                    return `<span style="color: var(--SmartThemeEmColor);">表格源</span>`;
+                    return `<span style="color: var(--SmartThemeEmColor);">테이블源</span>`;
                 } else if (rowIndex === 0) {
                     return `列 <span style="color: var(--SmartThemeQuoteColor);">${colIndex}</span>`;
                 } else if (colIndex === 0) {
@@ -210,14 +210,14 @@ async function updateTableHistoryData(container) {
 
         // 如果没有历史条目，显示提示
         if (validHistoryCount === 0) {
-            cellListContainer.append('<div class="history-empty">此表格没有历史数据</div>');
+            cellListContainer.append('<div class="history-empty">此테이블没有历史数据</div>');
         }
 
         sheetContainer.append(cellListContainer);
         sheetsContainer.append(sheetContainer);
     });
 
-    // 如果没有任何表格有历史数据，显示提示
+    // 如果没有任何테이블有历史数据，显示提示
     if (validSheetCount === 0) {
         sheetsContainer.append('<div class="history-empty">没有可显示的历史数据</div>');
     }
@@ -239,7 +239,7 @@ async function updateTableHistoryData(container) {
 }
 
 /**
- * 打开表格编辑历史记录弹窗
+ * 打开테이블编辑历史记录弹窗
  * */
 export async function openTableHistoryPopup(){
     const tableHistoryPopup = new EDITOR.Popup(histories, EDITOR.POPUP_TYPE.TEXT, '', { large: true, wide: true, allowVerticalScrolling: false });

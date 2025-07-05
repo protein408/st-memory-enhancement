@@ -109,8 +109,8 @@ export function generateDeviceId() {
 
 let antiShakeTimers = {};
 /**
- * 防抖函数，控制某个操作的执行频率
- * @param {string} uid 唯一标识符，用于区分不同的防抖操作
+ * 防抖函数，控制某个 작업的执行频率
+ * @param {string} uid 唯一标识符，用于区分不同的防抖 작업
  * @param {number} interval 时间间隔，单位毫秒，在这个间隔内只允许执行一次
  * @returns {boolean} 如果允许执行返回 true，否则返回 false
  */

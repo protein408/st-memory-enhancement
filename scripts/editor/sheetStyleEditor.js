@@ -31,7 +31,7 @@ const dom = {
 };
 
 /**
- * 统一的编辑器刷新方法
+ * 统一的编辑器새로고침方法
  */
 function refreshEditor() {
     // console.log("refreshEditor-elements.rendererDisplay 是否存在:", !!elements.rendererDisplay);
@@ -67,7 +67,7 @@ function renderHTML() {
     // 当返回为替换后的string时，移除所有<script>标签；否则返回的将是数组无需处理
     renderedHTML = typeof renderedHTML === 'string' ? renderedHTML.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ''): renderedHTML;
 
-    // 改用原生方法插入
+    // 改用原生方法삽입
     elements.rendererDisplay[0].innerHTML = renderedHTML;
     elements.rendererDisplay.css('white-space', 'pre-wrap');
 }
@@ -113,7 +113,7 @@ function updateGuideContent(elements, isRegex) {
     dom.toggleVisibility(elements.match_method_regex_container, isRegex);
     elements.push_to_chat_style_edit_guide_content.html(isRegex
         ? `支持标准的正则表达式语法,使用<cycleDivide></cycleDivide>包裹局部代码可以实现局部循环，例如用于折叠道具、任务等。`
-        : `当样式内容为空时默认显示原始表格。支持HTML、CSS定义结构样式，并使用<code>\\$\\w\\s+</code>的方式定位单元格。<br>例如<code>$A0</code>代表第1列第1行(表头)，<code>$A1</code>代表第1列第2行(表内容第一行)。`
+        : `当样式内容为空时默认显示原始테이블。支持HTML、CSS定义结构样式，并使用<code>\\$\\w\\s+</code>的方式定位单元格。<br>例如<code>$A0</code>代表第1列第1行(表头)，<code>$A1</code>代表第1列第2行(表内容第一行)。`
     );
 }
 
@@ -153,7 +153,7 @@ function setFormData(style = {}) {
 }
 
 /**
- * 初始化表格样式预览
+ * 初始化테이블样式预览
  */
 function setupSheetPreview() {
     if (!templateInstance) {
@@ -161,7 +161,7 @@ function setupSheetPreview() {
         return;
     }
 
-    // 初始化样式预览表格
+    // 初始化样式预览테이블
     templateInstance.element = null
     templateInstance.element = `<div class="justifyLeft scrollable">${templateInstance.renderSheet((cell) => {
         cell.element.style.cursor = 'default';
@@ -356,9 +356,9 @@ function bindStyleManagementEvents() {
             dom.setValue(elements.presetStyle, styleName);
             dom.triggerEvent(elements.presetStyle, 'change');
 
-            EDITOR.success('导入样式成功');
+            EDITOR.success('导入样式성공');
         } catch (e) {
-            EDITOR.error('导入样式失败，JSON格式错误');
+            EDITOR.error('导入样式실패，JSON格式错误');
         }
     });
 
@@ -435,14 +435,14 @@ async function initializeEditor() {
 }
 
 /**
- * 打开表格样式渲染器弹窗
- * @param {Object} originInstance 原始表格对象
+ * 打开테이블样式渲染器弹窗
+ * @param {Object} originInstance 原始테이블对象
  * @returns {Promise<Object>} 处理结果
  */
 export async function openSheetStyleRendererPopup(originInstance) {
     // 初始化弹窗
     const manager = await SYSTEM.getTemplate('customSheetStyle');
-    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "保存修改", cancelButton: "취소" });
+    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "저장修改", cancelButton: "취소" });
     const $dlg = $(tableRendererPopup.dlg);
     templateInstance = originInstance;
 
@@ -460,14 +460,14 @@ export async function openSheetStyleRendererPopup(originInstance) {
         const styleBasedOn = ["html", "csv", "json", "array"];
         const numberBoollen = isNaN(alternateLevel) || alternateLevel < 0 || Number.isInteger(alternateLevel) === false;  //是否满足非负整数
         const styleBoollen = styleBasedOn.includes(finalConfig.customStyles[finalConfig.selectedCustomStyleKey].basedOn);      //方式必须为html、csv、json、array
-        if (numberBoollen || (alternateLevel > 0 && !styleBoollen)) {     //输入的插入层级必须为非负整数，且不能为MarkDown格式否则改为0
+        if (numberBoollen || (alternateLevel > 0 && !styleBoollen)) {     //输入的삽입层级必须为非负整数，且不能为MarkDown格式否则改为0
             finalConfig.alternateLevel = 0;
             EDITOR.warning('穿插层级必须为非负整数，且不能为MarkDown格式，否则强制改为0');
         }
         Object.assign(originInstance.config, finalConfig);
-        console.log('表格样式已更新', originInstance.config.alternateLevel);
+        console.log('테이블样式已更新', originInstance.config.alternateLevel);
         originInstance.save();
         BASE.updateSystemMessageTableStatus()
-        EDITOR.success('表格样式已更新');
+        EDITOR.success('테이블样式已更新');
     }
 }

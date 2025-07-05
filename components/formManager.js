@@ -150,7 +150,7 @@ class Form {
                                 self.updateCallback(field.dataKey, newValue);
                             }
 
-                            // 新增：## 自动完成功能
+                            // 新增：## 自动完성공能
                             if (field.type === 'textarea' && e.target.value.slice(-2) === '##') {
                                 const popupMenu = new PopupMenu();
                                 const sheets = BASE.getChatSheets();
@@ -166,7 +166,7 @@ class Form {
                                         });
                                     });
                                 } else {
-                                    popupMenu.add('没有可用的表格', () => {});
+                                    popupMenu.add('没有可用的테이블', () => {});
                                 }
                                 
                                 const rect = e.target.getBoundingClientRect();

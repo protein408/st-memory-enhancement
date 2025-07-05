@@ -83,7 +83,7 @@ export function extractPath(filePath) {
 }
 
 export function compareRelativePath(from, to) {
-    // 1. 解析URL并提取路径，去除行号列号
+    // 1. 파싱URL并提取路径，去除行号列号
     const fromPath = new URL(from).pathname.split(':')[0]; // 移除 ':行号:列号' 部分
     const toPath = new URL(to).pathname.split(':')[0];
 

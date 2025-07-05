@@ -45,7 +45,7 @@ function updateButtonStates(selectedButton) {
 }
 
 /**
- * 初始化应用头部表格抽屉 (只调用一次)
+ * 初始化应用头部테이블抽屉 (只调用一次)
  */
 export async function initAppHeaderTableDrawer() {
     if (isEventListenersBound) {
@@ -130,7 +130,7 @@ export async function initAppHeaderTableDrawer() {
 }
 
 /**
- * 打开/关闭应用头部表格抽屉 (保持不变)
+ * 打开/关闭应用头部테이블抽屉 (保持不变)
  */
 export async function openAppHeaderTableDrawer(target = undefined) {
     if (!isEventListenersBound) {
@@ -200,7 +200,7 @@ async function switchContent(targetContent) {
     // 或者，可以引入一个变量来跟踪当前显示的div，避免DOM查询
     const currentContent = appHeaderTableContainer.children(':visible');
 
-    // 如果目标内容就是当前内容，则不执行操作 (理论上 updateButtonStates 已经处理了，但加一层保险)
+    // 如果目标内容就是当前内容，则不执行 작업 (理论上 updateButtonStates 已经处理了，但加一层保险)
     if (currentContent.is(targetContent)) {
         return;
     }

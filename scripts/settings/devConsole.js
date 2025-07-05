@@ -144,7 +144,7 @@ export const consoleMessageToEditor = {
 }
 
 /**
- * +.新增代码，打开自定义表格推送渲染器弹窗
+ * +.新增代码，打开自定义테이블推送渲染器弹窗
  * @returns {Promise<void>}
  */
 export async function openTableDebugLogPopup() {

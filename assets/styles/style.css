@@ -403,7 +403,7 @@ td.selected {
 .operation-list-container {
     display: flex;
     flex-direction: column;
-    gap: 5px; /* 操作项之间的间距 */
+    gap: 5px; /*  작업项之间的间距 */
     margin-top: 10px;
 }
 

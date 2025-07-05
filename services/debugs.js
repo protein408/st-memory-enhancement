@@ -32,10 +32,10 @@ export async function rollbackVersion() {
 
         USER.saveSettings()
         USER.saveChat();
-        console.log("已清除表格数据: ", USER.getSettings(), USER.getContext().chatMetadata, USER.getChatPiece())
+        console.log("已清除테이블数据: ", USER.getSettings(), USER.getContext().chatMetadata, USER.getChatPiece())
         return true
     } else {
-        console.log("用户取消了清除操作")
+        console.log("用户取消了清除 작업")
         return false
     }
 }
@@ -49,13 +49,13 @@ export function functionToBeRegistered() {
     //     console.log(s, s[0])
     //     console.log(s[0].cellHistory[0])
     //     console.log(s[0].cellHistory[0].data.description)
-    // }, "打印表格源")
+    // }, "打印테이블源")
     // SYSTEM.f(()=>{
     //     EDITOR.info("测试信息")
     // }, "测试信息")
     // SYSTEM.f(async ()=>{
     //     EDITOR.confirm(
-    //         '执行操作?',
+    //         '执行 작업?',
     //         '취소',
     //         '确认'
     //     ).then((r)=>{
@@ -71,16 +71,16 @@ export function functionToBeRegistered() {
     //
     //         // 测试连接
     //         const testResponse = await llmService.testConnection();
-    //         console.log("API 连接测试成功(非流式模式)!", testResponse);
+    //         console.log("API 连接测试성공(非流式模式)!", testResponse);
     //
     //         // 测试翻译
     //         console.log("正在测试翻译功能(非流式模式)...");
     //         const testText = "This is a test sentence to check if the translation service is working properly.";
     //         const translation = await llmService.callLLM(testText);
     //
-    //         console.log(`翻译测试成功(非流式模式)! 原文: ${testText}, 译文: ${translation}`);
+    //         console.log(`翻译测试성공(非流式模式)! 原文: ${testText}, 译文: ${translation}`);
     //     } catch (error) {
-    //         console.log("API 测试失败(非流式模式):", error.message);
+    //         console.log("API 测试실패(非流式模式):", error.message);
     //         console.error(error);
     //     }
     // }, "llmApi非流式");
@@ -94,7 +94,7 @@ export function functionToBeRegistered() {
     //
     //         // 测试连接(流式模式下仍然使用非流式测试)
     //         const testResponse = await llmService.testConnection();
-    //         console.log("API 连接测试成功(流式模式)!", testResponse);
+    //         console.log("API 连接测试성공(流式模式)!", testResponse);
     //
     //         // 测试翻译(流式模式)
     //         console.log("正在测试翻译功能(流式模式)...");
@@ -134,7 +134,7 @@ export function functionToBeRegistered() {
     //         console.log("\n流式传输完成!");
     //         console.log(`完整译文: ${translation}`);
     //     } catch (error) {
-    //         console.log("API 测试失败(流式模式):", error.message);
+    //         console.log("API 测试실패(流式模式):", error.message);
     //         console.error(error);
     //     }
     // }, "llmApi流式");

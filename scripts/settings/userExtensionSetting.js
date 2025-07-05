@@ -28,7 +28,7 @@ function updateSwitch(selector, switchValue) {
 }
 
 /**
- * 更新设置中的表格结构DOM
+ * 更新设置中的테이블结构DOM
  */
 function updateTableView() {
     const show_drawer_in_extension_list = USER.tableBaseSetting.show_drawer_in_extension_list;
@@ -99,8 +99,8 @@ function getSheetsCellStyle() {
 }
 
 /**
- * 将表格结构转为设置DOM
- * @param {object} tableStructure 表格结构
+ * 将테이블结构转为设置DOM
+ * @param {object} tableStructure 테이블结构
  * @returns 设置DOM
  */
 function tableStructureToSettingDOM(tableStructure) {
@@ -144,7 +144,7 @@ async function importTableSet() {
 
         reader.onload = async (e) => {
             try {
-                const importedData = JSON.parse(e.target.result); // 解析 JSON 文件内容
+                const importedData = JSON.parse(e.target.result); // 파싱 JSON 文件内容
 
                 // 获取导入 JSON 的第一级 key
                 const firstLevelKeys = Object.keys(importedData);
@@ -175,17 +175,17 @@ async function importTableSet() {
                 renderSetting(); // 重新渲染设置界面，应用新的设置
                 // 重新转换模板
                 initTableStructureToTemplate()
-                BASE.refreshTempView(true) // 刷新模板视图
-                EDITOR.success('가져오기 성공, 선택한 설정이 초기화되었습니다.'); // 提示用户导入成功
+                BASE.refreshTempView(true) // 새로고침模板视图
+                EDITOR.success('가져오기 성공, 선택한 설정이 초기화되었습니다.'); // 提示用户导入성공
 
             } catch (error) {
-                EDITOR.error('JSON 파일 분석에 실패했습니다. 파일 형식이 올바른지 확인해주세요.'); // 提示 JSON 解析失败
+                EDITOR.error('JSON 파일 분석에 실패했습니다. 파일 형식이 올바른지 확인해주세요.'); // 提示 JSON 파싱실패
                 console.error("파일 읽기 또는 분석 오류:", error); // 打印详细错误信息到控制台
             }
         };
 
         reader.onerror = (error) => {
-            EDITOR.error(`파일 읽기 실패: ${error}`); // 提示文件读取失败
+            EDITOR.error(`파일 읽기 실패: ${error}`); // 提示文件读取실패
         };
 
         reader.readAsText(file); // 以文本格式读取文件内容
@@ -248,7 +248,7 @@ function InitBinging() {
     $("#table-set-export").on('click', () => exportTableSet());
     // 重置设置
     $("#table-reset").on('click', () => resetSettings());
-    // 回退表格2.0到1.0
+    // 回退테이블2.0到1.0
     $("#table-init-from-2-to-1").on('click', async () => {
         if (await rollbackVersion() === true) {
             window.location.reload()
@@ -257,8 +257,8 @@ function InitBinging() {
     // 插件总体开关
     $('#table_switch').change(function () {
         USER.tableBaseSetting.isExtensionAble = this.checked;
-        EDITOR.success(this.checked ? '插件已开启' : '插件已关闭，可以打开和手动编辑表格但AI不会读表和生成');
-        updateSystemMessageTableStatus();   // 将表格数据状态更新到系统消息中
+        EDITOR.success(this.checked ? '插件已开启' : '插件已关闭，可以打开和手动编辑테이블但AI不会读表和生成');
+        updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
     // 调试模式开关
     $('#table_switch_debug_mode').change(function () {
@@ -268,15 +268,15 @@ function InitBinging() {
     // 插件读表开关
     $('#table_read_switch').change(function () {
         USER.tableBaseSetting.isAiReadTable = this.checked;
-        EDITOR.success(this.checked ? 'AI现在会读取表格' : 'AI现在将不会读表');
+        EDITOR.success(this.checked ? 'AI现在会读取테이블' : 'AI现在将不会读表');
     });
     // 插件写表开关
     $('#table_edit_switch').change(function () {
         USER.tableBaseSetting.isAiWriteTable = this.checked;
-        EDITOR.success(this.checked ? 'AI的更改现在会被写入表格' : 'AI的更改现在不会被写入表格');
+        EDITOR.success(this.checked ? 'AI的更改现在会被写入테이블' : 'AI的更改现在不会被写入테이블');
     });
 
-    // 表格插入模式
+    // 테이블삽입模式
     $('#dataTable_injection_mode').change(function (event) {
         USER.tableBaseSetting.injection_mode = event.target.value;
     });
@@ -291,7 +291,7 @@ function InitBinging() {
     $('#confirm_before_execution').change(function() {
         USER.tableBaseSetting.confirm_before_execution = $(this).prop('checked');
     })
-    // //整理表格相关高级设置
+    // //整理테이블相关高级设置
     // $('#advanced_settings').change(function() {
     //     $('#advanced_options').toggle(this.checked);
     //     USER.tableBaseSetting.advanced_settings = this.checked;
@@ -304,11 +304,11 @@ function InitBinging() {
     $('#ignore_user_sent').change(function() {
         USER.tableBaseSetting.ignore_user_sent = $(this).prop('checked');
     });
-    // // 强制刷新
+    // // 强制새로고침
     // $('#bool_force_refresh').change(function() {
     //     USER.tableBaseSetting.bool_force_refresh = $(this).prop('checked');
     // });
-    // 静默刷新
+    // 静默새로고침
     $('#bool_silent_refresh').change(function() {
         USER.tableBaseSetting.bool_silent_refresh = $(this).prop('checked');
     });
@@ -330,16 +330,16 @@ function InitBinging() {
     $('#model_selector').change(function(event) {
         $('#custom_model_name').val(event.target.value);
         USER.IMPORTANT_USER_PRIVACY_DATA.custom_model_name = event.target.value;
-        USER.saveSettings && USER.saveSettings(); // 保存设置
+        USER.saveSettings && USER.saveSettings(); // 저장设置
     });
-    // 表格推送至对话开关
+    // 테이블推送至对话开关
     $('#table_to_chat').change(function () {
         USER.tableBaseSetting.isTableToChat = this.checked;
-        EDITOR.success(this.checked ? '表格会被推送至对话中' : '关闭表格推送至对话');
+        EDITOR.success(this.checked ? '테이블会被推送至对话中' : '关闭테이블推送至对话');
         $('#table_to_chat_options').toggle(this.checked);
-        updateSystemMessageTableStatus();   // 将表格数据状态更新到系统消息中
+        updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
-    // 在扩展菜单栏中显示表格设置开关
+    // 在扩展菜单栏中显示테이블设置开关
     $('#show_settings_in_extension_menu').change(function () {
         USER.tableBaseSetting.show_settings_in_extension_menu = this.checked;
         updateTableView();
@@ -347,28 +347,28 @@ function InitBinging() {
     // 在扩展菜单栏中显示穿插模型设置开关
     $('#alternate_switch').change(function () {
         USER.tableBaseSetting.alternate_switch = this.checked;
-        EDITOR.success(this.checked ? '开启表格渲染穿插模式' : '关闭表格渲染穿插模式');
+        EDITOR.success(this.checked ? '开启테이블渲染穿插模式' : '关闭테이블渲染穿插模式');
         updateTableView();
         updateAlternateTable();
     });
-    // 在扩展列表显示表格设置
+    // 在扩展列表显示테이블设置
     $('#show_drawer_in_extension_list').change(function () {
         USER.tableBaseSetting.show_drawer_in_extension_list = this.checked;
         updateTableView();
     });
-    // 推送至前端的表格数据可被编辑
+    // 推送至前端的테이블数据可被编辑
     $('#table_to_chat_can_edit').change(function () {
         USER.tableBaseSetting.table_to_chat_can_edit = this.checked;
-        updateSystemMessageTableStatus();   // 将表格数据状态更新到系统消息中
+        updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
-    // 根据下拉列表选择表格推送位置
+    // 根据下拉列表选择테이블推送位置
     $('#table_to_chat_mode').change(function(event) {
         USER.tableBaseSetting.table_to_chat_mode = event.target.value;
         $('#table_to_chat_is_micro_d').toggle(event.target.value === 'macro');
-        updateSystemMessageTableStatus();   // 将表格数据状态更新到系统消息中
+        updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
 
-    // 根据下拉列表选择表格推送位置
+    // 根据下拉列表选择테이블推送位置
     $('#table_cell_width_mode').change(function(event) {
         USER.tableBaseSetting.table_cell_width_mode = event.target.value;
         getSheetsCellStyle()
@@ -378,7 +378,7 @@ function InitBinging() {
     // API URL
     $('#custom_api_url').on('input', function() {
         USER.IMPORTANT_USER_PRIVACY_DATA.custom_api_url = $(this).val();
-        USER.saveSettings && USER.saveSettings(); // 保存设置
+        USER.saveSettings && USER.saveSettings(); // 저장设置
     });
     // API KEY
     let apiKeyDebounceTimer;
@@ -389,10 +389,10 @@ function InitBinging() {
                 const rawKey = $(this).val();
                 const result = processApiKey(rawKey, generateDeviceId());
                 USER.IMPORTANT_USER_PRIVACY_DATA.custom_api_key = result.encryptedResult.encrypted || result.encryptedResult;
-                USER.saveSettings && USER.saveSettings(); // 保存设置
+                USER.saveSettings && USER.saveSettings(); // 저장设置
                 EDITOR.success(result.message);
             } catch (error) {
-                console.error('API Key 处理失败:', error);
+                console.error('API Key 处理실패:', error);
                 EDITOR.error('未能获取到API KEY，请重新输入~');
             }
         }, 500); // 500ms防抖延迟
@@ -400,14 +400,14 @@ function InitBinging() {
     // 模型名称
     $('#custom_model_name').on('input', function() {
         USER.IMPORTANT_USER_PRIVACY_DATA.custom_model_name = $(this).val();
-        USER.saveSettings && USER.saveSettings(); // 保存设置
+        USER.saveSettings && USER.saveSettings(); // 저장设置
     });
-    // 表格消息模板
+    // 테이블消息模板
     $('#dataTable_message_template').on("input", function () {
         const value = $(this).val();
         USER.tableBaseSetting.message_template = value;
     })
-    // 表格深度
+    // 테이블深度
     $('#dataTable_deep').on("input", function () {
         const value = $(this).val();
         USER.tableBaseSetting.deep = Math.abs(value);
@@ -455,12 +455,12 @@ function InitBinging() {
     // 代理地址
     $('#table_proxy_address').on('input', function() {
         USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_address = $(this).val();
-        USER.saveSettings && USER.saveSettings(); // 保存设置
+        USER.saveSettings && USER.saveSettings(); // 저장设置
     });
     // 代理密钥
     $('#table_proxy_key').on('input', function() {
         USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_key = $(this).val();
-        USER.saveSettings && USER.saveSettings(); // 保存设置
+        USER.saveSettings && USER.saveSettings(); // 저장设置
     });
 
     // 获取模型列表
@@ -474,15 +474,15 @@ function InitBinging() {
         const results = await handleApiTestRequest(apiUrl, encryptedApiKeys, modelName);
     });
 
-    // 开始整理表格
+    // 开始整理테이블
     $("#table_clear_up").on('click', () => {
         rebuildSheets()
     });
 
-    // 完整重建表格（合并到上面的下拉框内）
+    // 完整重建테이블（合并到上面的下拉框内）
     // $('#rebuild_table').on('click', () => rebuildTableActions(USER.tableBaseSetting.bool_force_refresh, USER.tableBaseSetting.bool_silent_refresh));
 
-    // 表格推送至对话
+    // 테이블推送至对话
     $("#dataTable_to_chat_button").on("click", async function () {
         customSheetsStylePopup()
     })
@@ -561,7 +561,7 @@ export function renderSetting() {
     $('#table_to_chat_options').toggle(USER.tableBaseSetting.isTableToChat);
     $('#table_to_chat_is_micro_d').toggle(USER.tableBaseSetting.table_to_chat_mode === 'macro');
 
-    // 不再在设置中显示表格结构
+    // 不再在设置中显示테이블结构
     // updateTableStructureDOM()
     console.log("设置已渲染")
 }
@@ -580,7 +580,7 @@ export function loadSettings() {
         USER.tableBaseSetting.updateIndex = 3
     }
 
-    // 2版本表格结构兼容
+    // 2版本테이블结构兼容
     console.log("updateIndex", USER.tableBaseSetting.updateIndex)
     if (USER.tableBaseSetting.updateIndex < 4) {
         // tableStructureToTemplate(USER.tableBaseSetting.tableStructure)
@@ -591,8 +591,8 @@ export function loadSettings() {
 
     renderSetting();
     InitBinging();
-    initRefreshTypeSelector(); // 初始化表格刷新类型选择器
-    updateTableView(); // 更新表格视图
+    initRefreshTypeSelector(); // 初始化테이블새로고침类型选择器
+    updateTableView(); // 更新테이블视图
     getSheetsCellStyle()
 }
 
@@ -651,7 +651,7 @@ function templateToTableStructure() {
 }
 
 /**
- * 刷新重整理模板
+ * 새로고침重整理模板
  */
 export function refreshRebuildTemplate() {
     const templateSelect = $('#rebuild--select');

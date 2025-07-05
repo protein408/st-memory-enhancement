@@ -40,14 +40,14 @@ export function truncateAfterLastParenthesis(str) {
 }
 
 /**
- * 解析字符串字典为对象
+ * 파싱字符串字典为对象
  * @param {*} str
  * @returns object
  */
 export function parseLooseDict(str) {
     const result = {};
     const content = str.replace(/\s+/g,'').slice(1, -1); // 去除最外层 {}
-    console.log("解析",content)
+    console.log("파싱",content)
     let i = 0;
     const len = content.length;
 
@@ -105,7 +105,7 @@ export function parseLooseDict(str) {
             i++;
         }
     }
-    console.log('解析后的对象:', result);
+    console.log('파싱后的对象:', result);
 
     return result;
 }

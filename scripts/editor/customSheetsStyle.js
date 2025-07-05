@@ -5,7 +5,7 @@ export async function customSheetsStylePopup() {
     const customStyleEditor = `
 <div class="column-editor">
     <div class="popup-content">
-        自定义推送至对话的表格的包裹样式，支持HTML与CSS，使用$0表示表格整体的插入位置
+        自定义推送至对话的테이블的包裹样式，支持HTML与CSS，使用$0表示테이블整体的삽입位置
     </div>
     <div class="column-editor-body">
         <textarea id="customStyleEditor" class="column-editor-textarea" rows="30" placeholder="请输入自定义样式"></textarea>

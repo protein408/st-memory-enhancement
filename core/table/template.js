@@ -8,13 +8,13 @@ export class SheetTemplate extends SheetBase {
         this.domain = this.SheetDomain.global
         this.currentPopupMenu = null;           // 用于跟踪当前弹出的菜单 - 移动到 Sheet (如果需要PopupMenu仍然在Sheet中管理)
         this.element = null;                    // 用于存储渲染后的 table 元素
-        this.lastCellEventHandler = null;       // 保存最后一次使用的 cellEventHandler
+        this.lastCellEventHandler = null;       // 저장最后一次使用的 cellEventHandler
 
         this.#load(target);
     }
 
     /**
-     * 渲染表格
+     * 渲染테이블
      * @description 接受 cellEventHandler 参数，提供一个 `Cell` 对象作为回调函数参数，用于处理单元格事件
      * @description 可以通过 `cell.parent` 获取 Sheet 对象，因此不再需要传递 Sheet 对象
      * @description 如果不传递 cellEventHandler 参数，则使用上一次的 cellEventHandler
@@ -68,12 +68,12 @@ export class SheetTemplate extends SheetBase {
         this.uid = `template_${SYSTEM.generateRandomString(8)}`;
         this.name = `新模板_${this.uid.slice(-4)}`;
         this.loadCells();
-        isSave && this.save(); // 保存新创建的 Sheet
+        isSave && this.save(); // 저장新创建的 Sheet
         return this; // 返回 Sheet 实例自身
     }
 
     /**
-     * 保存表格数据
+     * 저장테이블数据
      * @returns {SheetTemplate}
      */
     save(manualSave = false) {
@@ -86,17 +86,17 @@ export class SheetTemplate extends SheetBase {
             } else {
                 templates.push(sheetDataToSave);
             }
-            console.log("保存模板数据", templates)
+            console.log("저장模板数据", templates)
             USER.getSettings().table_database_templates = templates;
             if(!manualSave) USER.saveSettings();
             return this;
         } catch (e) {
-            EDITOR.error(`保存模板失败：${e}`);
+            EDITOR.error(`저장模板실패：${e}`);
             return null;
         }
     }
     /**
-     * 删除表格数据，根据 domain 决定删除的位置
+     * 删除테이블数据，根据 domain 决定删除的位置
      * @returns {*}
      */
     delete() {
@@ -128,7 +128,7 @@ export class SheetTemplate extends SheetBase {
         // if (target instanceof Sheet) {
         //     // 从 Sheet 实例模板化
         //     this.uid = `template_${SYSTEM.generateRandomString(8)}`;
-        //     this.name = target.name.replace('表格', '模板');
+        //     this.name = target.name.replace('테이블', '模板');
         //     this.hashSheet = [target.hashSheet[0]];
         //     this.cellHistory = target.cellHistory.filter(c => this.hashSheet[0].includes(c.uid));
         //     this.loadCells();

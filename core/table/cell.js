@@ -19,9 +19,9 @@ const CellType = {
 }
 
 /**
- * 单元格类，用于管理表格中的单元格数据
- * @description 单元格类用于管理表格中的单元格数据，包括单元格的位置、值、状态、类型等
- * @description 单元格类还提供了对单元格的操作，包括编辑、插入、删除等
+ * 单元格类，用于管理테이블中的单元格数据
+ * @description 单元格类用于管理테이블中的单元格数据，包括单元格的位置、值、状态、类型等
+ * @description 单元格类还提供了对单元格的 작업，包括编辑、삽입、删除等
  * @description 单元格类是 Sheet 类的子类，用于管理 Sheet 中的单元格数据
  */
 export class Cell {
@@ -240,7 +240,7 @@ export class Cell {
                 this.#clearSheet();
                 break;
             default:
-                console.warn(`未处理的单元格操作: ${actionName}`);
+                console.warn(`未处理的单元格 작업: ${actionName}`);
         }
 
         // 触发自定义事件监听器
@@ -258,7 +258,7 @@ export class Cell {
             this.parent.save();
         }
 
-        console.log(`单元格操作: ${actionName} 位置: ${[rowIndex, colIndex]}`);
+        console.log(`单元格 작업: ${actionName} 位置: ${[rowIndex, colIndex]}`);
     }
     #handleEditCell(props = {}) {
         if (!props || Object.keys(props).length === 0) {
@@ -270,14 +270,14 @@ export class Cell {
         cell.data = { ...this.data, ...props };
         const [rowIndex, colIndex] = this.#positionInParentCellSheet()
         this.parent.cells.set(cell.uid, cell);
-        console.log("保存前的 cell", this.parent.cellHistory);
+        console.log("저장前的 cell", this.parent.cellHistory);
         this.parent.cellHistory.push(cell);
         this.parent.hashSheet[rowIndex][colIndex] = cell.uid;
         this.parent.markPositionCacheDirty();
     }
 
     #insertRow(targetRowIndex) {
-        // 使用Array.from()方法在 hashSheet 中 targetRowIndex + 1 的位置插入新行
+        // 使用Array.from()方法在 hashSheet 中 targetRowIndex + 1 的位置삽입新行
         const newRow = Array.from({ length: this.parent.hashSheet[0].length }, (_, j) => {
             let cell = new Cell(this.parent); // 创建新单元格
             if (j === 0) {
@@ -292,7 +292,7 @@ export class Cell {
         this.parent.markPositionCacheDirty();
     }
     #insertColumn(colIndex) {
-        // 遍历每一行，在指定的 colIndex 位置插入新的单元格 UID
+        // 遍历每一行，在指定的 colIndex 位置삽입新的单元格 UID
         this.parent.hashSheet = this.parent.hashSheet.map(row => {
             const newCell = new Cell(this.parent);
             this.parent.cells.set(newCell.uid, newCell);

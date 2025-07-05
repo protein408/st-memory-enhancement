@@ -1,7 +1,7 @@
 import {profile_prompts} from "../../data/profile_prompts.js";
 
 /**
- * 初始化表格刷新类型选择器
+ * 初始化테이블새로고침类型选择器
  * 根据profile_prompts对象动态生成下拉选择器的选项
  */
 export function initRefreshTypeSelector() {
@@ -33,7 +33,7 @@ export function initRefreshTypeSelector() {
         $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~看到这个选项说明出问题了~~~~'));
     }
     
-    console.log('表格刷新类型选择器已更新');
+    console.log('테이블새로고침类型选择器已更新');
 
     // // 检查现有选项是否与profile_prompts一致
     // let needsUpdate = false;
@@ -75,5 +75,5 @@ export function initRefreshTypeSelector() {
     //         $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~看到这个选项说明出问题了~~~~'));
     //     }
         
-    //     console.log('表格刷新类型选择器已更新');
+    //     console.log('테이블새로고침类型选择器已更新');
 }

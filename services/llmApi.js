@@ -84,7 +84,7 @@ export class LLMApiService {
                 } else {
                     const responseData = await ChatCompletionService.processRequest(requestData, {}, true); // extractData = true for non-stream
                     if (!responseData || !responseData.content) {
-                        throw new Error("通过内部路由获取响应失败或响应内容为空");
+                        throw new Error("通过内部路由获取响应실패或响应内容为空");
                     }
                     return this.#cleanResponse(responseData.content);
                 }
@@ -138,7 +138,7 @@ export class LLMApiService {
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`API请求失败: ${response.status} - ${errorText}`);
+            throw new Error(`API请求실패: ${response.status} - ${errorText}`);
         }
 
         const responseData = await response.json();
@@ -161,7 +161,7 @@ export class LLMApiService {
 
         if (!response.ok) {
             const errorText = await response.text();
-            throw new Error(`API请求失败: ${response.status} - ${errorText}`);
+            throw new Error(`API请求실패: ${response.status} - ${errorText}`);
         }
 
         if (!response.body) {
@@ -299,9 +299,9 @@ export class LLMApiService {
                 // 使用 processRequest 进行非流式请求测试
                 const responseData = await ChatCompletionService.processRequest(requestData, {}, true);
                 if (!responseData || !responseData.content) {
-                    throw new Error("通过内部路由测试连接失败或响应内容为空");
+                    throw new Error("通过内部路由测试连接실패或响应内容为空");
                 }
-                return responseData.content; // 返回响应内容表示成功
+                return responseData.content; // 返回响应内容表示성공
             } catch (error) {
                 console.error("通过 SillyTavern 内部路由测试 API 连接错误:", error);
                 throw error;
@@ -336,7 +336,7 @@ export class LLMApiService {
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`API测试请求失败: ${response.status} - ${errorText}`);
+                    throw new Error(`API测试请求실패: ${response.status} - ${errorText}`);
                 }
 
                 const responseData = await response.json();
@@ -344,7 +344,7 @@ export class LLMApiService {
                 if (!responseData.choices || responseData.choices.length === 0 || !responseData.choices[0].message || !responseData.choices[0].message.content) {
                     throw new Error("API测试返回无效的响应结构");
                 }
-                return responseData.choices[0].message.content; // 返回响应内容表示成功
+                return responseData.choices[0].message.content; // 返回响应内容表示성공
             } catch (error) {
                 console.error("直接 fetch 测试 API 连接错误:", error);
                 throw error;

@@ -69,7 +69,7 @@ const histories = `
 </style>
 
 <div class="cell-history">
-    <h3>表格셀 기록</h3>
+    <h3>테이블셀 기록</h3>
 <!--    <div class="history-tabs">-->
 <!--        &lt;!&ndash; 动态生成tabs &ndash;&gt;-->
 <!--    </div>-->
@@ -205,7 +205,7 @@ function updateCellHistoryData(container, cell) {
 }
 
 /**
- * 打开表格编辑历史记录弹窗
+ * 打开테이블编辑历史记录弹窗
  * */
 export async function openCellHistoryPopup(cell){
     const cellHistoryPopup = new EDITOR.Popup(histories, EDITOR.POPUP_TYPE.TEXT, '', { large: true, wide: true, allowVerticalScrolling: false });

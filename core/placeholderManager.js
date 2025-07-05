@@ -9,7 +9,7 @@ class PlaceholderManager {
     /**
      * 渲染模板字符串，替换所有占位符
      * @param {string} template - 包含占位符的模板字符串
-     * @param {object} currentSheet - 当前的表格对象
+     * @param {object} currentSheet - 当前的테이블对象
      * @returns {string} - 渲染后的字符串
      */
     render(template, currentSheet) {
@@ -56,7 +56,7 @@ class PlaceholderManager {
     }
 
     /**
-     * 将单元格地址（例如 "A1"）解析为行和列索引
+     * 将单元格地址（例如 "A1"）파싱为行和列索引
      * @param {string} address - 单元格地址
      * @returns {{row: number, col: number}} - 行和列索引
      */

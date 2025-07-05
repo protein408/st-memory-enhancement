@@ -15,17 +15,17 @@ function handleCellValue(cell) {
 }
 
 /**
- * 在表格末尾插入行
+ * 在테이블末尾삽입行
  * @deprecated
- * @param {number} tableIndex 表格索引
- * @param {object} data 插入的数据
- * @returns 新插入行的索引
+ * @param {number} tableIndex 테이블索引
+ * @param {object} data 삽입的数据
+ * @returns 新삽입行的索引
  */
 export function insertRow(tableIndex, data) {
     if (tableIndex == null) return EDITOR.error('insert函数，tableIndex函数为空');
     if (data == null) return EDITOR.error('insert函数，data函数为空');
 
-    // 获取表格对象，支持新旧系统
+    // 获取테이블对象，支持新旧系统
     const table = DERIVED.any.waitingTable[tableIndex];
 
     // 检查是否为新系统的Sheet对象
@@ -35,9 +35,9 @@ export function insertRow(tableIndex, data) {
             // 获取当前行数（不包括表头）
             const rowCount = table.hashSheet.length - 1;
 
-            // 在最后一行后面插入新行
-            const cell = table.findCellByPosition(0, 0); // 获取表格源单元格
-            cell.newAction('insertDownRow'); // 在最后一行后插入新行
+            // 在最后一行后面삽입新行
+            const cell = table.findCellByPosition(0, 0); // 获取테이블源单元格
+            cell.newAction('insertDownRow'); // 在最后一行后삽입新行
 
             // 填充数据
             Object.entries(data).forEach(([key, value]) => {
@@ -50,10 +50,10 @@ export function insertRow(tableIndex, data) {
                 }
             });
 
-            console.log(`插入成功: table ${tableIndex}, row ${rowCount + 1}`);
+            console.log(`삽입성공: table ${tableIndex}, row ${rowCount + 1}`);
             return rowCount + 1;
         } catch (error) {
-            console.error('插入行失败:', error);
+            console.error('삽입行실패:', error);
             return -1;
         }
     } else {
@@ -66,12 +66,12 @@ export function insertRow(tableIndex, data) {
         const dataStr = JSON.stringify(newRowArray);
         // 检查是否已存在相同行
         if (table.content.some(row => JSON.stringify(row) === dataStr)) {
-            console.log(`跳过重复插入: table ${tableIndex}, data ${dataStr}`);
-            return -1; // 返回-1表示未插入
+            console.log(`跳过重复삽입: table ${tableIndex}, data ${dataStr}`);
+            return -1; // 返回-1表示未삽입
         }
         table.content.push(newRowArray);
         const newRowIndex = table.content.length - 1;
-        console.log(`插入成功 (旧系统): table ${tableIndex}, row ${newRowIndex}`);
+        console.log(`삽입성공 (旧系统): table ${tableIndex}, row ${newRowIndex}`);
         return newRowIndex;
     }
 }
@@ -79,14 +79,14 @@ export function insertRow(tableIndex, data) {
 /**
  * 행 삭제
  * @deprecated
- * @param {number} tableIndex 表格索引
+ * @param {number} tableIndex 테이블索引
  * @param {number} rowIndex 行索引
  */
 export function deleteRow(tableIndex, rowIndex) {
     if (tableIndex == null) return EDITOR.error('delete函数，tableIndex函数为空');
     if (rowIndex == null) return EDITOR.error('delete函数，rowIndex函数为空');
 
-    // 获取表格对象，支持新旧系统
+    // 获取테이블对象，支持新旧系统
     const table = DERIVED.any.waitingTable[tableIndex];
 
     // 检查是否为新系统的Sheet对象
@@ -102,24 +102,24 @@ export function deleteRow(tableIndex, rowIndex) {
                 return;
             }
 
-            // 获取要행 삭제的单元格并触发删除操作
+            // 获取要행 삭제的单元格并触发删除 작업
             const cell = table.findCellByPosition(actualRowIndex, 0);
             if (cell) {
                 cell.newAction('deleteSelfRow');
-                console.log(`删除成功: table ${tableIndex}, row ${rowIndex}`);
+                console.log(`删除성공: table ${tableIndex}, row ${rowIndex}`);
             } else {
                 console.error(`未找到行: ${rowIndex}`);
             }
         } catch (error) {
-            console.error('행 삭제失败:', error);
+            console.error('행 삭제실패:', error);
         }
     } else {
         // 旧系统：保持原有逻辑
         if (table.content && rowIndex >= 0 && rowIndex < table.content.length) {
             table.content.splice(rowIndex, 1);
-            console.log(`删除成功 (旧系统): table ${tableIndex}, row ${rowIndex}`);
+            console.log(`删除성공 (旧系统): table ${tableIndex}, row ${rowIndex}`);
         } else {
-            console.error(`删除失败 (旧系统): table ${tableIndex}, 无效的行索引 ${rowIndex} 或 content 不存在`);
+            console.error(`删除실패 (旧系统): table ${tableIndex}, 无效的行索引 ${rowIndex} 或 content 不存在`);
         }
     }
 }
@@ -127,7 +127,7 @@ export function deleteRow(tableIndex, rowIndex) {
 /**
  * 更新单个行的信息
  * @deprecated
- * @param {number} tableIndex 表格索引
+ * @param {number} tableIndex 테이블索引
  * @param {number} rowIndex 行索引
  * @param {object} data 更新的数据
  */
@@ -136,7 +136,7 @@ export function updateRow(tableIndex, rowIndex, data) {
     if (rowIndex == null) return EDITOR.error('update函数，rowIndex函数为空');
     if (data == null) return EDITOR.error('update函数，data函数为空');
 
-    // 获取表格对象，支持新旧系统
+    // 获取테이블对象，支持新旧系统
     const table = DERIVED.any.waitingTable[tableIndex];
 
     // 检查是否为新系统的Sheet对象
@@ -163,11 +163,11 @@ export function updateRow(tableIndex, rowIndex, data) {
                 }
             });
 
-            // 保存更改
+            // 저장更改
             table.save();
-            console.log(`更新成功: table ${tableIndex}, row ${rowIndex}`);
+            console.log(`更新성공: table ${tableIndex}, row ${rowIndex}`);
         } catch (error) {
-            console.error('更新行失败:', error);
+            console.error('更新行실패:', error);
         }
     } else {
         // 旧系统：保持原有逻辑
@@ -175,9 +175,9 @@ export function updateRow(tableIndex, rowIndex, data) {
             Object.entries(data).forEach(([key, value]) => {
                 table.content[rowIndex][parseInt(key)] = handleCellValue(value);
             });
-            console.log(`更新成功 (旧系统): table ${tableIndex}, row ${rowIndex}`);
+            console.log(`更新성공 (旧系统): table ${tableIndex}, row ${rowIndex}`);
         } else {
-            console.error(`更新失败 (旧系统): table ${tableIndex}, row ${rowIndex} 不存在或 content 不存在`);
+            console.error(`更新실패 (旧系统): table ${tableIndex}, row ${rowIndex} 不存在或 content 不存在`);
         }
     }
 }
