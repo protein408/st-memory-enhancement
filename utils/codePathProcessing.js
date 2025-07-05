@@ -8,7 +8,7 @@ export function getRelativePositionOfCurrentCode(deep = 1){
     // 从堆栈中获取使用此函数的文件名和行号
     const targetAbsolutePath = getStackTracePath(deep);
 
-    // 使用正则表达式移除 targetAbsolutePath 末尾的 :行号:列号 部分
+    // 使用正则表达式移除 targetAbsolutePath 末尾的 :行号:열号 部分
     const cleanTargetAbsolutePath = targetAbsolutePath.replace(/:(\d+):(\d+)$/, '');
 
     // 获取根目录绝对路径
@@ -83,8 +83,8 @@ export function extractPath(filePath) {
 }
 
 export function compareRelativePath(from, to) {
-    // 1. 파싱URL并提取路径，去除行号列号
-    const fromPath = new URL(from).pathname.split(':')[0]; // 移除 ':行号:列号' 部分
+    // 1. 파싱URL并提取路径，去除行号열号
+    const fromPath = new URL(from).pathname.split(':')[0]; // 移除 ':行号:열号' 部分
     const toPath = new URL(to).pathname.split(':')[0];
 
     // 2. 分割路径

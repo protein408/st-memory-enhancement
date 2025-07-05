@@ -326,7 +326,7 @@ function InitBinging() {
     $('#step_by_step_use_main_api').change(function() {
         USER.tableBaseSetting.step_by_step_use_main_api = this.checked;
     });
-    // 根据下拉列表选择的模型更新自定义模型名称
+    // 根据下拉열表选择的模型更新自定义模型名称
     $('#model_selector').change(function(event) {
         $('#custom_model_name').val(event.target.value);
         USER.IMPORTANT_USER_PRIVACY_DATA.custom_model_name = event.target.value;
@@ -351,7 +351,7 @@ function InitBinging() {
         updateTableView();
         updateAlternateTable();
     });
-    // 在扩展列表显示테이블设置
+    // 在扩展열表显示테이블设置
     $('#show_drawer_in_extension_list').change(function () {
         USER.tableBaseSetting.show_drawer_in_extension_list = this.checked;
         updateTableView();
@@ -361,14 +361,14 @@ function InitBinging() {
         USER.tableBaseSetting.table_to_chat_can_edit = this.checked;
         updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
-    // 根据下拉列表选择테이블推送位置
+    // 根据下拉열表选择테이블推送位置
     $('#table_to_chat_mode').change(function(event) {
         USER.tableBaseSetting.table_to_chat_mode = event.target.value;
         $('#table_to_chat_is_micro_d').toggle(event.target.value === 'macro');
         updateSystemMessageTableStatus();   // 将테이블数据状态更新到系统消息中
     });
 
-    // 根据下拉列表选择테이블推送位置
+    // 根据下拉열表选择테이블推送位置
     $('#table_cell_width_mode').change(function(event) {
         USER.tableBaseSetting.table_cell_width_mode = event.target.value;
         getSheetsCellStyle()
@@ -463,7 +463,7 @@ function InitBinging() {
         USER.saveSettings && USER.saveSettings(); // 저장设置
     });
 
-    // 获取模型列表
+    // 获取模型열表
     $('#fetch_models_button').on('click', updateModelList);
 
     // 测试API

@@ -177,7 +177,7 @@ async function updateTableHistoryData(container) {
             // 只显示有值的单元格
             if (!cell.data || !cell.data.value) return;
 
-            // // 跳过第一行第一列（테이블原始单元格）
+            // // 跳过第一行第一열（테이블原始单元格）
             // if (rowIndex === 0 && colIndex === 0) return;
 
             // 创建位置显示
@@ -185,7 +185,7 @@ async function updateTableHistoryData(container) {
                 if (rowIndex === 0 && colIndex === 0) {
                     return `<span style="color: var(--SmartThemeEmColor);">테이블源</span>`;
                 } else if (rowIndex === 0) {
-                    return `列 <span style="color: var(--SmartThemeQuoteColor);">${colIndex}</span>`;
+                    return `열 <span style="color: var(--SmartThemeQuoteColor);">${colIndex}</span>`;
                 } else if (colIndex === 0) {
                     return `行 <span style="color: var(--SmartThemeQuoteColor);">${rowIndex}</span>`;
                 } else if (rowIndex > 0 && colIndex > 0) {

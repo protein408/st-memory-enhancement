@@ -820,7 +820,7 @@ export async function rebuildSheets() {
 
 
 
-// 将Table数组序列化为字符串
+// 将Table数组序열化为字符串
 function tablesToString(sheets) {
     return JSON.stringify(sheetsToTables(sheets));
 }
@@ -951,7 +951,7 @@ async function getRecentChatHistory(chat, chatStairs, ignoreUserSent = false, to
         }
     }
 
-    // 按时间顺序排列并拼接
+    // 按时间顺序排열并拼接
     const chatHistory = collected.reverse().join('\n');
     return chatHistory;
 }
@@ -1035,7 +1035,7 @@ function cleanApiResponse(rawContent, options = {}) {
     }
 
     if (normalizeAndValidateColumnsContentPairs) {
-        // 标准化테이블结构，处理content部分，中文引号改为英文引号，然后检查列数和行数是否匹配以及格式问题，否则回退到原始内容
+        // 标准化테이블结构，处理content部分，中文引号改为英文引号，然后检查열数和行数是否匹配以及格式问题，否则回退到原始内容
         const regex = /([\"“”])columns\1\s*:\s*(\[.*?\])\s*,\s*([\"“”])content\3\s*:\s*(\[(?:\[.*?\](?:,\s*\[.*?\])*)?\])/g;
         content = content.replace(regex, (match, _quoteKeyColumns, columnsArrayStr, _quoteKeyContent, contentArrayStr) => {
             let normalizedColumnsArrayStr = replaceQuotesInContext(columnsArrayStr);
@@ -1071,7 +1071,7 @@ function cleanApiResponse(rawContent, options = {}) {
 
             for (const row of contentRows) {
                 if (!Array.isArray(row) || row.length !== numColumns) {
-                    console.warn(`警告: 内容行与列数 (${numColumns}) 不匹配或行本身不是数组。行数据:`, row);
+                    console.warn(`警告: 内容行与열数 (${numColumns}) 不匹配或行本身不是数组。行数据:`, row);
                     allRowsValid = false;
                     break;
                 }
@@ -1282,7 +1282,7 @@ function fixTableFormat(inputText) {
         }));
 
 
-        // 列对齐修正
+        // 열对齐修正
         return tables.map((table, index) => {
             if (!table || typeof table !== 'object') {
                 console.error(`处理索引 ${index} 处的테이블时出错：테이블数据无效（null、undefined 或不是对象）。接收到：`, table);

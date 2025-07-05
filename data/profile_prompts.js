@@ -687,7 +687,7 @@ export const profile_prompts = await switchLanguage('__profile_prompts__', {
 //         "include_history": true,
 //         "include_last_table": true,
 //         "core_rules":`
-// 请用纯JSON格式回复 작업列表，确保：
+// 请用纯JSON格式回复 작업열表，确保：
 //     1. 所有键名必须使用双引号包裹，例如 "action" 而非 action
 //     2. 数值键名必须加双引号，例如 "0" 而非 0
 //     3. 使用双引号而非单引号，例如 "value" 而非 'value'
@@ -699,7 +699,7 @@ export const profile_prompts = await switchLanguage('__profile_prompts__', {
 //             "action": "insert/update/delete",
 //             "tableIndex": 数字,
 //             "rowIndex": 数字（delete/update时需要）,
-//             "data": {列索引: "值"}（insert/update时需要）
+//             "data": {열索引: "值"}（insert/update时需要）
 //         }]
 //     8. 强调：delete 작업不包含"data"，insert 작업不包含"rowIndex"
 //     9. 强调：tableIndex和rowIndex的值为数字，不加双引号，例如 0 而非 "0"

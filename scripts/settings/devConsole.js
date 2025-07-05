@@ -79,7 +79,7 @@ function renderDebugLogs($container, logs, onlyError) {
         return;
     }
 
-    // 用于匹配堆栈信息行，并捕获函数名、URL和行号列号
+    // 用于匹配堆栈信息行，并捕获函数名、URL和行号열号
     const stackLineRegex = /at\s+([^\s]*?)\s+\((https?:\/\/[^\s:]+(?::\d+)?(?:[^\s:]+)*)(?::(\d+):(\d+))?\)/g;
     logs.forEach(log => {
         if (onlyError && log.type !== 'error') {
@@ -104,7 +104,7 @@ function renderDebugLogs($container, logs, onlyError) {
                 // functionName 是函数名 (例如 getPromptAndRebuildTable, dispatch)
                 // urlBase 是链接的基础部分
                 // lineNumber 是行号 (如果存在)
-                // columnNumber 是列号 (如果存在)
+                // columnNumber 是열号 (如果存在)
 
                 let functionNameHtml = '';
                 if (functionName) {

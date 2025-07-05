@@ -426,7 +426,7 @@ td.selected {
 }
 
 .operation-detail.data-detail {
-    flex-direction: column; /* 数据详情垂直排列 */
+    flex-direction: column; /* 数据详情垂直排열 */
 }
 
 .detail-label {

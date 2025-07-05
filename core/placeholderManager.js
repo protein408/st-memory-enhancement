@@ -56,9 +56,9 @@ class PlaceholderManager {
     }
 
     /**
-     * 将单元格地址（例如 "A1"）파싱为行和列索引
+     * 将单元格地址（例如 "A1"）파싱为行和열索引
      * @param {string} address - 单元格地址
-     * @returns {{row: number, col: number}} - 行和列索引
+     * @returns {{row: number, col: number}} - 行和열索引
      */
     parseCellAddress(address) {
         const colStrMatch = address.match(/[A-Z]+/);

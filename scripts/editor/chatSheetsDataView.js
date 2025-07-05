@@ -84,7 +84,7 @@ async function importTable(mesId, viewSheetsContainer) {
 
     // 2. 添加事件监听器，监听文件选择的变化 (change 事件)
     fileInput.addEventListener('change', function (event) {
-        // 获取用户选择的文件列表 (FileList 对象)
+        // 获取用户选择的文件열表 (FileList 对象)
         const files = event.target.files;
 
         // 检查是否选择了文件

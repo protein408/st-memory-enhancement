@@ -113,7 +113,7 @@ function updateGuideContent(elements, isRegex) {
     dom.toggleVisibility(elements.match_method_regex_container, isRegex);
     elements.push_to_chat_style_edit_guide_content.html(isRegex
         ? `支持标准的正则表达式语法,使用<cycleDivide></cycleDivide>包裹局部代码可以实现局部循环，例如用于折叠道具、任务等。`
-        : `当样式内容为空时默认显示原始테이블。支持HTML、CSS定义结构样式，并使用<code>\\$\\w\\s+</code>的方式定位单元格。<br>例如<code>$A0</code>代表第1列第1行(表头)，<code>$A1</code>代表第1列第2行(表内容第一行)。`
+        : `当样式内容为空时默认显示原始테이블。支持HTML、CSS定义结构样式，并使用<code>\\$\\w\\s+</code>的方式定位单元格。<br>例如<code>$A0</code>代表第1열第1行(表头)，<code>$A1</code>代表第1열第2行(表内容第一行)。`
     );
 }
 

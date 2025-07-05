@@ -197,7 +197,7 @@ export class SheetBase {
 
     findCellByPosition(rowIndex, colIndex) {
         if (rowIndex < 0 || colIndex < 0 || rowIndex >= this.hashSheet.length || colIndex >= this.hashSheet[0].length) {
-            console.warn('无效的行列索引');
+            console.warn('无效的行열索引');
             return null;
         }
         const hash = this.hashSheet[rowIndex][colIndex]

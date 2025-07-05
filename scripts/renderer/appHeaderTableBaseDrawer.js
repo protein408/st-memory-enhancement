@@ -206,8 +206,8 @@ async function switchContent(targetContent) {
     }
 
     // 停止当前正在进行的动画 (以防用户快速点击)
-    currentContent.stop(true, false); // 清除动画队列，不跳转到动画末尾
-    targetContent.stop(true, false);  // 清除动画队列，不跳转到动画末尾
+    currentContent.stop(true, false); // 清除动画队열，不跳转到动画末尾
+    targetContent.stop(true, false);  // 清除动画队열，不跳转到动画末尾
 
     if (currentContent.length > 0) {
         // **** 修改点：简化动画链，移除 .delay().hide(0) ****

@@ -5,7 +5,7 @@ const TESTING = true;
 
 let codeQueue = [];
 /**
- * 将代码添加到测试队列。
+ * 将代码添加到测试队열。
  * @param {Function} code 测试函数
  * @param {string} [functionName] 函数的名称，可选
  */
@@ -106,7 +106,7 @@ function createToolBar() {
 
     const retryButton = createToolButton('<i class="fa-solid fa-repeat"></i>', async (event) => { // 使用 Font Awesome 图标, 并添加隐藏的文字
         event.stopPropagation();
-        if (confirm('将依次执行测试队列中注册的的代码，是否继续？')) {
+        if (confirm('将依次执行测试队열中注册的的代码，是否继续？')) {
             await reloadTestContent();
         } else {
 
@@ -178,7 +178,7 @@ function loadAndAppendTestContent(container) {
  * 为单个测试函数创建并添加执行按钮到容器。
  * @param {HTMLElement} container 容器元素
  * @param {object} codeObject 包含测试函数和函数名的对象 { func: Function, name: string }
- * @param {number} index 函数在队列中的索引
+ * @param {number} index 函数在队열中的索引
  */
 function appendTestFunctionButton(container, codeObject, index) {
     const functionContainer = document.createElement('div');

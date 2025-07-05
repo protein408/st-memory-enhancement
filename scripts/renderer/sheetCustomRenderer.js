@@ -44,7 +44,7 @@ function staticPipeline(target) {
     return regexReplace.replace(/\$(\w)(\d+)/g, (match, colLetter, rowNumber) => {
         const colIndex = colLetter.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0);
         const rowIndex = parseInt(rowNumber);
-        console.log("静态渲染行:", rowIndex, "静态渲染列:", colIndex);
+        console.log("静态渲染行:", rowIndex, "静态渲染열:", colIndex);
         const c = target.findCellByPosition(rowIndex, colIndex);
         console.log("获取单元格位置：", c, '\n获取单元格内容：', c.data.value);
         return c ? (c.data.value || `<span style="color: red">?</span>`) :

@@ -61,7 +61,7 @@ export class Cell {
     }
     get headerY() {
         const p = this.#positionInParentCellSheet();
-        const targetUid = this.parent.hashSheet[0][p[1]];   // 获取当前单元格所在列的第一个单元格的 uid
+        const targetUid = this.parent.hashSheet[0][p[1]];   // 获取当前单元格所在열的第一个单元格的 uid
         return this.parent.cells.get(targetUid);
     }
 

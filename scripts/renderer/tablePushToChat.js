@@ -176,7 +176,7 @@ async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer) {
             currentIndex
         }));
 
-        // 排序（按第2列角色名）
+        // 排序（按第2열角色名）
         indexedTable.sort((a, b) => {
             const clean = (str) => String(str).trim().replace(/[\u200B-\u200D\uFEFF]/g, '').toLowerCase();
             const roleA = clean(a.row[1]) || "";

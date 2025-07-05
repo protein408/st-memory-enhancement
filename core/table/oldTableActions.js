@@ -41,7 +41,7 @@ export function insertRow(tableIndex, data) {
 
             // 填充数据
             Object.entries(data).forEach(([key, value]) => {
-                const colIndex = parseInt(key) + 1; // +1 因为第一列是行索引
+                const colIndex = parseInt(key) + 1; // +1 因为第一열是行索引
                 if (colIndex < table.hashSheet[0].length) {
                     const cell = table.findCellByPosition(rowCount + 1, colIndex);
                     if (cell) {
@@ -154,7 +154,7 @@ export function updateRow(tableIndex, rowIndex, data) {
 
             // 更新行数据
             Object.entries(data).forEach(([key, value]) => {
-                const colIndex = parseInt(key) + 1; // +1 因为第一列是行索引
+                const colIndex = parseInt(key) + 1; // +1 因为第一열是行索引
                 if (colIndex < table.hashSheet[0].length) {
                     const cell = table.findCellByPosition(actualRowIndex, colIndex);
                     if (cell) {

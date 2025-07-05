@@ -202,7 +202,7 @@ export async function handleMainAPIRequest(systemPrompt, userPrompt, isSilent = 
  */
 export async function handleApiTestRequest(apiUrl, encryptedApiKeys, modelName) {
     if (!apiUrl || !encryptedApiKeys) {
-        EDITOR.error('请先填写 API URL 和 API Key。');
+        EDITOR.error('먼저 API URL과 API Key를 입력해주세요.');
         return []; // 初始验证실패时返回空数组
     }
 
@@ -340,7 +340,7 @@ export async function handleCustomAPIRequest(systemPrompt, userPrompt, isStepByS
     }
 
     if (!decryptedApiKeysString) {
-        EDITOR.error('API key解密실패或未设置，请检查API key设置！');
+        EDITOR.error('API 키 복호화 실패 또는 미설정. API 키 설정을 확인하십시오!');
         return;
     }
 
@@ -489,7 +489,7 @@ export async function handleCustomAPIRequest(systemPrompt, userPrompt, isStepByS
     // }
 }
 
-/**请求模型列表
+/**请求模型열表
  * @returns {Promise<void>}
  */
 /**
@@ -508,7 +508,7 @@ function maskApiKey(key) {
     }
 }
 
-/**请求模型列表
+/**请求模型열表
  * @returns {Promise<void>}
  */
 export async function updateModelList() {
@@ -516,7 +516,7 @@ export async function updateModelList() {
     const decryptedApiKeysString = await getDecryptedApiKey(); // 使用 getDecryptedApiKey 函数解密
 
     if (!decryptedApiKeysString) {
-        EDITOR.error('API key解密실패或未设置，请检查API key设置！');
+        EDITOR.error('API 키 복호화 실패 또는 미설정. API 키 설정을 확인하십시오!');
         return;
     }
     if (!apiUrl) {
@@ -597,9 +597,9 @@ export async function updateModelList() {
                 // 不在此处显示성공消息，统一在最后处理
             } else if (!foundValidKey && (!data?.data || data.data.length === 0)) {
                  // 即使请求성공，但没有模型数据，也视为一种실패情况，记录下来
-                 throw new Error('请求성공但未返回有效模型列表');
+                 throw new Error('请求성공但未返回有效模型열表');
             }
-            // 如果已经找到有效key并更新了列表，后续的key只做有效性检查，不再更新UI
+            // 如果已经找到有效key并更新了열表，后续的key只做有效性检查，不再更新UI
 
         } catch (error) {
             console.error(`使用第 ${i + 1} 个 Key 获取模型실패:`, error);
@@ -609,11 +609,11 @@ export async function updateModelList() {
 
     // 处理最终结果和错误提示
     if (foundValidKey) {
-        EDITOR.success(`성공获取 ${modelCount} 个模型并更新列表 (共检查 ${apiKeys.length} 个Key)`);
+        EDITOR.success(`성공获取 ${modelCount} 个模型并更新열表 (共检查 ${apiKeys.length} 个Key)`);
     } else {
-        EDITOR.error('未能使用任何提供的API Key获取模型列表');
-        $selector.empty(); // 确保在所有key都无效时清空列表
-        $selector.append($('<option>', { value: '', text: '未能获取模型列表' }));
+        EDITOR.error('未能使用任何提供的API Key获取模型열表');
+        $selector.empty(); // 确保在所有key都无效时清空열表
+        $selector.append($('<option>', { value: '', text: '未能获取模型열表' }));
     }
 
     if (invalidKeysInfo.length > 0) {
@@ -729,13 +729,13 @@ export function ext_exportAllTablesAsJson() {
         }
     });
 
-    // 直接序列化整个清洗过的对象。
+    // 直接序열化整个清洗过的对象。
     // 如果这里依然出错，说明问题比预想的更复杂，但理论上这已经是JS中最标准的做法。
     try {
         // 为了避免外层宏파싱실패，我们直接返回字符串，让宏自己去파싱。
         return exportData;
     } catch (e) {
-        console.error("[Memory Enhancement] 最终JSON序列化실패:", e);
+        console.error("[Memory Enhancement] 最终JSON序열化실패:", e);
         return {}; // 发生意外时返回空对象
     }
 }
