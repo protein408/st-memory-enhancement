@@ -837,10 +837,22 @@ jQuery(async () => {
             return "{}"; // 오류 시 빈 JSON 객체 반환
         }
     });
+   
+    let doNavbarIconClick = undefined;
+    try {
+        // 동적 임포트, 함수가 존재하지 않는 경우에도 호환되도록 처리
+        const module = await import('../../../../script.js');
+        doNavbarIconClick = module.doNavbarIconClick;
+    } catch (e) { }
+
+      
 
     // 테이블 편집 버튼 설정
     $(document).on('click', '#table_drawer_icon', function () {
-        openAppHeaderTableDrawer();
+        if (typeof doNavbarIconClick === 'undefined')
+            openAppHeaderTableDrawer();// 适用于SillyTavern 1.13.0及以前
+        else
+            doNavbarIconClick.call($(this).parent());// 适用于SillyTavern 1.13.1起
         // updateTableContainerPosition();
     })
     // // 테이블 편집 버튼 설정
