@@ -16,7 +16,7 @@ import { SYSTEM, USER} from "../core/manager.js";
 
 export async function rollbackVersion() {
     // 弹出确认
-    if (confirm("初始化2.0表格数据？该操作无法回退！（将销毁当前对话的所有新表数据，清空所有新表格模板，用于模拟回退上一版本，该功能仅用于调试。）")) {
+    if (confirm("2.0 테이블 데이터를 초기화하시겠습니까? 이 작업은 되돌릴 수 없습니다! (현재 대화의 모든 새 테이블 데이터를 삭제하고, 모든 새 테이블 템플릿을 비워서 이전 버전으로 되돌리는 것을 시뮬레이션하는 데 사용됩니다. 이 기능은 디버깅용입니다.)")) {
         USER.tableBaseSetting.updateIndex = 3
         delete USER.getSettings().table_database_templates
         delete USER.getContext().chatMetadata.sheets
@@ -42,7 +42,7 @@ export async function rollbackVersion() {
 
 /**______________________请注意不要把填写后的API密钥上传了______________________*/
 export function functionToBeRegistered() {
-    SYSTEM.f(rollbackVersion, "回退上一版本")
+    SYSTEM.f(rollbackVersion, "이전 버전으로 되돌리기")
     // SYSTEM.f(()=>{
     //     let sourceData = {}
     //     const s = BASE.sheetsData.context
