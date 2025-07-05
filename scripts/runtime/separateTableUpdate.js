@@ -90,7 +90,7 @@ export async function TableTwoStepSummary(mode) {
     console.log('待填表的对话片段:', todoChats);
 
     // 检查是否开启执行前确认
-    const popupContentHtml = `총 \${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?`;
+    const popupContentHtml = `총 ${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?`;
     // 移除了模板选择相关的HTML和逻辑
 
     const popupId = 'stepwiseSummaryConfirm';
