@@ -112,8 +112,8 @@ async function getUIElements($dlg) {
 function updateGuideContent(elements, isRegex) {
     dom.toggleVisibility(elements.match_method_regex_container, isRegex);
     elements.push_to_chat_style_edit_guide_content.html(isRegex
-        ? `支持标准的正则表达式语法,使用<cycleDivide></cycleDivide>包裹局部代码可以实现局部循环，例如用于折叠道具、任务等。`
-        : `当样式内容为空时默认显示原始테이블。支持HTML、CSS定义结构样式，并使用<code>\\$\\w\\s+</code>的方式定位单元格。<br>例如<code>$A0</code>代表第1열第1行(表头)，<code>$A1</code>代表第1열第2行(表内容第一行)。`
+        ? `표준 정규식 문법을 지원하며, <cycleDivide></cycleDivide>로 코드 일부를 감싸면 국소 반복이 가능합니다. 예: 아이템, 퀘스트 접기 등에 사용됩니다.`
+        : `스타일 내용이 비어 있을 경우 기본적으로 원본 테이블을 표시합니다. HTML, CSS를 사용해 구조와 스타일을 정의할 수 있으며, <code>\\$\\w\\s+</code> 형식으로 셀을 지정할 수 있습니다.<br>예를 들어 <code>$A0</code>는 1열 1행(헤더), <code>$A1</code>는 1열 2행(본문 첫 행)을 의미합니다.`
     );
 }
 
@@ -291,7 +291,7 @@ function bindEvents() {
 function bindStyleManagementEvents() {
     // 添加样式
     elements.addStyleButton.get(0).addEventListener('click', async function () {
-        const styleName = await EDITOR.callGenericPopup("输入新样式名称：", EDITOR.POPUP_TYPE.INPUT);
+        const styleName = await EDITOR.callGenericPopup("새 스타일 이름을 입력하세요: ", EDITOR.POPUP_TYPE.INPUT);
         if (!styleName) return;
 
         templateInstance.config.customStyles = templateInstance.config.customStyles || {};
@@ -306,7 +306,7 @@ function bindStyleManagementEvents() {
         const selectedKey = dom.getValue(elements.presetStyle);
         if (selectedKey === 'default' || !templateInstance.config.customStyles[selectedKey]) return;
 
-        const newName = await EDITOR.callGenericPopup("修改样式名称：", EDITOR.POPUP_TYPE.INPUT, selectedKey);
+        const newName = await EDITOR.callGenericPopup("스타일 이름을 수정하세요:", EDITOR.POPUP_TYPE.INPUT, selectedKey);
         if (!newName || newName === selectedKey) return;
 
         // 重命名样式
@@ -324,10 +324,10 @@ function bindStyleManagementEvents() {
     elements.deleteStyleButton.get(0).addEventListener('click', async function () {
         const selectedKey = dom.getValue(elements.presetStyle);
         if (selectedKey === 'default') {
-            return EDITOR.error('不能删除默认样式');
+            return EDITOR.error('기본 스타일은 삭제할 수 없습니다');
         }
 
-        const confirmation = await EDITOR.callGenericPopup("确定要删除此样式吗？", EDITOR.POPUP_TYPE.CONFIRM);
+        const confirmation = await EDITOR.callGenericPopup("이 스타일을 삭제하시겠습니까?", EDITOR.POPUP_TYPE.CONFIRM);
         if (!confirmation) return;
 
         delete templateInstance.config.customStyles[selectedKey];
@@ -336,14 +336,14 @@ function bindStyleManagementEvents() {
         dom.triggerEvent(elements.presetStyle, 'change');
     });
 
-    // 导入样式
+    // 스타일 가져오기 
     elements.importStyleButton.get(0).addEventListener('click', async function () {
         const importData = await EDITOR.callGenericPopup("粘贴样式配置JSON：", EDITOR.POPUP_TYPE.INPUT, '', { rows: 10 });
         if (!importData) return;
 
         try {
             const styleData = JSON.parse(importData);
-            const styleName = styleData.name || "导入样式";
+            const styleName = styleData.name || "스타일 가져오기 ";
 
             // 移除不需要的属性
             delete styleData.name;
@@ -356,9 +356,9 @@ function bindStyleManagementEvents() {
             dom.setValue(elements.presetStyle, styleName);
             dom.triggerEvent(elements.presetStyle, 'change');
 
-            EDITOR.success('导入样式성공');
+            EDITOR.success('스타일 가져오기 성공');
         } catch (e) {
-            EDITOR.error('导入样式실패，JSON格式错误');
+            EDITOR.error('스타일 가져오기 실패，JSON格式错误');
         }
     });
 
