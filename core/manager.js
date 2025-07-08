@@ -271,7 +271,7 @@ export const BASE = {
             const {piece: currentPiece} = USER.getChatPiece()
             buildSheetsByTemplates(currentPiece)
             if (currentPiece?.hash_sheets) {
-                // console.log('使用模板创建了新的테이블数据', currentPiece)
+                // console.log('使用模板创建了tableEdit数据', currentPiece)
                 return currentPiece
             }
         }
@@ -347,7 +347,7 @@ export const DERIVED = {
 export const SYSTEM = {
     getTemplate: (name) => {
         console.log('getTemplate', name);
-        return APP.renderExtensionTemplateAsync('third-party/st-memory-enhancement/assets/templates', name);
+        return APP.renderExtensionTemplateAsync('third-party/st-memory-enhancement-kr/assets/templates', name);
     },
 
     codePathLog: function (context = '', deep = 2) {

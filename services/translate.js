@@ -10,7 +10,7 @@ let _translations = undefined;
  */
 async function fetchTranslations(locale) {
     try {
-        const response = await fetch(`/scripts/extensions/third-party/st-memory-enhancement/assets/locales/${locale}.json`);
+        const response = await fetch(`/scripts/extensions/third-party/st-memory-enhancement-kr/assets/locales/${locale}.json`);
         if (!response.ok) {
             console.warn(`Could not load translations for ${locale}, falling back to zh-cn`);
             // Fallback to Chinese if requested locale is not available
@@ -46,33 +46,24 @@ async function getTranslationsConfig() {
  */
 function applyTranslations(translations) {
     console.log("Applying translations", translations);
-
-    // 모든 data-i18n 요소 처리 (option 포함)
+    // 遍历所有具有 data-i18n 属性的元素
     document.querySelectorAll('[data-i18n]').forEach(element => {
-        const key = element.getAttribute('data-i18n').trim();
+        const key = element.getAttribute('data-i18n');
         if (translations[key]) {
-            if (element.tagName === 'OPTION') {
-                element.innerText = translations[key];
+            // 如果元素有 title 属性，则翻译 title 属性
+            if (element.hasAttribute('title')) {
+                element.setAttribute('title', translations[key]);
             } else {
+                // 否则翻译元素的文本内容
                 element.textContent = translations[key];
             }
         }
     });
 
-    // title 속성 번역
-    document.querySelectorAll('[data-i18n-title]').forEach(element => {
-        const key = element.getAttribute('data-i18n-title').trim();
-        if (translations[key]) {
-            element.setAttribute('title', translations[key]);
-        }
-    });
-
-    // 선택자 기반 예외 처리 (필요 시 유지)
+    // 通过 CSS 选择器翻译其他元素
     translateElementsBySelector(translations, '#table_clear_up a', "Reorganize tables now");
     translateElementsBySelector(translations, '#dataTable_to_chat_button a', "Edit style of tables rendered in conversation");
 }
-
-
 
 /**
  * 使用 CSS 选择器翻译元素
