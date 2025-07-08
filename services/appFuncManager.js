@@ -6,6 +6,8 @@ import { power_user, applyPowerUserSettings, getContextSettings, loadPowerUserSe
 import { LoadLocal, SaveLocal, LoadLocalBool } from '/scripts/f-localStorage.js';
 import { getCurrentLocale } from '/scripts/i18n.js';
 
+
+
 /**
  * appManager 对象，用于集中管理和暴露常用的应用程序功能和库。
  * 方便在应用程序的不同模块中统一访问和使用这些功能。
@@ -49,6 +51,25 @@ const applicationFunctionManager = {
 
     // scripts/i18n.js 模块
     getCurrentLocale,
+
+    // 初始化时为 null
+    doNavbarIconClick: null,
+
+    // 初始化方法
+    async init() {
+        try {
+            const { doNavbarIconClick } = await import('/script.js');
+            this.doNavbarIconClick = doNavbarIconClick || null;
+        } catch (error) {
+            console.warn('无法导入 doNavbarIconClick:', error);
+            this.doNavbarIconClick = () => {
+                console.warn('doNavbarIconClick 不可用');
+            };
+        }
+    }
 };
+
+// 导出前初始化
+applicationFunctionManager.init();
 
 export default applicationFunctionManager;

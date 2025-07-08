@@ -7,7 +7,6 @@ import { updateSystemMessageTableStatus } from "../renderer/tablePushToChat.js";
 import { TableTwoStepSummary } from "./separateTableUpdate.js";
 import { estimateTokenCount, handleCustomAPIRequest, handleMainAPIRequest } from "../settings/standaloneAPI.js";
 import { profile_prompts } from "../../data/profile_prompts.js";
-import { refreshContextView } from "../editor/chatSheetsDataView.js";
 import { Form } from '../../components/formManager.js';
 import { refreshRebuildTemplate } from "../settings/userExtensionSetting.js"
 
@@ -432,7 +431,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
                 // UI 새로고침
                 const tableContainer = document.querySelector('#tableContainer');
                 if (tableContainer) {
-                    refreshContextView();
+                    BASE.refreshContextView();
                     updateSystemMessageTableStatus();
                     EDITOR.success('테이블 생성 성공!');
                     r = 'success';
@@ -691,7 +690,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
         USER.getContext().saveChat();
         // 새로고침 UI
         const tableContainer = document.querySelector('#tableContainer');
-        refreshContextView();
+        BASE.refreshContextView();
         updateSystemMessageTableStatus()
         EDITOR.success('테이블 요약 완료');
     } catch (error) {
@@ -1662,7 +1661,7 @@ export async function executeIncrementalUpdateFromSummary(
             console.error("오류 원문: ", matches.join('\n'));
         }
         USER.saveChat()
-        refreshContextView();
+        BASE.refreshContextView();
         updateSystemMessageTableStatus();
         EDITOR.success('독립 프롬프트 완료!');
         return 'success';

@@ -177,9 +177,9 @@ async function clearTable(mesId, viewSheetsContainer) {
         setTimeout(() => {
             USER.saveSettings()
             USER.saveChat();
-            BASE.refreshContextView()
+            refreshContextView()
             EDITOR.success("표 데이터 삭제 성공")
-            console.log("已清除테이블数据")
+            console.log("已清除表格数据")
         }, 100)
     }
 }
@@ -554,13 +554,18 @@ async function undoTable(mesId, tableContainer) {
 }
 
 
-async function renderSheetsDOM() {
+async function renderSheetsDOM(mesId = -1) {
     const task = new SYSTEM.taskTiming('renderSheetsDOM_task')
-
+    DERIVED.any.renderingMesId = mesId
     updateSystemMessageTableStatus();
     task.log()
-    const { piece, deep } = BASE.getLastSheetsPiece();
+    const {deep: lastestDeep} = BASE.getLastSheetsPiece()
+    const { piece, deep } = mesId === -1 ? {piece:USER.getContext().chat[lastestDeep], deep: lastestDeep} : {piece:USER.getContext().chat[mesId], deep: mesId}
     if (!piece || !piece.hash_sheets) return;
+
+    if( deep === lastestDeep) DERIVED.any.isRenderLastest = true;
+    else DERIVED.any.isRenderLastest = false;
+    DERIVED.any.renderDeep = deep;
 
     const sheets = BASE.hashSheetsToSheets(piece.hash_sheets);
     sheets.forEach((sheet) => {
@@ -575,18 +580,18 @@ async function renderSheetsDOM() {
     DERIVED.any.renderingSheets = sheets
     task.log()
     // 用于记录上一次的hash_sheets，渲染时根据上一次的hash_sheets进行高亮
-    lastCellsHashSheet = BASE.getLastSheetsPiece(deep - 1, 3, false)?.piece.hash_sheets;
-    // console.log("找到的diff前项", lastCellsHashSheet)
-    if (lastCellsHashSheet) {
-        lastCellsHashSheet = BASE.copyHashSheets(lastCellsHashSheet)
-        //for (const sheetUid in lastCellsHashSheet) {
-        //    lastCellsHashSheet[sheetUid] = lastCellsHashSheet[sheetUid].flat()
-        //}
+    if(deep != 0) {
+        lastCellsHashSheet = BASE.getLastSheetsPiece(deep - 1, 3, false)?.piece.hash_sheets;
+        if (lastCellsHashSheet) {
+            lastCellsHashSheet = BASE.copyHashSheets(lastCellsHashSheet)
+        }
     }
+    
     task.log()
     $(viewSheetsContainer).empty()
     viewSheetsContainer.style.paddingBottom = '150px'
-    renderEditableSheetsDOM(sheets, viewSheetsContainer)
+    renderEditableSheetsDOM(sheets, viewSheetsContainer,DERIVED.any.isRenderLastest?undefined:()=>{})
+    $("#table_indicator").text(DERIVED.any.isRenderLastest ? "现在是可修改的活动表格" : `现在是第${deep}轮对话中的旧表格，不可被更改`)
     task.log()
 }
 
@@ -594,7 +599,6 @@ let initializedTableView = null
 async function initTableView(mesId) {
     initializedTableView = $(await SYSTEM.getTemplate('manager')).get(0);
     viewSheetsContainer = initializedTableView.querySelector('#tableContainer');
-
     // setTableEditTips($(initializedTableView).find('#tableEditTips'));    // 确保在 table_manager_container 存在的情况下查找 tableEditTips
 
     // 设置编辑提示
@@ -633,15 +637,37 @@ async function initTableView(mesId) {
     $(document).on('click', '#export_table_button', function () {
         EDITOR.tryBlock(exportTable, "표 내보내기 실패");
     })
+    // 点击前表按钮
+    $(document).on('click', '#table_prev_button', function () {
+        const deep = DERIVED.any.renderDeep;
+        const { deep: prevDeep }  = BASE.getLastSheetsPiece(deep - 1, 20, false);
+        if (prevDeep === -1) {
+            EDITOR.error("没有更多的表格数据了")
+            return
+        }
+        renderSheetsDOM(prevDeep);
+    })
+
+    // 点击后表按钮
+    $(document).on('click', '#table_next_button', function () {
+        const deep = DERIVED.any.renderDeep;
+        console.log("当前深度：", deep)
+        const { deep: nextDeep }  = BASE.getLastSheetsPiece(deep + 1, 20, false, "down");
+        if (nextDeep === -1) {
+            EDITOR.error("没有更多的表格数据了")
+            return
+        }
+        renderSheetsDOM(nextDeep);
+    })
 
     return initializedTableView;
 }
 
-export async function refreshContextView() {
+export async function refreshContextView(mesId = -1) {
     if(BASE.contextViewRefreshing) return
     BASE.contextViewRefreshing = true
-    await renderSheetsDOM();
-    console.log("새로고침테이블视图")
+    await renderSheetsDOM(mesId);
+    console.log("표 보기 새로고침")
     BASE.contextViewRefreshing = false
 }
 

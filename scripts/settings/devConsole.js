@@ -1,4 +1,4 @@
-import {EDITOR, SYSTEM, USER} from '../../core/manager.js';
+import {EDITOR, SYSTEM, USER, BASE} from '../../core/manager.js';
 import JSON5 from '../../utils/json5.min.mjs'
 
 let isPopupOpening = false; // 防止在弹窗打开时推送日志导致循环
@@ -157,6 +157,7 @@ export async function openTableDebugLogPopup() {
     const $debugLogContainer = $dlg.find('#debugLogContainer');
     const $onlyErrorLogCheckbox = $dlg.find('#only_error_log'); // 获取 checkbox
     const $exportButton = $dlg.find('#table_debug_log_export_button'); // 获取导出按钮
+    const $exportInfoButton = $dlg.find('#table_debug_info_export_button'); // 获取导出调试信息按钮
 
     $debugLogContainer.empty(); // 清空容器，避免重复显示旧日志
     toastr.clear()
@@ -183,6 +184,22 @@ export async function openTableDebugLogPopup() {
         const a = document.createElement('a');
         a.href = url;
         a.download = 'table_debug_log.json';
+        a.click();
+        URL.revokeObjectURL(url);
+    })
+
+    $exportInfoButton.on('click', () => {
+        const infoData = {
+            chatMate: BASE.sheetsData.context,
+            lastestSheet: BASE.getLastSheetsPiece(),
+            allHash: USER.getContext().chat.map(chat => chat.hash_sheets ?? null),
+        };
+        const infoDataString = JSON.stringify(infoData, null, 2);
+        const blob = new Blob([infoDataString], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'table_debug_info.json';
         a.click();
         URL.revokeObjectURL(url);
     })

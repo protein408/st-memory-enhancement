@@ -6,7 +6,7 @@
     <!--        </span>-->
     <!--    </h2>-->
     <small data-i18n="managerDescription">
-        이것은 데이터를 저장하기 위한 테이블입니다. 모델은 제공된 프롬프트에 따라 테이블을 업데이트하고, 테이블의 데이터를 참조하여 다음 대화를 생성하는 데 사용합니다.
+        데이터를 저장하는 데 사용되는 표입니다. 정상적으로 대화만 하면 되고, 기본적으로 아무런 조작 없이도 표가 자동으로 업데이트됩니다. 아래의 요약/정리와 즉시 작성은 보조적인 수단일 뿐입니다.
     </small>
     <div id="tableEditTips"></div>
     <hr />
@@ -20,22 +20,27 @@
             <!--            <div style="display: flex; justify-content: center;" id="table_edit_mode_button">-->
             <!--                <i class="menu_button menu_button_icon fa-solid fa-pen" style="height: 30px; width: 30px" title="批量编辑"></i>-->
             <!--            </div>-->
-            <div style="display: flex; justify-content: center" id="table_data_statistics_button" title="테이블 데이터 통계 보기" data-i18n="[title]View table data statistics">
+            <div style="display: flex; justify-content: center" id="table_data_statistics_button" title="테이블 데이터 통계 보기" 
+                data-i18n="[title]View table data statistics">
                 <i class="menu_button menu_button_icon fa-solid fa-ranking-star" style="height: 30px; width: 30px"></i>
             </div>
-            <div style="display: flex; justify-content: center" id="dataTable_history_button" title="테이블 편집 기록 보기" data-i18n="[title]View table edit history">
+            <div style="display: flex; justify-content: center" id="dataTable_history_button" title="테이블 편집 기록 보기" 
+                data-i18n="[title]View table edit history">
                 <i class="menu_button menu_button_icon fa-solid fa-history" style="height: 30px; width: 30px"></i>
             </div>
-            <div style="display: flex; justify-content: center" id="table_undo" title="테이블 복원" data-i18n="[title]Restore Table">
+            <div style="display: flex; justify-content: center" id="table_undo" title="테이블 복원" 
+                data-i18n="[title]Restore Table">
                 <i class="menu_button menu_button_icon fa-solid fa-undo" style="height: 30px; width: 30px"></i>
             </div>
-            <div style="display: flex; justify-content: center" id="table_rebuild_button" title="테이블 요약" data-i18n="[title]Table Summary">
+            <div style="display: flex; justify-content: center" id="table_rebuild_button" title="테이블 요약" 
+                data-i18n="[title]Table Summary">
                 <i class="menu_button menu_button_icon fa-solid fa-repeat" data-i18n="Summarize and Organize">요약/정리</i>
             </div>
-            <div style="display: flex; justify-content: center" id="trigger_step_by_step_button" title="수동 업데이트" data-i18n="[title]Manual Update">
+            <div style="display: flex; justify-content: center" id="trigger_step_by_step_button" title="수동 업데이트" 
+                data-i18n="[title]Manual Update">
                 <i class="menu_button menu_button_icon fa-solid fa-bolt" data-i18n="Fill Table Immediately">즉시 표 작성</i>
             </div>
-            
+
             <!--            <div style="display: flex; justify-content: center;" id="paste_table_button">-->
             <!--                <i class="menu_button menu_button_icon fa-solid fa-paste" style="height: 30px; width: 30px" title="粘贴테이블"></i>-->
             <!--            </div>-->
@@ -45,17 +50,31 @@
         </div>
         <div style=" display: flex; justify-content: flex-end; flex-wrap: wrap; width: fit-content; gap: 4px;">
             <div style="display: flex; justify-content: center" id="copy_table_button">
-                <i class="menu_button menu_button_icon fa-solid fa-copy" style="height: 30px; width: 30px" title="테이블 복사" data-i18n="[title]Copy table"></i>
+                <i class="menu_button menu_button_icon fa-solid fa-copy" style="height: 30px; width: 30px" title="테이블 복사" 
+                    data-i18n="[title]Copy table"></i>
             </div>
             <div style="display: flex; justify-content: center" id="import_table_button">
-                <i class="menu_button menu_button_icon fa-solid fa-file-import" style="height: 30px; width: 30px" title="테이블 가져오기" data-i18n="[title]Import table"></i>
+                <i class="menu_button menu_button_icon fa-solid fa-file-import" style="height: 30px; width: 30px" 
+                    title="테이블 가져오기" data-i18n="[title]Import table"></i>
             </div>
             <div style="display: flex; justify-content: center" id="export_table_button">
-                <i class="menu_button menu_button_icon fa-solid fa-file-export" style="height: 30px; width: 30px" title="테이블 내보내기" data-i18n="[title]Export table"></i>
+                <i class="menu_button menu_button_icon fa-solid fa-file-export" style="height: 30px; width: 30px" 
+                    title="테이블 내보내기" data-i18n="[title]Export table"></i>
             </div>
             <div style="display: flex; justify-content: center" id="clear_table_button">
-                <i class="menu_button menu_button_icon fa-solid fa-trash-can redWarningBG" style="height: 30px; width: 30px" title="테이블 지우기" data-i18n="[title]Clear table"></i>
+                <i class="menu_button menu_button_icon fa-solid fa-trash-can redWarningBG" 
+                    style="height: 30px; width: 30px" title="테이블 지우기" data-i18n="[title]Clear table"></i>
             </div>
+        </div>
+    </div>
+    <hr />
+    <div style="display: flex; justify-content: space-between; ">
+        <div style="display: flex; justify-content: center" id="table_prev_button" title="이전 표">
+            <i class="menu_button menu_button_icon fa-solid">&lt; 이전 표</i>
+        </div>
+        <div id="table_indicator">현재는 최신 표입니다</div>
+        <div style="display: flex; justify-content: center" id="table_next_button" title="다음 표">
+            <i class="menu_button menu_button_icon fa-solid">다음 표 &gt;</i>
         </div>
     </div>
     <hr />

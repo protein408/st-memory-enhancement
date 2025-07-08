@@ -208,7 +208,7 @@ export const BASE = {
     reSaveAllChatSheets(sheets) {
         BASE.sheetsData.context = []
         const {piece} = USER.getChatPiece()
-        if(!piece) return EDITOR.error("没有记录载体")
+        if(!piece) return EDITOR.error("没有记录载体，表格是保存在聊天记录中的，请聊至少一轮后再重试")
         sheets.forEach(sheet => {
             sheet.save(piece, true)
         })
@@ -219,15 +219,17 @@ export const BASE = {
     updateSelectBySheetStatus(){
         updateSelectBySheetStatus()
     },
-    getLastSheetsPiece(deep = 0, cutoff = 1000, startAtLastest = true) {
-        console.log("向上查询테이블数据，深度", deep, "截断", cutoff, "从最新开始", startAtLastest)
-        // 如果没有找到新系统的테이블数据，则尝试查找旧系统的테이블数据（兼容模式）
+    getLastSheetsPiece(deep = 0, cutoff = 1000, deepStartAtLastest = true, direction = 'up') {
+        console.log("向上查询表格数据，深度", deep, "截断", cutoff, "从最新开始", deepStartAtLastest)
+        // 如果没有找到新系统的表格数据，则尝试查找旧系统的表格数据（兼容模式）
         const chat = APP.getContext().chat
         if (!chat || chat.length === 0 || chat.length <= deep) {
             return { deep: -1, piece: BASE.initHashSheet() }
         }
-        const startIndex = startAtLastest ? chat.length - deep - 1 : deep;
-        for (let i = startIndex; i >= 0 && i >= startIndex - cutoff; i--) {
+        const startIndex = deepStartAtLastest ? chat.length - deep - 1 : deep;
+        for (let i = startIndex;
+            direction === 'up' ? (i >= 0 && i >= startIndex - cutoff) : (i < chat.length && i < startIndex + cutoff);
+            direction === 'up' ? i-- : i++) {
             if (chat[i].is_user === true) continue; // 跳过用户消息
             if (chat[i].hash_sheets) {
                 console.log("向上查询테이블数据，找到테이블数据", chat[i])

@@ -8,10 +8,10 @@ import { initTest } from "./components/_fotTest.js";
 import { initAppHeaderTableDrawer, openAppHeaderTableDrawer } from "./scripts/renderer/appHeaderTableBaseDrawer.js";
 import { initRefreshTypeSelector } from './scripts/runtime/absoluteRefresh.js';
 import {refreshTempView, updateTableContainerPosition} from "./scripts/editor/tableTemplateEditView.js";
-import { refreshContextView } from "./scripts/editor/chatSheetsDataView.js";
 import { functionToBeRegistered } from "./services/debugs.js";
 import { parseLooseDict, replaceUserTag } from "./utils/stringUtil.js";
 import {executeTranslation} from "./services/translate.js";
+import applicationFunctionManager from "./services/appFuncManager.js"
 
 
 console.log("______________________메모리 플러그인: 로딩 시작______________________")
@@ -765,20 +765,39 @@ export async function undoSheets(deep) {
  * @description 새로운 Sheet 시스템을 사용하여 테이블 뷰 업데이트
  * @returns {Promise<*[]>}
  */
-async function updateSheetsView() {
+async function updateSheetsView(mesId) {
     const task = new SYSTEM.taskTiming('openAppHeaderTableDrawer_task')
     try{
        // 테이블 뷰 새로고침
-        console.log("========================================\n테이블 뷰 업데이트")
+        console.log("========================================\n표 보기 업데이트")
         refreshTempView(true).then(() => task.log());
-        console.log("========================================\n테이블 내용 뷰 업데이트")
-        refreshContextView().then(() => task.log());
+        console.log("========================================\n표 내용 보기 업데이트")
+        BASE.refreshContextView(mesId).then(() => task.log());
 
         // 시스템 메시지의 테이블 상태 업데이트
         updateSystemMessageTableStatus(); 
     }catch (error) {
-        EDITOR.error("메모리 플러그인: 테이블 뷰 업데이트 실패\n원인:", error.message, error)
+        EDITOR.error("메모리 플러그인: 테이블 보기 업데이트 실패\n원인:", error.message, error)
     }
+}
+
+/**
+ * 打开表格drawer
+ */
+export function openDrawer() {
+    const drawer = $('#table_database_settings_drawer .drawer-toggle')
+    if (isDrawerNewVersion()) {
+        applicationFunctionManager.doNavbarIconClick.call(drawer)
+    }else{
+        return openAppHeaderTableDrawer()
+    }
+}
+
+/**
+ * 获取是新版还是旧版drawer
+ */
+export function isDrawerNewVersion() {
+    return !!applicationFunctionManager.doNavbarIconClick
 }
 
 jQuery(async () => {
@@ -799,7 +818,7 @@ jQuery(async () => {
         }
     })
 
-    // 주의: 기존 테이블 시스템의 초기화 코드가 제거됨, 이제 새로운 Sheet 시스템 사용
+    $('.extraMesButtons').append('<div title="표 보기" class="mes_button open_table_by_id">표</div>');
 
     // 모바일과 PC 이벤트 분리
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
@@ -820,7 +839,18 @@ jQuery(async () => {
     // 애플리케이션 시작 시 설정 로드
     loadSettings();
 
-    // 매크로 등록
+    // 표 팝업 창
+    $(document).on('click', '.open_table_by_id', function () {
+        const messageId = parseInt($(this).closest('.mes').attr('mesid'))
+        if (USER.getContext().chat[messageId].is_user === true) {
+            toastr.warning('사용자 메시지는 표 편집을 지원하지 않습니다')
+            return
+        }
+        BASE.refreshContextView(messageId)
+        openDrawer()
+    })
+
+    // 注册宏
     USER.getContext().registerMacro("tablePrompt", () =>getMacroPrompt())
     USER.getContext().registerMacro("tableData", () =>getMacroTablePrompt())
     USER.getContext().registerMacro("GET_ALL_TABLES_JSON", () => {
@@ -845,17 +875,15 @@ jQuery(async () => {
         doNavbarIconClick = module.doNavbarIconClick;
     } catch (e) { }
 
-      
-
-    // 테이블 편집 버튼 설정
-    $(document).on('click', '#table_drawer_icon', function () {
-        if (typeof doNavbarIconClick === 'undefined')
-            openAppHeaderTableDrawer();// 适用于SillyTavern 1.13.0及以前
-        else
-            doNavbarIconClick.call($(this).parent());// 适用于SillyTavern 1.13.1起
-        // updateTableContainerPosition();
-    })
-    // // 테이블 편집 버튼 설정
+    // 设置表格编辑按钮
+    console.log("표 편집 버튼 배치", applicationFunctionManager.doNavbarIconClick)
+    if (isDrawerNewVersion()) {
+        $('#table_database_settings_drawer .drawer-toggle').on('click', applicationFunctionManager.doNavbarIconClick);
+    }else{
+        $('#table_drawer_content').attr('data-slide-toggle', 'hidden').css('display', 'none');
+        $('#table_database_settings_drawer .drawer-toggle').on('click', openAppHeaderTableDrawer);
+    }
+    // // 设置表格编辑按钮
     // $(document).on('click', '.tableEditor_editButton', function () {
     //     let index = $(this).data('index'); // 현재 클릭된 인덱스 가져오기
     //     openTableSettingPopup(index);
