@@ -18,9 +18,9 @@ export function initRefreshTypeSelector() {
             .text((() => {
                 switch(value.type) {
                     case 'refresh':
-                        return '**旧** ' + (value.name || key);
+                        return '**이전** ' + (value.name || key);
                     case 'third_party':
-                        return '**第三方作者** ' + (value.name || key);
+                        return '**제3자 저자** ' + (value.name || key);
                     default:
                         return value.name || key;
                 }
@@ -30,10 +30,10 @@ export function initRefreshTypeSelector() {
     
     // 如果没有选项，添加默认选项
     if ($selector.children().length === 0) {
-        $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~看到这个选项说明出问题了~~~~'));
+        $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~이 옵션이 보인다면 문제가 발생했다는 뜻입니다~~~~'));
     }
-    
-    console.log('테이블새로고침类型选择器已更新');
+
+    console.log('테이블 새로고침 유형 선택기가 이미 업데이트됨');
 
     // // 检查现有选项是否与profile_prompts一致
     // let needsUpdate = false;
@@ -75,5 +75,5 @@ export function initRefreshTypeSelector() {
     //         $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~看到这个选项说明出问题了~~~~'));
     //     }
         
-    //     console.log('테이블새로고침类型选择器已更新');
+    //     console.log('테이블새로고침类型选择器已업데이트');
 }

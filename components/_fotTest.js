@@ -5,9 +5,9 @@ const TESTING = true;
 
 let codeQueue = [];
 /**
- * 将代码添加到测试队열。
- * @param {Function} code 测试函数
- * @param {string} [functionName] 函数的名称，可选
+ * 코드를 테스트 대기열에 추가하세요
+ * @param {Function} code 테스트 함수
+ * @param {string} [functionName] 함수명, 선택 사항
  */
 export function pushCodeToQueue(code, functionName) {
     codeQueue.push({ func: code, name: functionName });
@@ -41,7 +41,7 @@ function openTestSidebar() {
 
 async function testingProcess() {
     if (codeQueue.length === 0) {
-        console.log(`[${new Date().toLocaleTimeString()}] 没有注册任何 code，无法执行，请使用 SYSTEM.f(()=>{需要测试的代码}, '函数名') 注册测试代码。`);
+        console.log(`[${new Date().toLocaleTimeString()}] 등록된 code가 없어 실행할 수 없습니다. SYSTEM.f(()=>{테스트할 코드}, '함수명') 형식으로 테스트 코드를 등록해 주세요.`);
         return;
     }
 
@@ -50,21 +50,21 @@ async function testingProcess() {
     console.log(`%c[${new Date().toLocaleTimeString()}] START [SYSTEM.f()...`, 'color: blue; font-weight: bold');
     for (const codeObject of codeQueue) {
         const func = codeObject.func;
-        const functionName = codeObject.name; // 获取函数名
+        const functionName = codeObject.name; // 获取함수名
         const startTimeI = performance.now();
         const index = codeQueue.indexOf(codeObject);
         try {
             await func();
-            console.log(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} END (用时: ${(performance.now() - startTimeI).toFixed(2)}ms)`, 'color: green'); // 保留函数名输出和时间
+            console.log(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} END (소요 시간: ${(performance.now() - startTimeI).toFixed(2)}ms)`, 'color: green'); // 保留함수名输出和时间
         } catch (error) {
-            console.error(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} ERROR:`, 'color: red; font-weight: bold', error); // 保留函数名输出
+            console.error(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} ERROR:`, 'color: red; font-weight: bold', error); // 保留함수名输出
         }
     }
 
     const endTime = performance.now();
     const elapsedTime = endTime - startTime;
 
-    console.log(`%c[${new Date().toLocaleTimeString()}] SYSTEM.f()] END (总用时: ${elapsedTime.toFixed(2)}ms)`, 'color: green; font-weight: bold');
+    console.log(`%c[${new Date().toLocaleTimeString()}] SYSTEM.f()] END (총 소요 시간: ${elapsedTime.toFixed(2)}ms)`, 'color: green; font-weight: bold');
 }
 
 function createSidebarContainer() {
@@ -106,7 +106,7 @@ function createToolBar() {
 
     const retryButton = createToolButton('<i class="fa-solid fa-repeat"></i>', async (event) => { // 使用 Font Awesome 图标, 并添加隐藏的文字
         event.stopPropagation();
-        if (confirm('将依次执行测试队열中注册的的代码，是否继续？')) {
+        if (confirm('테스트 대기열에 등록된 코드를 차례대로 실행합니다. 계속 진행하시겠습니까?')) {
             await reloadTestContent();
         } else {
 
@@ -165,7 +165,7 @@ function createToolButton(innerHTML, onClickHandler) { // 修改 text 参数为 
  */
 function loadAndAppendTestContent(container) {
     if (codeQueue.length === 0) {
-        appendTestOutput(container, 'SYSTEM.f(()=>{添加测试代码}, "函数名")');
+        appendTestOutput(container, 'SYSTEM.f(()=>{테스트 코드 추가}, "함수명")');
         return;
     }
 
@@ -175,10 +175,10 @@ function loadAndAppendTestContent(container) {
 }
 
 /**
- * 为单个测试函数创建并添加执行按钮到容器。
+ * 为单个测试함수创建并添加执행按钮到容器。
  * @param {HTMLElement} container 容器元素
- * @param {object} codeObject 包含测试函数和函数名的对象 { func: Function, name: string }
- * @param {number} index 函数在队열中的索引
+ * @param {object} codeObject 包含测试함수和함수名的对象 { func: Function, name: string }
+ * @param {number} index 함수在队열中的인덱스
  */
 function appendTestFunctionButton(container, codeObject, index) {
     const functionContainer = document.createElement('div');
@@ -203,7 +203,7 @@ function appendTestFunctionButton(container, codeObject, index) {
             console.log(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} START`, 'color: blue; font-weight: bold');
             await codeObject.func();
             //  "END" 信息也使用粗体显示
-            console.log(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} END (用时: ${(performance.now() - startTimeI).toFixed(2)}ms)`, 'color: green; font-weight: bold');
+            console.log(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} END (소요 시간: ${(performance.now() - startTimeI).toFixed(2)}ms)`, 'color: green; font-weight: bold');
         } catch (error) {
             console.error(`%c[${new Date().toLocaleTimeString()}] ${functionName || `f[${index}]`} ERROR:`, 'color: red; font-weight: bold', error);
             console.error(error);

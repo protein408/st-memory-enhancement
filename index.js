@@ -380,6 +380,7 @@ function executeAction(EditAction, sheets) {
         case 'insert': {
             // 삽입 작업 실행
             const cell = sheet.findCellByPosition(sheet.getRowCount() - 1, 0)
+            if (!cell) return -1
             cell.newAction(cell.CellAction.insertDownRow, {}, false)
             const lastestRow = sheet.getRowCount() - 1
             const cells = sheet.getCellsByRowIndex(lastestRow)
@@ -782,7 +783,7 @@ async function updateSheetsView(mesId) {
 }
 
 /**
- * 打开表格drawer
+ * 打开테이블drawer
  */
 export function openDrawer() {
     const drawer = $('#table_database_settings_drawer .drawer-toggle')
@@ -863,7 +864,7 @@ jQuery(async () => {
             return JSON.stringify(jsonData);
         } catch (error) {
             console.error("GET_ALL_TABLES_JSON 매크로 실행 오류:", error);
-            EDITOR.error("모든 테이블 데이터 내보내기 중 오류 발생.");
+            EDITOR.error("모든 표 데이터 내보내기 중 오류 발생","",error);
             return "{}"; // 오류 시 빈 JSON 객체 반환
         }
     });
@@ -875,7 +876,7 @@ jQuery(async () => {
         doNavbarIconClick = module.doNavbarIconClick;
     } catch (e) { }
 
-    // 设置表格编辑按钮
+    // 设置테이블编辑按钮
     console.log("표 편집 버튼 배치", applicationFunctionManager.doNavbarIconClick)
     if (isDrawerNewVersion()) {
         $('#table_database_settings_drawer .drawer-toggle').on('click', applicationFunctionManager.doNavbarIconClick);
@@ -883,7 +884,7 @@ jQuery(async () => {
         $('#table_drawer_content').attr('data-slide-toggle', 'hidden').css('display', 'none');
         $('#table_database_settings_drawer .drawer-toggle').on('click', openAppHeaderTableDrawer);
     }
-    // // 设置表格编辑按钮
+    // // 设置테이블编辑按钮
     // $(document).on('click', '.tableEditor_editButton', function () {
     //     let index = $(this).data('index'); // 현재 클릭된 인덱스 가져오기
     //     openTableSettingPopup(index);

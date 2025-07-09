@@ -81,13 +81,13 @@ export async function TableTwoStepSummary(mode) {
     const {piece: todoPiece} = USER.getChatPiece()
 
     if (todoPiece === undefined) {
-        console.log('未找到待填表的对话片段');
+        console.log('채워진 테이블의 채팅 조각을 찾을 수 없습니다.');
         EDITOR.error('작성할 양식의 채팅 기록을 찾을 수 없습니다. 현재 채팅이 올바른지 확인해주세요.');
         return;
     }
     let todoChats = todoPiece.mes;
 
-    console.log('待填表的对话片段:', todoChats);
+    console.log('채팅 조각의 테이블이 채워집니다:', todoChats);
 
     // 检查是否开启执行前确认
     const popupContentHtml = `총 ${todoChats.length} 길이의 텍스트가 누적되었습니다. 독립적으로 표 작성을 시작할까요?`;
@@ -106,26 +106,26 @@ export async function TableTwoStepSummary(mode) {
     console.log('newPopupConfirm result for stepwise summary:', confirmResult);
 
     if (confirmResult === false) {
-        console.log('用户取消执行独立填表: ', `(${todoChats.length}) `, toBeExecuted);
+        console.log('사용자가 독립 테이블 채우기 실행을 취소했습니다: ', `(${todoChats.length}) `, toBeExecuted);
         MarkChatAsWaiting(currentPiece, swipeUid);
     } else {
         // This block executes if confirmResult is true OR 'dont_remind_active'
         if (confirmResult === 'dont_remind_active') {
-            console.log('独立填表弹窗已被禁止，自动执行。');
+            console.log('독립 테이블 채우기 팝업이 금지되어 자동 실행됩니다.');
             EDITOR.info('“항상 예 선택”이 선택되었습니다. 작업은 백그라운드에서 자동으로 실행됩니다...'); // <--- 增加后台执行提示
         } else { // confirmResult === true
-            console.log('用户确认执行独立填表 (或首次选择了“一直选是”并确认)');
+            console.log('사용자가 독립 테이블 채우기 실행을 확인했습니다 (또는 처음으로 “항상 예”을 선택하고 확인함)');
         }
         manualSummaryChat(todoChats, confirmResult);
     }
 }
 
 /**
- * 手动总结聊天（立即填表）
+ * 手动总结聊天（立即填테이블）
  * 重构逻辑：
- * 1. 恢复：首先调用内建的 `undoSheets` 函数，将테이블状态恢复到上一版本。
- * 2. 执行：以恢复后的干净状态为基础，调用标准增量更新流程，向AI请求新的 작업并执行。
- * @param {Array} todoChats - 需要用于填表的聊天记录。
+ * 1. 恢复：首先调用内建的 `undoSheets` 함수，将테이블状态恢复到上一版本。
+ * 2. 执行：以恢复后的干净状态为基础，调用标准增量업데이트流程，向AI请求新的 작업并执行。
+ * @param {Array} todoChats - 需要用于填테이블的聊天记录。
  * @param {string|boolean} confirmResult - 用户的确认结果。
  */
 export async function manualSummaryChat(todoChats, confirmResult) {
@@ -139,21 +139,21 @@ export async function manualSummaryChat(todoChats, confirmResult) {
 
     // 只有当테이블中已经有内容时，才执行“撤销并重做”
     if (initialPiece.hash_sheets && Object.keys(initialPiece.hash_sheets).length > 0) {
-        console.log('[Memory Enhancement] 立即填表：检测到테이블中有数据，执行恢复 작업...');
+        console.log('[Memory Enhancement] 즉시 채우기: 테이블에 데이터가 감지되어 복구 작업을 수행중...');
         try {
             await undoSheets(0);
             EDITOR.success('테이블이 이전 버전으로 복원되었습니다.');
-            console.log('[Memory Enhancement] 테이블恢复성공，准备执行填表。');
+            console.log('[Memory Enhancement] 테이블 복원 성공，채우기 작업을 진행할 준비가 되었습니다.');
         } catch (e) {
-            EDITOR.error('테이블 복원 실패, 작업이 중단되었습니다.');
-            console.error('[Memory Enhancement] 调用 undoSheets 실패:', e);
+            EDITOR.error('테이블 복원 실패, 작업이 중단되었습니다.', e.message, e);
+            console.error('[Memory Enhancement] undoSheets 호출 실패:', e);
             return;
         }
     } else {
-        console.log('[Memory Enhancement] 立即填表：检测到为空表，跳过恢复步骤，直接执行填表。');
+        console.log('[Memory Enhancement] 테이블 즉시 채우기: 감지된 빈 테이블로 인해 복원 단계를 건너뛰고 직접 채우기를 실행중...');
     }
 
-    // 步骤二：以当前状态（可能已恢复）为基础，继续执行填表
+    // 步骤二：以当前状态（可能已恢复）为基础，继续执行填테이블
     // 重新获取 piece，确保我们使用的是最新状态（无论是原始状态还是恢复后的状态）
     const { piece: referencePiece } = USER.getChatPiece();
     if (!referencePiece) {
@@ -161,7 +161,7 @@ export async function manualSummaryChat(todoChats, confirmResult) {
         return;
     }
     
-    // 테이블数据
+    // 테이블 데이터
     const originText = getTablePrompt(referencePiece);
 
     // 테이블总体提示词
@@ -181,7 +181,7 @@ export async function manualSummaryChat(todoChats, confirmResult) {
         isSilentMode // Pass silent mode flag
     );
 
-    console.log('执行独立填表（增量更新）结果:', r);
+    console.log('독립적인 테이블 채우기(증분 업데이트) 실행 결과:', r);
     if (r === 'success') {
         // 由于直接在 referencePiece 引用上 작업，修改已自动同步，无需手动回写 hash_sheets。
         toBeExecuted.forEach(chat => {
@@ -192,11 +192,11 @@ export async function manualSummaryChat(todoChats, confirmResult) {
 
         // 저장并새로고침UI
         await USER.saveChat();
-        // 根据用户要求，使用整页새로고침来确保包括宏在内的所有数据都得到更新。
+        // 根据用户要求，使用整页새로고침来确保包括宏在内的所有数据都得到업데이트。
         reloadCurrentChat();
         return true;
     } else if (r === 'suspended' || r === 'error' || !r) {
-        console.log('执行增量独立填表실패或取消: ', `(${todoChats.length}) `, toBeExecuted);
+        console.log('증분 독립 테이블 채우기 실패 또는 취소: ', `(${todoChats.length}) `, toBeExecuted);
         return false;
     }
     

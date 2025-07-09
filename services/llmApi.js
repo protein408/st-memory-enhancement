@@ -6,7 +6,7 @@ try {
     const module = await import('/scripts/custom-request.js');
     ChatCompletionService = module.ChatCompletionService;
 } catch (e) {
-    console.warn("未检测到 /scripts/custom-request.js 或未正确导出 ChatCompletionService，将禁用代理相关功能。", e);
+    console.warn("/scripts/custom-request.js 를 찾을 수 없거나 ChatCompletionService가 올바르게 내보내지지 않아 프록시 관련 기능이 비활성화됩니다.", e);
 }
 export class LLMApiService {
     constructor(config = {}) {
@@ -23,11 +23,11 @@ export class LLMApiService {
 
     async callLLM(prompt, streamCallback = null) {
         if (!prompt) {
-            throw new Error("输入内容不能为空");
+            throw new Error("입력 내용이 비어 있을 수 없습니다");
         }
 
         if (!this.config.api_url || !this.config.api_key || !this.config.model_name) {
-            throw new Error("API配置不完整");
+            throw new Error("API 구성이 불완전합니다");
         }
 
         let messages;
@@ -36,13 +36,13 @@ export class LLMApiService {
             messages = prompt;
         } else if (typeof prompt === 'string') {
             // 如果 prompt 是字符串，保持旧逻辑
-            if (prompt.trim().length < 2) throw new Error("输入文本太短");
+            if (prompt.trim().length < 2) throw new Error("입력 텍스트가 너무 짧습니다");
             messages = [
                 { role: 'system', content: this.config.system_prompt },
                 { role: 'user', content: prompt }
             ];
         } else {
-            throw new Error("无效的输入类型，只接受字符串或消息数组");
+            throw new Error("유효하지 않은 입력 유형입니다. 문자열 또는 메시지 배열만 허용됩니다");
         }
 
         this.config.stream = streamCallback !== null;
@@ -51,7 +51,7 @@ export class LLMApiService {
         if (USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_address) {
             console.log("检测到代理配置，将使用 SillyTavern 内部路由");
             if (typeof ChatCompletionService === 'undefined' || !ChatCompletionService?.processRequest) {
-                const errorMessage = "当前酒馆版本过低，无法发送自定义请求。请更新你的酒馆版本";
+                const errorMessage = "현재酒馆版本过低，하지 못하다전송사용자 정의请求。请업데이트你的酒馆版本";
                 EDITOR.error(errorMessage);
                 throw new Error(errorMessage);
             }
@@ -70,7 +70,7 @@ export class LLMApiService {
 
                 if (this.config.stream) {
                     if (!streamCallback || typeof streamCallback !== 'function') {
-                        throw new Error("流式模式下必须提供有效的streamCallback函数");
+                        throw new Error("流式모드下必须提供유효한的streamCallback함수");
                     }
                     const streamGenerator = await ChatCompletionService.processRequest(requestData, {}, false); // extractData = false for stream
                     let fullResponse = '';
@@ -84,17 +84,17 @@ export class LLMApiService {
                 } else {
                     const responseData = await ChatCompletionService.processRequest(requestData, {}, true); // extractData = true for non-stream
                     if (!responseData || !responseData.content) {
-                        throw new Error("通过内部路由获取响应실패或响应内容为空");
+                        throw new Error("通过内部路由가져오다响应실패或响应내용为空");
                     }
                     return this.#cleanResponse(responseData.content);
                 }
             } catch (error) {
-                console.error("通过 SillyTavern 内部路由调用 LLM API 错误:", error);
+                console.error("通过 SillyTavern 内部路由调用 LLM API 오류:", error);
                 throw error;
             }
         } else {
             // 未配置代理，使用原始的直接 fetch 逻辑
-            console.log("未检测到代理配置，将使用直接 fetch");
+            console.log("未检测到代理配置，将사용直接 fetch");
             let apiEndpoint = this.config.api_url;
             if (!apiEndpoint.endsWith("/chat/completions")) {
                 apiEndpoint += "/chat/completions";
@@ -116,14 +116,14 @@ export class LLMApiService {
             try {
                 if (this.config.stream) {
                     if (!streamCallback || typeof streamCallback !== 'function') {
-                        throw new Error("流式模式下必须提供有效的streamCallback函数");
+                        throw new Error("流式모드下必须提供유효한的streamCallback함수");
                     }
                     return await this.#handleStreamResponse(apiEndpoint, headers, data, streamCallback);
                 } else {
                     return await this.#handleRegularResponse(apiEndpoint, headers, data);
                 }
             } catch (error) {
-                console.error("直接调用 LLM API 错误:", error);
+                console.error("直接调用 LLM API 오류:", error);
                 throw error;
             }
         }
@@ -165,7 +165,7 @@ export class LLMApiService {
         }
 
         if (!response.body) {
-            throw new Error("无法获取响应流");
+            throw new Error("하지 못하다가져오다响应流");
         }
 
         const reader = response.body.getReader();
@@ -281,14 +281,14 @@ export class LLMApiService {
             { role: 'user', content: testPrompt }
         ];
 
-        // 如果配置了代理地址，则使用 SillyTavern 的内部路由进行测试
+        // 如果配置了代理地址，则使用 SillyTavern 的内部路由进行테스트 
         if (USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_address) {
-            console.log("检测到代理配置，将使用 SillyTavern 内部路由进行连接测试");
+            console.log("检测到代理配置，将사용 SillyTavern 内部路由进行连接테스트 ");
             try {
                 const requestData = {
-                    stream: false, // 测试连接不需要流式
+                    stream: false, // 테스트 连接不需要流式
                     messages: messages,
-                    max_tokens: 50, // 测试连接不需要太多 token
+                    max_tokens: 50, // 테스트 连接不需要太多 token
                     model: this.config.model_name,
                     temperature: this.config.temperature,
                     chat_completion_source: 'openai', // 假设代理目标是 OpenAI 兼容的
@@ -296,19 +296,19 @@ export class LLMApiService {
                     reverse_proxy: USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_address,
                     proxy_password: USER.IMPORTANT_USER_PRIVACY_DATA.table_proxy_key || null,
                 };
-                // 使用 processRequest 进行非流式请求测试
+                // 使用 processRequest 进行非流式请求테스트 
                 const responseData = await ChatCompletionService.processRequest(requestData, {}, true);
                 if (!responseData || !responseData.content) {
-                    throw new Error("通过内部路由测试连接실패或响应内容为空");
+                    throw new Error("通过内部路由테스트 连接실패或响应내용为空");
                 }
                 return responseData.content; // 返回响应内容表示성공
             } catch (error) {
-                console.error("通过 SillyTavern 内部路由测试 API 连接错误:", error);
+                console.error("通过 SillyTavern 内部路由테스트  API 连接오류:", error);
                 throw error;
             }
         } else {
-            // 未配置代理，使用原始的直接 fetch 逻辑进行测试
-            console.log("未检测到代理配置，将使用直接 fetch 进行连接测试");
+            // 未配置代理，使用原始的直接 fetch 逻辑进行테스트 
+            console.log("未检测到代理配置，将사용直接 fetch 进行连接테스트 ");
             let apiEndpoint = this.config.api_url;
             if (!apiEndpoint.endsWith("/chat/completions")) {
                 apiEndpoint += "/chat/completions";
@@ -323,7 +323,7 @@ export class LLMApiService {
                 model: this.config.model_name,
                 messages: messages,
                 temperature: this.config.temperature,
-                max_tokens: 50, // 测试连接不需要太多 token
+                max_tokens: 50, // 테스트 连接不需要太多 token
                 stream: false
             };
 
@@ -336,17 +336,17 @@ export class LLMApiService {
 
                 if (!response.ok) {
                     const errorText = await response.text();
-                    throw new Error(`API测试请求실패: ${response.status} - ${errorText}`);
+                    throw new Error(`API테스트 请求실패: ${response.status} - ${errorText}`);
                 }
 
                 const responseData = await response.json();
                 // 检查响应是否有效
                 if (!responseData.choices || responseData.choices.length === 0 || !responseData.choices[0].message || !responseData.choices[0].message.content) {
-                    throw new Error("API测试返回无效的响应结构");
+                    throw new Error("API테스트 返回无效的响应结构");
                 }
                 return responseData.choices[0].message.content; // 返回响应内容表示성공
             } catch (error) {
-                console.error("直接 fetch 测试 API 连接错误:", error);
+                console.error("直接 fetch 테스트 API 连接오류:", error);
                 throw error;
             }
         }

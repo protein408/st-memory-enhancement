@@ -61,9 +61,9 @@ const applicationFunctionManager = {
             const { doNavbarIconClick } = await import('/script.js');
             this.doNavbarIconClick = doNavbarIconClick || null;
         } catch (error) {
-            console.warn('无法导入 doNavbarIconClick:', error);
+            console.warn('doNavbarIconClick을 가져오지 못했습니다:', error);
             this.doNavbarIconClick = () => {
-                console.warn('doNavbarIconClick 不可用');
+                console.warn('doNavbarIconClick을 사용할 수 없습니다');
             };
         }
     }

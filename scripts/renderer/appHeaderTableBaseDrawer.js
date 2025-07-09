@@ -29,7 +29,7 @@ let isEventListenersBound = false;
 let currentActiveButton = null; // Track currently active button
 
 /**
- * 更新按钮选中状态 (保持不变)
+ * 업데이트按钮选中状态 (保持不变)
  * @param {jQuery} selectedButton 当前选中的按钮
  */
 function updateButtonStates(selectedButton) {
@@ -69,7 +69,7 @@ export async function initAppHeaderTableDrawer() {
 
     let doNavbarIconClick = undefined;
     try {
-        // 动态导入，兼容函数不存在的情况
+        // 动态导入，兼容함수不存在的情况
         const module = await import('../../../../../../script.js');
         doNavbarIconClick = module.doNavbarIconClick;
     } catch (e) { }
@@ -111,7 +111,7 @@ export async function initAppHeaderTableDrawer() {
         $('#extensions_details').trigger('click');
     });
 
-    // **** 修改点：按钮点击事件调用新的 switchContent 函数 ****
+    // **** 修改点：按钮点击事件调用新的 switchContent 함수 ****
     databaseButton.on('click', function() {
         if (updateButtonStates(databaseButton)) {
             switchContent(databaseContentDiv); // 传入缓存的 jQuery 对象
@@ -199,7 +199,7 @@ export async function openAppHeaderTableDrawer(target = undefined) {
 }
 
 /**
- * **** 新增：通用的内容切换函数 ****
+ * **** 新增：通用的内容切换함수 ****
  * @param {jQuery} targetContent 要显示的目标内容的 jQuery 对象
  */
 async function switchContent(targetContent) {

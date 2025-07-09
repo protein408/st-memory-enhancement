@@ -3,9 +3,9 @@ import { SheetBase } from "./base.js";
 import { cellStyle, filterSavingData } from "./utils.js";
 import { Cell } from "./cell.js";
 /**
- * 테이블类，用于管理테이블数据
- * @description 테이블类用于管理테이블数据，包括테이블的名称、域、类型、单元格数据等
- * @description 테이블类还提供了对테이블的 작업，包括创建、저장、删除、渲染等
+ * 테이블类，用于管理테이블 데이터
+ * @description 테이블类用于管理테이블 데이터，包括테이블的名称、域、类型、单元格数据等
+ * @description 테이블类还提供了对테이블的 작업，包括创建、저장、삭제、渲染等
  */
 export class Sheet extends SheetBase {
     constructor(target = null) {
@@ -20,7 +20,7 @@ export class Sheet extends SheetBase {
 
     /**
      * 渲染테이블
-     * @description 接受 cellEventHandler 参数，提供一个 `Cell` 对象作为回调函数参数，用于处理单元格事件
+     * @description 接受 cellEventHandler 参数，提供一个 `Cell` 对象作为回调함수参数，用于处理单元格事件
      * @description 可以通过 `cell.parent` 获取 Sheet 对象，因此不再需要传递 Sheet 对象
      * @description 如果不传递 cellEventHandler 参数，则使用上一次的 cellEventHandler
      * @param {Function} cellEventHandler
@@ -70,7 +70,7 @@ export class Sheet extends SheetBase {
     }
 
     /**
-     * 저장테이블数据
+     * 저장테이블 데이터
      * @returns {Sheet|boolean}
      */
     save(targetPiece = USER.getChatPiece()?.piece, manualSave = false) {
@@ -86,17 +86,17 @@ export class Sheet extends SheetBase {
             }
             BASE.sheetsData.context = sheets;
             if (!targetPiece) {
-                console.log("没用消息能承载hash_sheets数据，不予저장")
+                console.log("hash_sheets 데이터를 담을 수 있는 메시지가 없어 저장하지 않습니다.")
                 return this
             }
             if (!targetPiece.hash_sheets) targetPiece.hash_sheets = {};
             targetPiece.hash_sheets[this.uid] = this.hashSheet?.map(row => row.map(hash => hash));
-            console.log('저장테이블数据', targetPiece, this.hashSheet);
+            console.log('테이블 데이터 저장', targetPiece, this.hashSheet);
             if (!manualSave) USER.saveChat();
 
             return this;
         } catch (e) {
-            EDITOR.error(`템플릿 저장 실패：${e}`);
+            EDITOR.error(`템플릿 저장 실패`, e.message, e);
             return false;
         }
     }
@@ -114,38 +114,38 @@ export class Sheet extends SheetBase {
     }
 
     /**
-     * 获取테이블内容的提示词，可以通过指定['title', 'node', 'headers', 'rows', 'editRules']中的部分，只获取部分内容
-     * @returns 테이블内容提示词
+     * 获取테이블 내용的提示词，可以通过指定['title', 'node', 'headers', 'rows', 'editRules']中的部分，只导入部分内容
+     * @returns 테이블 내용提示词
      */
     getTableText(index, customParts = ['title', 'node', 'headers', 'rows', 'editRules']) {
-        console.log('获取테이블内容提示词', this)
-        if (this.triggerSend && this.triggerSendDeep < 1) return ''; // 如果触发深度=0，则不发送，可以用作信息一览表
+        console.log('테이블 내용 프롬프트를 임포트합니다.', this)
+        if (this.triggerSend && this.triggerSendDeep < 1) return ''; // 如果触发深度=0，则不发送，可以用作信息一览표
         const title = `* ${index}:${this.name}\n`;
         const node = this.source.data.note && this.source.data.note !== '' ? '【설명】' + this.source.data.note + '\n' : '';
         const headers = "rowIndex," + this.getCellsByRowIndex(0).slice(1).map((cell, index) => index + ':' + cell.data.value).join(',') + '\n';
         let rows = this.getSheetCSV()
         const editRules = this.#getTableEditRules() + '\n';
-        // 新增触发式테이블内容发送，检索聊天内容的角色名
+        // 新增触发式테이블 내용发送，检索聊天内容的角色名
 
 
         if (rows && this.triggerSend) {
             const chats = USER.getContext().chat;
-            console.log("进入触发发送模式,测试获取chats", chats)
+            console.log("트리거 전송 모드에 진입합니다, 테스트 임포트 chats", chats)
             // 提取所有聊天内容中的 content 值
             const chat_content = getLatestChatHistory(chats, this.triggerSendDeep)
-            console.log('获取聊天内容: ', chat_content)
-            console.log("聊天内容类型:", typeof (chat_content))
+            console.log('채팅 내용 임포트: ', chat_content)
+            console.log("채팅 내용 타입:", typeof (chat_content))
             const rowsArray = rows.split('\n').filter(line => {
                 line = line.trim();
                 if (!line) return false;
                 const parts = line.split(',');
-                const str1 = parts?.[1] ?? ""; // 字符串1对应索引1
+                const str1 = parts?.[1] ?? ""; // 字符串1对应인덱스1
                 return chat_content.includes(str1);
             });
             rows = rowsArray.join('\n');
         }
         let result = '';
-        console.log('测试获取테이블内容提示词', customParts, result, this);
+        console.log('테이블 내용 프롬프트 임포트 테스트', customParts, result, this);
         if (customParts.includes('title')) {
             result += title;
         }
@@ -193,7 +193,7 @@ export class Sheet extends SheetBase {
         sheetDataToSave.content = this.getContent(true)
         return sheetDataToSave
     }
-    /** _______________________________________ 以下函数不进行外部调用 _______________________________________ */
+    /** _______________________________________ 以下함수不进行外部调用 _______________________________________ */
 
     #load(target) {
         if (target == null) {
@@ -209,7 +209,7 @@ export class Sheet extends SheetBase {
         }
         if (typeof target === 'object') {
             if (target.domain === this.SheetDomain.global) {
-                console.log('从模板转化테이블', target, this);
+                console.log('테이블을 템플릿으로부터 변환', target, this);
                 this.loadJson(target)
                 this.domain = 'chat'
                 this.uid = `sheet_${SYSTEM.generateRandomString(8)}`;
@@ -232,14 +232,14 @@ export class Sheet extends SheetBase {
         else {
             let editRules = '【추가/삭제/수정 트리거 조건】\n'
             if (source.data.insertNode) editRules += ('삽입：' + source.data.insertNode + '\n')
-            if (source.data.updateNode) editRules += ('更新：' + source.data.updateNode + '\n')
-            if (source.data.deleteNode) editRules += ('删除：' + source.data.deleteNode + '\n')
+            if (source.data.updateNode) editRules += ('업데이트：' + source.data.updateNode + '\n')
+            if (source.data.deleteNode) editRules += ('삭제：' + source.data.deleteNode + '\n')
             return editRules
         }
     }
 
     /**
-     * 初始化hashSheet，只保留表头
+     * 初始化hashSheet，只保留표头
      */
     initHashSheet() {
         this.hashSheet = [this.hashSheet[0].map(uid => uid)];

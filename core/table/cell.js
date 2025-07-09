@@ -19,10 +19,10 @@ const CellType = {
 }
 
 /**
- * 单元格类，用于管理테이블中的单元格数据
- * @description 单元格类用于管理테이블中的单元格数据，包括单元格的位置、值、状态、类型等
- * @description 单元格类还提供了对单元格的 작업，包括编辑、삽입、删除等
- * @description 单元格类是 Sheet 类的子类，用于管理 Sheet 中的单元格数据
+ * 셀 클래스 — 테이블 내 셀 데이터를 관리하기 위해 사용됩니다.
+ * @description 셀 클래스는 테이블 내 셀 데이터를 관리하며, 셀의 위치, 값, 상태, 타입 등을 포함합니다.
+ * @description 셀 클래스는 셀의 편집, 삽입, 삭제 등의 작업을 제공합니다.
+ * @description 셀 클래스는 Sheet 클래스의 하위 클래스이며, Sheet 내의 셀 데이터를 관리합니다.
  */
 export class Cell {
     CellType = CellType;
@@ -47,7 +47,7 @@ export class Cell {
             },
         });
 
-        this.customEventListeners = {}; // 存储自定义事件监听器，key 为事件名 (CellAction 或 '')，value 为回调函数
+        this.customEventListeners = {}; // 存储自定义事件监听器，key 为事件名 (CellAction 或 '')，value 为回调함수
         this.#init(target);
     }
 
@@ -56,7 +56,7 @@ export class Cell {
     }
     get headerX() {
         const p = this.#positionInParentCellSheet();
-        const targetUid = this.parent.hashSheet[p[0]][0];   // 获取当前单元格所在行的第一个单元格的 uid
+        const targetUid = this.parent.hashSheet[p[0]][0];   // 获取当前单元格所在행的第一个单元格的 uid
         return this.parent.cells.get(targetUid);
     }
     get headerY() {
@@ -154,7 +154,7 @@ export class Cell {
      * @param callback
      */
     on(event, callback) {
-        if (typeof callback !== 'function') throw new Error('回调函数必须是一个函数');
+        if (typeof callback !== 'function') throw new Error('콜백 함수는 반드시 함수여야 합니다');
         if (event === '') {
             if (!this.customEventListeners['']) {
                 this.customEventListeners[''] = []; // 初始化为数组
@@ -169,14 +169,14 @@ export class Cell {
             try {
                 this.element.addEventListener(event, callback); // 监听原生 DOM 事件
             } catch (e) {
-                throw new Error(`无法监听事件: ${event}`);
+                throw new Error(`이벤트를 감지할 수 없습니다 : ${event}`);
             }
         }
     }
 
-    /** _______________________________________ 以下函数不进行外部调用 _______________________________________ */
-    /** _______________________________________ 以下函数不进行外部调用 _______________________________________ */
-    /** _______________________________________ 以下函数不进行外部调用 _______________________________________ */
+    /** _______________________________________ 아래 함수들은 외부에서 호출하지 않습니다 _______________________________________ */
+    /** _______________________________________ 以下함수不进행外部调用 _______________________________________ */
+    /** _______________________________________ 以下함수不进행外部调用 _______________________________________ */
 
     bridge = {
 
@@ -192,7 +192,7 @@ export class Cell {
                 targetCell = this.parent.cells.get(targetUid);
             }
             if (!targetCell) {
-                throw new Error(`未找到单元格，UID: ${targetUid}`);
+                throw new Error(`셀을 찾을 수 없습니다, UID: ${targetUid}`);
             }
         }
         this.uid = targetCell.uid || `cell_${this.parent.uid.split('_')[1]}_${SYSTEM.generateRandomString(16)}`;
@@ -240,17 +240,17 @@ export class Cell {
                 this.#clearSheet();
                 break;
             default:
-                console.warn(`未处理的单元格 작업: ${actionName}`);
+                console.warn(`처리되지 않은 셀 작업: ${actionName}`);
         }
 
         // 触发自定义事件监听器
         if (this.customEventListeners[actionName]) {
-            this.customEventListeners[actionName].forEach(callback => { // 遍历执行数组中的回调函数
+            this.customEventListeners[actionName].forEach(callback => { // 遍历执행数组中的回调함수
                 callback(this, actionName, props); // 传递 cell 实例, actionName, 和 props
             });
         }
         if (this.customEventListeners['']) {
-            this.customEventListeners[''].forEach(callback => { // 遍历执行数组中的回调函数
+            this.customEventListeners[''].forEach(callback => { // 遍历执行数组中的回调함수
                 callback(this, actionName, props); // 监听所有事件的监听器
             });
         }
@@ -258,11 +258,11 @@ export class Cell {
             this.parent.save();
         }
 
-        console.log(`单元格 작업: ${actionName} 位置: ${[rowIndex, colIndex]}`);
+        console.log(`셀 작업: ${actionName} 위치: ${[rowIndex, colIndex]}`);
     }
     #handleEditCell(props = {}) {
         if (!props || Object.keys(props).length === 0) {
-            console.warn('未提供任何要修改的属性');
+            console.warn('수정할 속성이 제공되지 않았습니다');
             return;
         }
         let cell = new Cell(this.parent);
@@ -270,7 +270,7 @@ export class Cell {
         cell.data = { ...this.data, ...props };
         const [rowIndex, colIndex] = this.#positionInParentCellSheet()
         this.parent.cells.set(cell.uid, cell);
-        console.log("저장前的 cell", this.parent.cellHistory);
+        console.log("저장 전의 cell", this.parent.cellHistory);
         this.parent.cellHistory.push(cell);
         this.parent.hashSheet[rowIndex][colIndex] = cell.uid;
         this.parent.markPositionCacheDirty();
@@ -319,6 +319,6 @@ export class Cell {
         this.parent.markPositionCacheDirty();
     }
     #clearSheet() {
-        throw new Error('未实现的方法');
+        throw new Error('구현되지 않은 메서드입니다');
     }
 }

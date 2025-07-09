@@ -6,7 +6,7 @@ import { USER } from "../core/manager.js";
 export function replaceUserTag(str) {
     if (str == null) return ''; // 处理 null 或 undefined
     if (typeof str !== 'string') {
-        console.warn('非字符串输入:', str);
+        console.warn('비문자열 입력:', str);
         str = String(str); // 强制转换为字符串
     }
     return str.replace(/<user>/g, USER.getContext().name1);
@@ -105,7 +105,7 @@ export function parseLooseDict(str) {
             i++;
         }
     }
-    console.log('파싱后的对象:', result);
+    console.log('파싱의 객체:', result);
 
     return result;
 }

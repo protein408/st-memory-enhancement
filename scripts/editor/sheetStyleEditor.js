@@ -9,7 +9,7 @@ let templateInstance = null;
 const DEFAULT_STYLE = { mode: 'regex', basedOn: 'html', regex: '.*', replace: '' };
 
 /**
- * DOM 元素工具函数
+ * DOM 元素工具함수
  */
 const dom = {
     setValue: (element, value) => element.get(0).value = value,
@@ -107,7 +107,7 @@ async function getUIElements($dlg) {
 }
 
 /**
- * 更新指南内容
+ * 업데이트指南内容
  */
 function updateGuideContent(elements, isRegex) {
     dom.toggleVisibility(elements.match_method_regex_container, isRegex);
@@ -130,7 +130,7 @@ function getCurrentSelectedStyle() {
 }
 
 /**
- * 获取当前UI表单数据
+ * 获取当前UI테이블单数据
  */
 function getFormData() {
     return {
@@ -142,7 +142,7 @@ function getFormData() {
 }
 
 /**
- * 设置表单数据
+ * 设置테이블单数据
  */
 function setFormData(style = {}) {
     const data = { ...DEFAULT_STYLE, ...style };
@@ -157,7 +157,7 @@ function setFormData(style = {}) {
  */
 function setupSheetPreview() {
     if (!templateInstance) {
-        console.warn("setupSheetPreview: 未能获取到有效的 table 对象。");
+        console.warn("setupSheetPreview: 유효한 table 객체를 가져오지 못했습니다.");
         return;
     }
 
@@ -256,7 +256,7 @@ function initPresetStyleDropdown() {
             templateInstance.config.selectedCustomStyleKey = firstStyleKey;
         }
     } else {
-        dom.addOption(presetDropdown, 'default', '默认');
+        dom.addOption(presetDropdown, 'default', '기본');
     }
 }
 
@@ -313,7 +313,7 @@ function bindStyleManagementEvents() {
         templateInstance.config.customStyles[newName] = templateInstance.config.customStyles[selectedKey];
         delete templateInstance.config.customStyles[selectedKey];
 
-        // 更新下拉菜单
+        // 업데이트下拉菜单
         const option = elements.presetStyle.find(`option[value="${selectedKey}"]`).get(0);
         option.text = newName;
         option.value = newName;
@@ -338,7 +338,7 @@ function bindStyleManagementEvents() {
 
     // 스타일 가져오기 
     elements.importStyleButton.get(0).addEventListener('click', async function () {
-        const importData = await EDITOR.callGenericPopup("粘贴样式配置JSON：", EDITOR.POPUP_TYPE.INPUT, '', { rows: 10 });
+        const importData = await EDITOR.callGenericPopup("스타일 구성 JSON 붙여넣기:", EDITOR.POPUP_TYPE.INPUT, '', { rows: 10 });
         if (!importData) return;
 
         try {
@@ -358,7 +358,7 @@ function bindStyleManagementEvents() {
 
             EDITOR.success('스타일 가져오기 성공');
         } catch (e) {
-            EDITOR.error('스타일 가져오기 실패，JSON格式错误');
+            EDITOR.error('스타일 가져오기 실패, JSON 형식 오류', e.message, e);
         }
     });
 
@@ -369,7 +369,7 @@ function bindStyleManagementEvents() {
 
         const exportData = { ...templateInstance.config.customStyles[selectedKey], name: selectedKey };
         navigator.clipboard.writeText(JSON.stringify(exportData, null, 2))
-            .then(() => EDITOR.success('样式已复制到剪贴板'));
+            .then(() => EDITOR.success('스타일이 클립보드에 복사되었습니다'));
     });
 }
 
@@ -392,7 +392,7 @@ function bindPreviewAndCopyEvents() {
         const previewHtml = `
             <div>
                 <div style="margin-bottom: 10px; display: flex; align-items: center;">
-                    <span style="margin-right: 10px;">基于:</span>
+                    <span style="margin-right: 10px;">기반:</span>
                     <select id="preview_benchmark_selector" style="min-width: 100px">${benchmarkOptions}</select>
                 </div>
                 <textarea id="table_to_chat_text_preview" rows="10" style="width: 100%">${initialText}</textarea>
@@ -417,7 +417,7 @@ function bindPreviewAndCopyEvents() {
     // 复制按钮
     elements.copyTextButton.get(0).addEventListener('click', () =>
         navigator.clipboard.writeText(elements.rendererDisplay.html())
-            .then(() => EDITOR.success('HTML内容已复制到剪贴板')));
+            .then(() => EDITOR.success('HTML 내용이 클립보드에 복사되었습니다')));
 }
 
 /**
@@ -442,7 +442,7 @@ async function initializeEditor() {
 export async function openSheetStyleRendererPopup(originInstance) {
     // 初始化弹窗
     const manager = await SYSTEM.getTemplate('customSheetStyle');
-    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "저장修改", cancelButton: "취소" });
+    const tableRendererPopup = new EDITOR.Popup(manager, EDITOR.POPUP_TYPE.CONFIRM, '', { large: true, wide: true, allowVerticalScrolling: true, okButton: "편집 저장", cancelButton: "취소" });
     const $dlg = $(tableRendererPopup.dlg);
     templateInstance = originInstance;
 
@@ -460,14 +460,14 @@ export async function openSheetStyleRendererPopup(originInstance) {
         const styleBasedOn = ["html", "csv", "json", "array"];
         const numberBoollen = isNaN(alternateLevel) || alternateLevel < 0 || Number.isInteger(alternateLevel) === false;  //是否满足非负整数
         const styleBoollen = styleBasedOn.includes(finalConfig.customStyles[finalConfig.selectedCustomStyleKey].basedOn);      //方式必须为html、csv、json、array
-        if (numberBoollen || (alternateLevel > 0 && !styleBoollen)) {     //输入的삽입层级必须为非负整数，且不能为MarkDown格式否则改为0
+        if (numberBoollen || (alternateLevel > 0 && !styleBoollen)) {     //输入的삽입层级必须为非负整数，且하지 못하다为MarkDown格式否则改为0
             finalConfig.alternateLevel = 0;
-            EDITOR.warning('穿插层级必须为非负整数，且不能为MarkDown格式，否则强制改为0');
+            EDITOR.warning('교대 숫자는 음이 아닌 정수여야 합니다，마크다운 형식이 아니면 강제로 0으로 변경합니다');
         }
         Object.assign(originInstance.config, finalConfig);
-        console.log('테이블样式已更新', originInstance.config.alternateLevel);
+        console.log('테이블 스타일 업데이트되었습니다.', originInstance.config.alternateLevel);
         originInstance.save();
         BASE.updateSystemMessageTableStatus()
-        EDITOR.success('테이블样式已更新');
+        EDITOR.success('테이블 스타일 업데이트');
     }
 }

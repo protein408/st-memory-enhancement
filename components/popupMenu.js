@@ -16,7 +16,7 @@ export class PopupMenu {
     static instance = null;
 
     /**
-     * 构造函数
+     * 构造함수
      * @param {object} [options] - 可选配置项
      * @param {boolean} [options.lasting=false] - 是否持久化，为 true 时点击外部或菜单项点击后不销毁实例，只隐藏
      */
@@ -39,7 +39,7 @@ export class PopupMenu {
     add(html, event, type = MenuItemType.normal) {
         const index = this.menuItems.length;
         this.menuItems.push({ html, event, type });
-        this.menuItemIndexMap.set(html, index); // 存储 HTML 内容与索引的映射
+        this.menuItemIndexMap.set(html, index); // 存储 HTML 内容与인덱스的映射
     }
 
     renderMenu() {
@@ -61,7 +61,7 @@ export class PopupMenu {
 
             this.menuContainer.appendChild(menuItem);
 
-            // 存储菜单项元素与索引的映射
+            // 存储菜单项元素与인덱스的映射
             this.menuItemIndexMap.set(menuItem, index);
         });
 
@@ -132,7 +132,7 @@ export class PopupMenu {
     #init(options) {
         this.menuItems = [];
         this.lasting = options.lasting === true;
-        this.menuItemIndexMap = new Map();      // 使用 Map 存储菜单项与其索引的映射关系
+        this.menuItemIndexMap = new Map();      // 使用 Map 存储菜单项与其인덱스的映射关系
 
         this.popupContainer = document.createElement('div');
         this.popupContainer.style.position = 'absolute';
@@ -169,7 +169,7 @@ export class PopupMenu {
     handleMenuItemClick(event) {
         const menuItemElement = event.target.closest('.dynamic-popup-menu-item');
         if (menuItemElement) {
-            // 直接从 Map 中获取索引
+            // 直接从 Map 中获取인덱스
             const index = this.menuItemIndexMap.get(menuItemElement);
             if (index !== undefined && this.menuItems[index].event) {
                 this.menuItems[index].event(event);

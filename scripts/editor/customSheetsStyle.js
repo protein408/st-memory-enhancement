@@ -5,10 +5,10 @@ export async function customSheetsStylePopup() {
     const customStyleEditor = `
 <div class="column-editor">
     <div class="popup-content">
-        自定义推送至对话的테이블的包裹样式，支持HTML与CSS，使用$0表示테이블整体的삽입位置
+        대화창으로 전송되는 테이블을 감싸는(wrapper) 스타일을 사용자 정의할 수 있습니다. HTML과 CSS를 지원하며, $0을 사용하여 테이블이 삽입될 위치를 지정합니다
     </div>
     <div class="column-editor-body">
-        <textarea id="customStyleEditor" class="column-editor-textarea" rows="30" placeholder="请输入自定义样式"></textarea>
+        <textarea id="customStyleEditor" class="column-editor-textarea" rows="30" placeholder="사용자 정의 스타일 입력"></textarea>
     </div>
 </div>
 `

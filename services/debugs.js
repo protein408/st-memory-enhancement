@@ -32,10 +32,10 @@ export async function rollbackVersion() {
 
         USER.saveSettings()
         USER.saveChat();
-        console.log("已清除테이블数据: ", USER.getSettings(), USER.getContext().chatMetadata, USER.getChatPiece())
+        console.log("테이블 데이터를 삭제했습니다: ", USER.getSettings(), USER.getContext().chatMetadata, USER.getChatPiece())
         return true
     } else {
-        console.log("用户取消了清除 작업")
+        console.log("사용자가 제거 작업을 취소했습니다")
         return false
     }
 }
@@ -121,7 +121,7 @@ export function functionToBeRegistered() {
     //             "depth rendering at 90 FPS in resolution of 1920×1280 (Waymo), and\n" +
     //             "120 FPS in resolution of 1600×900 (nuScenes) in urban scenarios.";
     //
-    //         // 流式回调函数
+    //         // 流式回调함수
     //         let fullResponse = "";
     //         const streamCallback = (chunk) => {
     //             fullResponse += chunk;

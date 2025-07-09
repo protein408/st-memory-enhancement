@@ -278,7 +278,7 @@ td.selected {
 .function-name {
     font-weight: bold;
     color: #aaa;
-    margin-left: 5px; /* 函数名和序号之间的间距 */
+    margin-left: 5px; /* 함수名和序号之间的间距 */
 }
 
 .function-name.error-function {
@@ -300,7 +300,7 @@ td.selected {
     text-align: left;
     color: #888;
     font-size: 0.9em;
-    margin: 0 8px; /* 序号和函数名之间的间距 */
+    margin: 0 8px; /* 序号和함수名之间的间距 */
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -378,7 +378,7 @@ td.selected {
 
 #custom_temperature {
     flex: 1;
-    min-width: 150px; /* 防止过小时换行 */
+    min-width: 150px; /* 防止过小时换행 */
 }
 .refresh-scroll-content {
     overflow-y: auto;

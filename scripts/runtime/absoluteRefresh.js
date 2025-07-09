@@ -176,7 +176,7 @@ export function initRefreshTypeSelector() {
     //         $selector.append($('<option></option>').attr('value', 'rebuild_base').text('~~~看到这个选项说明出问题了~~~~'));
     //     }
 
-    //     console.log('테이블새로고침类型选择器已更新');
+    //     console.log('테이블새로고침类型选择器已업데이트');
 }
 
 
@@ -192,20 +192,20 @@ export function initRefreshTypeSelector() {
 export async function getPromptAndRebuildTable(templateName = '', additionalPrompt, force, isSilentUpdate = USER.tableBaseSetting.bool_silent_refresh, chatToBeUsed = '') {
     let r = '';
     try {
-        // 根据提示模板类型选择不同的테이블处理函数
+        // 根据提示模板类型选择不同的테이블处理함수
         // const force = $('#bool_force_refresh').prop('checked');
         r = await rebuildTableActions(force || true, isSilentUpdate, chatToBeUsed);
         return r;
     } catch (error) {
-        console.error('获取提示模板실패:', error);
-        EDITOR.error(`프롬프트 템플릿 가져오기 실패: ${error.message}`);
+        console.error('프롬프트 템플릿 가져오기 실패:', error);
+        EDITOR.error(`프롬프트 템플릿 가져오기 실패`, error.message, error);
     }
 }
 
 /**
- * 重新生成完整테이블
+ * 테이블 재생성 완료
  * @param {*} force 是否强制새로고침
- * @param {*} silentUpdate  是否静默更新
+ * @param {*} silentUpdate  是否静默업데이트
  * @param chatToBeUsed
  * @returns
  */
@@ -221,7 +221,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
     //     if (!confirmation) return;
     // }
 
-    // 开始重新生成完整테이블
+    // 开始테이블 재생성 완료
     console.log('전체 테이블 재생성 시작');
     const isUseMainAPI = $('#use_main_api').prop('checked');
 
@@ -331,7 +331,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
                 }
             } catch (error) {
                 EDITOR.clear();
-                EDITOR.error('주 API 요청 오류: ' + error.message);
+                EDITOR.error('주 API 요청 오류: ' , error.message, error);
                 console.error('주 API 요청 오류:', error);
             }
         }
@@ -345,7 +345,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
                 }
             } catch (error) {
                 EDITOR.clear();
-                EDITOR.error('사용자 정의 API 요청 오류: ' + error.message);
+                EDITOR.error('사용자 정의 API 요청 오류: ' , error.message, error);
             }
         }
         console.log('rawContent:', rawContent);
@@ -398,7 +398,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
 
                 // 참조 문제 방지를 위한 깊은 복사
                 const clonedTables = tableDataToTables(cleanContentTable);
-                console.log('깊은 복사 후의 cleanContent:', clonedTables);
+                console.log('깊은 복사 후 cleanContent:', clonedTables);
 
                 // 제목 수정 방지
                 clonedTables.forEach((table, index) => {
@@ -442,7 +442,7 @@ export async function rebuildTableActions(force = false, silentUpdate = USER.tab
                 return r;
             } catch (error) {
                 console.error('테이블 저장 중 오류 발생:', error);
-                EDITOR.error(`테이블 생성 실패: ${error.message}`);
+                EDITOR.error(`테이블 생성 실패`, error.message, error);
             }
         } else {
             EDITOR.error("테이블 생성 저장 실패: 내용이 비어 있습니다");
@@ -509,7 +509,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
                     return 'suspended'
                 }
             } catch (error) {
-                EDITOR.error('주 API 요청 오류: ' + error.message);
+                EDITOR.error('주 API 요청 오류: ' , error.message, error);
             }
         }
         else {
@@ -520,7 +520,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
                     return 'suspended'
                 }
             } catch (error) {
-                EDITOR.error('사용자 정의 API 요청 오류: ' + error.message);
+                EDITOR.error('사용자 정의 API 요청 오류: ' , error.message, error);
             }
         }
 
@@ -629,7 +629,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
         // 合并 작업：先非删除，后删除
         uniqueActions = [...uniqueNonDeleteActions, ...uniqueDeleteActions];
 
-        // 如果不是静默更新，显示 작업确认
+        // 如果不是静默업데이트，显示 작업确认
         if (!silentUpdate) {
             // 将uniqueActions内容推送给用户确认是否继续
             const confirmContent = confirmTheOperationPerformed(uniqueActions);
@@ -684,7 +684,7 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
             EDITOR.success('삭제 보호가 활성화되어 삭제 작업이 무시되었습니다 (플러그인 설정에서 변경 가능)');
         }
 
-        // 更新聊天数据
+        // 업데이트 채팅 데이터
         chat = USER.getContext().chat[USER.getContext().chat.length - 1];
         chat.dataTable = DERIVED.any.waitingTable;
         USER.getContext().saveChat();
@@ -694,8 +694,8 @@ export async function refreshTableActions(force = false, silentUpdate = false, c
         updateSystemMessageTableStatus()
         EDITOR.success('테이블 요약 완료');
     } catch (error) {
-        console.error('요약 과정에서 오류 발생:', error);
-        EDITOR.error(`요약 실패：${error.message}`);
+        console.error('요약 과정 중 오류 발생:', error);
+        EDITOR.error(`요약 실패`, error.message, error);
     } finally {
 
     }
@@ -727,7 +727,7 @@ export async function rebuildSheets() {
 
     const previewDiv1 = document.createElement('div');
     previewDiv1.className = 'rebuild-preview-item';
-    previewDiv1.innerHTML = `<span>실행 완료 후 확인?: </span>${USER.tableBaseSetting.bool_silent_refresh ? '아니오' : '예'}`;
+    previewDiv1.innerHTML = `<span>실행 완료 후 확인하시겠습니까?: </span>${USER.tableBaseSetting.bool_silent_refresh ? '아니오' : '예'}`;
     container.appendChild(previewDiv1);
 
     const previewDiv2 = document.createElement('div');
@@ -857,7 +857,7 @@ function tableDataToTables(tablesData) {
  * @param {*} newTables  *
  */
 function compareAndMarkChanges(oldTables, newTables) {
-    console.log("标记变动：", oldTables, newTables);
+    console.log("변동 사항 표시：", oldTables, newTables);
     newTables.forEach((newTable, tableIndex) => {
         const oldTable = oldTables[tableIndex];
         newTable.insertedRows = [];
@@ -870,7 +870,7 @@ function compareAndMarkChanges(oldTables, newTables) {
             }
         });
 
-        // 标记更新单元格（只比较有效行）
+        // 标记업데이트单元格（只比较有效行）
         oldTable.content.filter(Boolean).forEach((oldRow, rowIndex) => {
             const newRow = newTable.content[rowIndex];
             if (newRow) {
@@ -940,7 +940,7 @@ async function getRecentChatHistory(chat, chatStairs, ignoreUserSent = false, to
             break;
         }
 
-        // 更新计数
+        // 업데이트计数
         totalTokens += tokens;
         collected.push(currentStr);
 
@@ -1044,11 +1044,11 @@ function cleanApiResponse(rawContent, options = {}) {
             try {
                 columns = JSON.parse(normalizedColumnsArrayStr);
                 if (!Array.isArray(columns) || !columns.every(col => typeof col === 'string')) {
-                    console.warn("警告: 'columns' 部分파싱后不是一个有效的字符串数组。原始片段:", columnsArrayStr, "处理后尝试파싱:", normalizedColumnsArrayStr, "파싱结果:", columns);
+                    console.warn("경고: 'columns' 부분 파싱 후 유효한 문자열 배열이 아닙니다. 원본 부분:", columnsArrayStr, "처리 후 파싱 시도:", normalizedColumnsArrayStr, "파싱 결과:", columns);
                     return match;
                 }
             } catch (e) {
-                console.warn("警告: 파싱 'columns' 数组실패。错误:", e, "原始片段:", columnsArrayStr, "处理后尝试파싱:", normalizedColumnsArrayStr);
+                console.warn("경고: 'columns' 배열 파싱 실패。오류:", e, "원본 부분:", columnsArrayStr, "처리 후 파싱 시도:", normalizedColumnsArrayStr);
                 return match;
             }
 
@@ -1056,11 +1056,11 @@ function cleanApiResponse(rawContent, options = {}) {
             try {
                 contentRows = JSON.parse(normalizedContentArrayStr);
                 if (!Array.isArray(contentRows)) {
-                    console.warn("警告: 'content' 部分파싱后不是一个有效的数组。原始片段:", contentArrayStr, "处理后尝试파싱:", normalizedContentArrayStr, "파싱结果:", contentRows);
+                    console.warn("경고: 'content' 부분 파싱 후 유효한 배열이 아닙니다. 원본 부분:", contentArrayStr, "처리 후 파싱 시도:", normalizedContentArrayStr, "파싱 결과:", contentRows);
                     return match;
                 }
             } catch (e) {
-                console.warn("警告: 파싱 'content' 数组실패。错误:", e, "原始片段:", contentArrayStr, "处理后尝试파싱:", normalizedContentArrayStr);
+                console.warn("경고: 'content' 배열 파싱 실패。오류:", e, "원본 부분:", contentArrayStr, "처리 후 파싱 시도:", normalizedContentArrayStr);
                 return match;
             }
 
@@ -1070,12 +1070,12 @@ function cleanApiResponse(rawContent, options = {}) {
 
             for (const row of contentRows) {
                 if (!Array.isArray(row) || row.length !== numColumns) {
-                    console.warn(`警告: 内容行与열数 (${numColumns}) 不匹配或行本身不是数组。行数据:`, row);
+                    console.warn(`경고: 내용이 열 개수(${numColumns})와 불일치. 배열이 행과 불일치. 행 데이터:`, row);
                     allRowsValid = false;
                     break;
                 }
                 if (!row.every(cell => typeof cell === 'string')) {
-                    console.warn("警告: 内容行中并非所有单元格都是字符串。行数据:", row);
+                    console.warn("경고: 행 내용 중 모든 셀의 데이터가 문자열이 아닙니다. 행 데이터:", row);
                     allRowsValid = false;
                     break;
                 }
@@ -1083,7 +1083,7 @@ function cleanApiResponse(rawContent, options = {}) {
             }
 
             if (!allRowsValid) {
-                console.warn("警告: 'content' 数组的某些行未通过验证，该 'columns'-'content' 片段将不会被修改。");
+                console.warn("경고: 'content' 배열의 일부 행이 유효성 검사를 통과하지 못했습니다. 해당 'columns'-'content' 조각은 수정되지 않을 것입니다.");
                 return match;
             }
 
@@ -1120,14 +1120,14 @@ function cleanApiResponse(rawContent, options = {}) {
 
     // 去除首尾空白
     content = content.trim();
-    console.log('清洗前的内容:', rawContent);
-    console.log('清洗后的内容:', content);
+    console.log('정리 전 내용:', rawContent);
+    console.log('정리 후 내용:', content);
 
     return content;
 }
 
 /**
- * 修复테이블格式
+ * 修复데이블式
  * @param {string} inputText - 输入的文本
  * @returns {string} 修复后的文本
  * */
@@ -1160,7 +1160,7 @@ function fixTableFormat(inputText) {
         let inString = false;
         let escapeNext = false;
 
-        // 查找潜在数组的第一个左方括号
+        // 查找潜在数组的第一个왼쪽 대괄호
         let initialArrayIndex = -1;
         for (let i = 0; i < text.length; i++) {
             if (text[i] === '[') {
@@ -1170,7 +1170,7 @@ function fixTableFormat(inputText) {
         }
 
         if (initialArrayIndex === -1) {
-            console.warn("extractTable: 未找到左方括号 '['。将回退到正则表达式。");
+            console.warn("extractTable: 왼쪽 대괄호를 찾을 수 없습니다 '['. 정규식으로 되돌아갑니다.");
             const regex = /\[(?:[^\[\]"]|"(?:\\.|[^"\\])*"|\{[^{}]*?\})*?\]/g;
             let match;
             const candidates = [];
@@ -1218,7 +1218,7 @@ function fixTableFormat(inputText) {
                         JSON5.parse(extracted);
                         return extracted;
                     } catch (e) {
-                        console.error("extractTable: 通过括号计数提取的片段不是有效的JSON。片段:", extracted, "错误:", e, "正在回退。");
+                        console.error("extractTable: 괄호 개수로 조각 추출, 유효한 JSON이 아닙니다. 조각:", extracted, "오류:", e, "롤백");
                         startIndex = -1; // 使当前尝试无效
                         balance = 0; // 重置计数
                         break; // 退出循环以进行回退
@@ -1231,7 +1231,7 @@ function fixTableFormat(inputText) {
         EDITOR.error(inputText.length > 300 ? inputText.slice(0, 300) + '...' : inputText);
         throw new Error("완전하고 유효한 JSON 배열을 찾을 수 없어 프로세스가 중단되었습니다!");
 
-        // console.warn("extractTable: 括号计数未能找到完整的有效JSON数组。将回退到正则表达式。");
+        // console.warn("extractTable: 括号计数未能找到完整的有效JSON数组。将回退到正则테이블达式。");
         // const regex = /\[(?:[^\[\]"]|"(?:\\.|[^"\\])*"|\{[^{}]*?\})*?\]/g;
         // let match;
         // const candidates = [];
@@ -1246,7 +1246,7 @@ function fixTableFormat(inputText) {
         //     return candidates.sort((a, b) => b.length - a.length)[0];
         // }
 
-        // console.warn("extractTable: 改进的正则表达式也실패了。将回退到原始的简单正则表达式。");
+        // console.warn("extractTable: 改进的正则테이블达式也실패了。将回退到原始的简单正则테이블达式。");
         // const simpleCandidates = text.match(/\[[^\[\]]*\]/g) || [];
         // return simpleCandidates.sort((a, b) => b.length - a.length)[0] || null;
     };
@@ -1269,11 +1269,11 @@ function fixTableFormat(inputText) {
             .replace(/({|,)\s*([a-zA-Z_]+)\s*:/g, '$1"$2":')    // 键名标准化
             .replace(/"(\d+)":/g, '$1:')  // 修复数字键格式
 
-        console.log('关键预处理修复常见格式错误后:', jsonStr);
+        console.log('关键预处理修复常见格式오류后:', jsonStr);
 
         // 强约束파싱
         let tables = safeParse(jsonStr);
-        console.log('safeParse强约束파싱后:', tables);
+        console.log('safeParse 강력한 제약으로 파싱:', tables);
 
         tables = tables.map(table => ({  // 新增：类型转换
             ...table,
@@ -1284,8 +1284,8 @@ function fixTableFormat(inputText) {
         // 열对齐修正
         return tables.map((table, index) => {
             if (!table || typeof table !== 'object') {
-                console.error(`处理索引 ${index} 处的테이블时出错：테이블数据无效（null、undefined 或不是对象）。接收到：`, table);
-                return { tableName: `무효 테이블 (색인 ${index})`, columns: [], content: [] }; // 返回默认的空테이블结构
+                console.error(`테이블의 처리 인덱스 ${index} 오류：유효하지 않은 테이블 데이터（null、undefined 객체가 아님）。 획득：`, table);
+                return { tableName: `무효 테이블 (인덱스 ${index})`, columns: [], content: [] }; // 返回默认的空테이블结构
             }
 
             let columnCount = 0;
@@ -1313,7 +1313,7 @@ function fixTableFormat(inputText) {
             return table;
         });
     } catch (error) {
-        console.error("修复실패:", error);
+        console.error("파싱 실패:", error);
         throw new Error('테이블 데이터를 파싱할 수 없습니다');
         // 原暴力提取逻辑已禁用
         // const rawTables = inputText.match(/{[^}]*?"tableIndex":\s*\d+[^}]*}/g) || [];
@@ -1486,7 +1486,7 @@ export async function importRebuildTemplate() {
             refreshRebuildTemplate();
             EDITOR.success(`템플릿 "${name}" 가져오기 성공`);
         } catch (error) {
-            EDITOR.error(`가져오기 실패：${error.message}`);
+            EDITOR.error(`가져오기 실패`, error.message, error);
         } finally {
             document.body.removeChild(input);
         }
@@ -1496,7 +1496,7 @@ export async function importRebuildTemplate() {
 }
 
 /**
- * 手动触发一次分步填表
+ * 手动触发一次分步填테이블
  */
 export async function triggerStepByStepNow() {
     console.log('[Memory Enhancement] Manually triggering step-by-step update...');
@@ -1504,12 +1504,12 @@ export async function triggerStepByStepNow() {
 }
 
 /**
- * 执行增量更新（可用于普通새로고침和分步总结）
+ * 执行增量업데이트（可用于普通새로고침和分步总结）
  * @param {string} chatToBeUsed - 要使用的聊天记录, 为空则使用最近的聊天记录
  * @param {string} originTableText - 当前테이블的文本表示
  * @param {Array} referencePiece - 参考用的piece
  * @param {boolean} useMainAPI - 是否使用주 API
- * @param {boolean} silentUpdate - 是否静默更新,不显示 작업确认
+ * @param {boolean} silentUpdate - 是否静默업데이트,不显示 작업确认
  * @param {boolean} [isSilentMode=false] - 是否以静默模式运行API调用（不显示加载提示）
  * @returns {Promise<string>} 'success', 'suspended', 'error', or empty
  */
@@ -1570,7 +1570,7 @@ export async function executeIncrementalUpdateFromSummary(
             }
         } catch (e) {
             console.error("Error parsing step_by_step_user_prompt string:", e, "Raw string:", stepByStepPromptString);
-            EDITOR.error("독립 양식 작성 프롬프트 형식이 잘못되어 파싱할 수 없습니다. 플러그인 설정을 확인하십시오.");
+            EDITOR.error("독립 작성용 프롬프트 형식 오류로 해석할 수 없습니다. 플러그인 설정을 확인해 주세요.", e.message, e);
             return 'error';
         }
 
@@ -1590,7 +1590,7 @@ export async function executeIncrementalUpdateFromSummary(
             content: replacePlaceholders(msg.content)
         }));
 
-        // 将处理后的完整消息数组传递给API请求处理函数
+        // 将处理后的完整消息数组传递给API请求处理함수
         systemPromptForApi = processedMessages;
         userPromptForApi = null; // 在这种情况下，userPromptForApi 不再需要
 
@@ -1624,7 +1624,7 @@ export async function executeIncrementalUpdateFromSummary(
                 }
             } catch (error) {
                 console.error('주 API 요청 오류:', error);
-                EDITOR.error('주 API 요청 오류: ' + error.message, error);
+                EDITOR.error('주 API 요청 오류: ' , error.message, error);
                 return 'error';
             }
         } else { // Using Custom API
@@ -1635,7 +1635,7 @@ export async function executeIncrementalUpdateFromSummary(
                     return 'suspended';
                 }
             } catch (error) {
-                EDITOR.error('사용자 정의 API 요청 오류: ' + error.message);
+                EDITOR.error('사용자 정의 API 요청 오류: ' , error.message, error);
                 return 'error';
             }
         }
@@ -1645,7 +1645,7 @@ export async function executeIncrementalUpdateFromSummary(
             return 'error';
         }
 
-        // **核心修复**: 使用与常规填表完全一致的 getTableEditTag 函数来提取指令
+        // **核心修复**: 使用与常规填테이블完全一致的 getTableEditTag 함수来提取指令
         const { matches } = getTableEditTag(rawContent);
 
         if (!matches || matches.length === 0) {
@@ -1668,7 +1668,7 @@ export async function executeIncrementalUpdateFromSummary(
 
     } catch (error) {
         console.error('증분 업데이트 실행 중 오류 발생:', error);
-        EDITOR.error(`증분 업데이트 실행 실패: ${error.message}`);
+        EDITOR.error(`증분 업데이트 실행 실패`, error.message, error);
         console.log('[Memory Enhancement Plugin] Error context:', {
             timestamp: new Date().toISOString(),
             error: error.message,

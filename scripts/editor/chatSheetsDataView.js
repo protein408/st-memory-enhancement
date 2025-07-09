@@ -25,7 +25,7 @@ const userTableEditInfo = {
 
 /**
  * 复制테이블
- * @param {*} tables 所有테이블数据
+ * @param {*} tables 所有테이블 데이터
  */
 export async function copyTable() {
     copyTableData = JSON.stringify(getTableJson({type:'chatSheets', version: 1}))
@@ -49,7 +49,7 @@ export async function copyTable() {
  */
 async function pasteTable() {
     if (USER.getContext().chat.length === 0) {
-        EDITOR.error("표를 위한 최소한의 내용으로 AI가 한 개 이상의 메시지를 응답하도록 해주세요.")
+        EDITOR.error("기록 매개체가 없습니다. 표는 채팅 기록에 저장되므로, 최소한 한 차례 대화를 나눈 후 다시 시도해 주세요.")
         return
     }
     const confirmation = await EDITOR.callGenericPopup('붙여넣기는 기존 표 데이터를 모두 삭제합니다. 계속하시겠습니까?', EDITOR.POPUP_TYPE.CONFIRM, '', { okButton: "계속하기", cancelButton: "취소" });
@@ -72,7 +72,7 @@ async function pasteTable() {
  */
 async function importTable(mesId, viewSheetsContainer) {
     if (mesId === -1) {
-        EDITOR.error("표의 기본 내용으로 AI가 최소 한 개의 메시지를 응답하도록 해주세요.")
+        EDITOR.error("기록 매개체가 없습니다. 표는 채팅 기록에 저장되므로, 최소한 한 차례 대화를 나눈 후 다시 시도해 주세요.")
         return
     }
 
@@ -84,7 +84,7 @@ async function importTable(mesId, viewSheetsContainer) {
 
     // 2. 添加事件监听器，监听文件选择的变化 (change 事件)
     fileInput.addEventListener('change', function (event) {
-        // 获取用户选择的文件열表 (FileList 对象)
+        // 获取用户选择的文件열표 (FileList 对象)
         const files = event.target.files;
 
         // 检查是否选择了文件
@@ -95,7 +95,7 @@ async function importTable(mesId, viewSheetsContainer) {
             // 3. 创建 FileReader 对象，用于读取文件内容
             const reader = new FileReader();
 
-            // 4. 定义 FileReader 的 onload 事件处理函数
+            // 4. 定义 FileReader 的 onload 事件处理함수
             // 当文件读取성공后，会触发 onload 事件
             reader.onload = async function (loadEvent) {
                 const button = { text: '템플릿 및 데이터 가져오기', result: 3 }
@@ -121,7 +121,7 @@ async function importTable(mesId, viewSheetsContainer) {
 
 /**
  * 导出테이블
- * @param {Array} tables 所有테이블数据
+ * @param {Array} tables 所有테이블 데이터
  */
 async function exportTable() {
     const jsonTables = getTableJson({type:'chatSheets', version: 1})
@@ -138,7 +138,7 @@ async function exportTable() {
 
     URL.revokeObjectURL(url); // 释放 URL 对象
 
-    EDITOR.success('已导出');
+    EDITOR.success('이미 내보냈습니다');
 }
 
 /**
@@ -179,7 +179,7 @@ async function clearTable(mesId, viewSheetsContainer) {
             USER.saveChat();
             refreshContextView()
             EDITOR.success("표 데이터 삭제 성공")
-            console.log("已清除表格数据")
+            console.log("데이터를 제거했습니다")
         }, 100)
     }
 }
@@ -196,7 +196,7 @@ function setTableEditTips(tableEditTips) {
     const tips = $(tableEditTips); // 确保 tableEditTips 是 jQuery 对象
     tips.empty();
     if (USER.tableBaseSetting.isExtensionAble === false) {
-        tips.append('目前插件已关闭，将不会要求AI更新테이블。');
+        tips.append('目前插件已关闭，将不会要求AI업데이트테이블。');
         tips.css("color", "rgb(211 39 39)");
     } else if (userTableEditInfo.editAble) {
         tips.append('点击单元格选择编辑 작업。绿色单元格为本轮삽입，蓝色单元格为本轮修改。');
@@ -253,7 +253,7 @@ function batchEditMode(cell) {
     renderSheetsDOM();
 }
 
-// 新的事件处理函数
+// 新的事件处理함수
 export function cellClickEditModeEvent(cell) {
     cell.element.style.cursor = 'pointer'
     if (cell.type === cell.CellType.row_header) {
@@ -332,7 +332,7 @@ async function confirmAction(event, text = '이 작업을 계속하시겠습니�
  */
 export function cellHighlight(sheet) {
     const lastHashSheet = lastCellsHashSheet[sheet.uid] || []
-    if ((sheet.hashSheet.length < 2) && (lastHashSheet.length < 2)) return;    //테이블内容为空的时候不执行后续函数,提高健壮性
+    if ((sheet.hashSheet.length < 2) && (lastHashSheet.length < 2)) return;    //테이블 내용为空的时候不执行后续함수,提高健壮性
     const hashSheetFlat = sheet.hashSheet.flat()
     const lastHashSheetFlat = lastHashSheet.flat()
     let deleteRow = []
@@ -490,7 +490,7 @@ function cellClickEvent(cell) {
         })
     })
     cell.on('', () => {
-        console.log('cell发生了改变:', cell)
+        console.log('cell이 변경되었습니다:', cell)
     })
 }
 
@@ -504,7 +504,7 @@ export async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer, _ce
     for (let [index, sheet] of _sheets.entries()) {
         if (!sheet.enable) continue
         const instance = sheet
-        console.log("渲染：", instance)
+        console.log("렌더링：", instance)
         const sheetContainer = document.createElement('div')
         const sheetTitleText = document.createElement('h3')
         sheetContainer.style.overflowX = 'none'
@@ -528,7 +528,7 @@ export async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer, _ce
             sheetElement = await instance.renderSheet(_cellClickEvent)
         }
         cellHighlight(instance)
-        console.log("渲染테이블：", sheetElement)
+        console.log("렌더링 테이블：", sheetElement)
         $(sheetContainer).append(sheetElement)
 
         $(_viewSheetsContainer).append(sheetTitleText)
@@ -591,7 +591,7 @@ async function renderSheetsDOM(mesId = -1) {
     $(viewSheetsContainer).empty()
     viewSheetsContainer.style.paddingBottom = '150px'
     renderEditableSheetsDOM(sheets, viewSheetsContainer,DERIVED.any.isRenderLastest?undefined:()=>{})
-    $("#table_indicator").text(DERIVED.any.isRenderLastest ? "现在是可修改的活动表格" : `现在是第${deep}轮对话中的旧表格，不可被更改`)
+    $("#table_indicator").text(DERIVED.any.isRenderLastest ? "현재는 수정 가능한 활동 테이블입니다" : `현재는 ${deep}번째 채팅의 이전 테이블로，변경할 수 없습니다`)
     task.log()
 }
 
@@ -602,7 +602,7 @@ async function initTableView(mesId) {
     // setTableEditTips($(initializedTableView).find('#tableEditTips'));    // 确保在 table_manager_container 存在的情况下查找 tableEditTips
 
     // 设置编辑提示
-    // 点击打开查看테이블数据统计
+    // 点击打开查看테이블 데이터统计
     $(document).on('click', '#table_data_statistics_button', function () {
         EDITOR.tryBlock(openTableStatisticsPopup, "표 통계 열기 실패")
     })
@@ -637,12 +637,12 @@ async function initTableView(mesId) {
     $(document).on('click', '#export_table_button', function () {
         EDITOR.tryBlock(exportTable, "표 내보내기 실패");
     })
-    // 点击前表按钮
+    // 点击前테이블按钮
     $(document).on('click', '#table_prev_button', function () {
         const deep = DERIVED.any.renderDeep;
         const { deep: prevDeep }  = BASE.getLastSheetsPiece(deep - 1, 20, false);
         if (prevDeep === -1) {
-            EDITOR.error("没有更多的表格数据了")
+            EDITOR.error("더 이상의 테이블 데이터는 없습니다")
             return
         }
         renderSheetsDOM(prevDeep);
@@ -651,10 +651,10 @@ async function initTableView(mesId) {
     // 点击后表按钮
     $(document).on('click', '#table_next_button', function () {
         const deep = DERIVED.any.renderDeep;
-        console.log("当前深度：", deep)
+        console.log("현재 깊이：", deep)
         const { deep: nextDeep }  = BASE.getLastSheetsPiece(deep + 1, 20, false, "down");
         if (nextDeep === -1) {
-            EDITOR.error("没有更多的表格数据了")
+            EDITOR.error("더 이상의 테이블 데이터는 없습니다")
             return
         }
         renderSheetsDOM(nextDeep);
@@ -674,7 +674,7 @@ export async function refreshContextView(mesId = -1) {
 export async function getChatSheetsView(mesId = -1) {
     // 如果已经初始化过，直接返回缓存的容器，避免重复创建
     if (initializedTableView) {
-        // 更新테이블内容，但不重新创建整个容器
+        // 업데이트테이블 내용，但不重新创建整个容器
         await renderSheetsDOM();
         return initializedTableView;
     }

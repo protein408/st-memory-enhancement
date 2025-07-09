@@ -33,7 +33,7 @@ export class PopupConfirm {
         this.toastElement = null;
         this.resolvePromise = null;
         this._text = '';
-        this.messageText = null; // 저장文本元素的引用
+        this.messageText = null; // 저장된 텍스트 요소 참조
         this.id = null; // To store the popup ID
     }
 
@@ -110,7 +110,7 @@ export class PopupConfirm {
         // Create message container
         const messageEl = $('<div class="toast-message"></div>')[0];
         const messageIcon = $('<i class="fa-solid fa-code-branch""></i>')[0];
-        this.messageText = $('<span id="toast_message_text"></span>')[0]; // 저장为类属性
+        this.messageText = $('<span id="toast_message_text"></span>')[0]; // 클래스 속성으로 저장하기
         messageEl.style.display = 'flex';
         messageEl.style.flexDirection = 'row';
         messageEl.style.alignItems = 'center';
@@ -284,7 +284,7 @@ export class PopupConfirm {
 //     const colorValue = getComputedStyle(document.documentElement)
 //         .getPropertyValue(target).trim();
 //
-//     // 创建临时元素来파싱颜色
+//     // 임시 요소를 생성하여 색상을 파싱하기
 //     const tempEl = document.createElement('div');
 //     tempEl.style.color = colorValue;
 //     document.body.appendChild(tempEl);

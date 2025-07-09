@@ -24,7 +24,7 @@ export const APP = applicationFunctionManager
 /**
  * @description `USER` 用户数据管理器
  * @description 该管理器用于管理用户的设置、上下文、聊天记录等数据
- * @description 请注意，用户数据应该通过该管理器提供的方法进行访问，而不应该直接访问用户数据
+ * @description 请注意，用户数据应该通过该管理器提供的方法进행访问，而不应该直接访问用户数据
  */
 export const USER = {
     getSettings: () => APP.power_user,
@@ -63,7 +63,7 @@ export const USER = {
             USER.getSettings().table_database_templates = templates;
             USER.saveSettings();
         }
-        console.log("全局模板", templates)
+        console.log("ALL 템플릿", templates)
         return templates;
     },
     tableBaseSetting: createProxyWithUserSetting('muyoo_dataTable'),
@@ -75,13 +75,13 @@ export const USER = {
 /**
  * @description `BASE` 数据库基础数据管理器
  * @description 该管理器提供了对库的用户数据、模板数据的访问，但不提供对数据的修改
- * @description 请注意，对库的 작업应通过 `BASE.object()` 创建 `Sheet` 实例进行，任何对库的编辑都不应该直接暴露到该管理器中
+ * @description 请注意，对库的 작업应通过 `BASE.object()` 创建 `Sheet` 实例进행，任何对库的编辑都不应该直接暴露到该管理器中
  */
 export const BASE = {
     /**
-     * @description `Sheet` 数据表单实例
-     * @description 该实例用于对数据库的数据进行访问、修改、查询等 작업
-     * @description 请注意，对数据库的任何 작업都应该通过该实例进行，而不应该直接访问数据库
+     * @description `Sheet` 数据테이블单实例
+     * @description 该实例用于对数据库的数据进행访问、修改、查询等 작업
+     * @description 请注意，对数据库的任何 작업都应该通过该实例进행，而不应该直接访问数据库
      */
     Sheet: TTable.Sheet,
     SheetTemplate: TTable.Template,
@@ -193,14 +193,14 @@ export const BASE = {
         if(type === 'data') return BASE.saveChatSheets()
         const oldSheets = BASE.getChatSheets().filter(sheet => !newSheets.some(newSheet => newSheet.uid === sheet.uid))
         oldSheets.forEach(sheet => sheet.enable = false)
-        console.log("应用테이블数据", newSheets, oldSheets)
+        console.log("테이블 데이터 사용", newSheets, oldSheets)
         const mergedSheets = [...newSheets, ...oldSheets]
         BASE.reSaveAllChatSheets(mergedSheets)
     },
     saveChatSheets(saveToPiece = true) {
         if(saveToPiece){
             const {piece} = USER.getChatPiece()
-            if(!piece) return EDITOR.error("테이블数据没有记录载体，请聊过一轮后再试")
+            if(!piece) return EDITOR.error("기록 매개체가 없습니다. 표는 채팅 기록에 저장되므로, 최소한 한 차례 대화를 나눈 후 다시 시도해 주세요.")
             BASE.getChatSheets(sheet => sheet.save(piece, true))
         }else BASE.getChatSheets(sheet => sheet.save(undefined, true))
         USER.saveChat()
@@ -208,7 +208,7 @@ export const BASE = {
     reSaveAllChatSheets(sheets) {
         BASE.sheetsData.context = []
         const {piece} = USER.getChatPiece()
-        if(!piece) return EDITOR.error("没有记录载体，表格是保存在聊天记录中的，请聊至少一轮后再重试")
+        if(!piece) return EDITOR.error("기록 매개체가 없습니다. 표는 채팅 기록에 저장되므로, 최소한 한 차례 대화를 나눈 후 다시 시도해 주세요.")
         sheets.forEach(sheet => {
             sheet.save(piece, true)
         })
@@ -220,8 +220,8 @@ export const BASE = {
         updateSelectBySheetStatus()
     },
     getLastSheetsPiece(deep = 0, cutoff = 1000, deepStartAtLastest = true, direction = 'up') {
-        console.log("向上查询表格数据，深度", deep, "截断", cutoff, "从最新开始", deepStartAtLastest)
-        // 如果没有找到新系统的表格数据，则尝试查找旧系统的表格数据（兼容模式）
+        console.log("테이블 데이터를 위에서 조회，깊이", deep, "절단", cutoff, "최신으로 시작", deepStartAtLastest)
+        // 如果没有找到新系统的테이블 데이터，则尝试查找구시스템的테이블 데이터（兼容模式）
         const chat = APP.getContext().chat
         if (!chat || chat.length === 0 || chat.length <= deep) {
             return { deep: -1, piece: BASE.initHashSheet() }
@@ -232,14 +232,14 @@ export const BASE = {
             direction === 'up' ? i-- : i++) {
             if (chat[i].is_user === true) continue; // 跳过用户消息
             if (chat[i].hash_sheets) {
-                console.log("向上查询테이블数据，找到테이블数据", chat[i])
+                console.log("테이블 데이터를 위에서 조회하여 데이터를 찾기", chat[i])
                 return { deep: i, piece: chat[i] }
             }
-            // 如果没有找到新系统的테이블数据，则尝试查找旧系统的테이블数据（兼容模式）
+            // 如果没有找到新系统的테이블 데이터，则尝试查找구시스템的테이블 데이터（兼容模式）
             // 请注意不再使用旧的Table类
             if (chat[i].dataTable) {
-                // 为了兼容旧系统，将旧数据转换为新的Sheet格式
-                console.log("找到旧테이블数据", chat[i])
+                // 为了兼容구시스템，将旧数据转换为新的Sheet格式
+                console.log("이전 테이블 데이터 찾기", chat[i])
                 convertOldTablesToNewSheets(chat[i].dataTable, chat[i])
                 return { deep: i, piece: chat[i] }
             }
@@ -248,7 +248,7 @@ export const BASE = {
     },
     getReferencePiece(){
         const swipeInfo = USER.isSwipe()
-        console.log("获取参考片段", swipeInfo)
+        console.log("참고 조각 가져오기", swipeInfo)
         const {piece} = swipeInfo.isSwipe?swipeInfo.deep===-1?{piece:BASE.initHashSheet()}: BASE.getLastSheetsPiece(swipeInfo.deep-1,1000,false):BASE.getLastSheetsPiece()
         return piece
     },
@@ -269,7 +269,7 @@ export const BASE = {
     },
     initHashSheet() {
         if (BASE.sheetsData.context.length === 0) {
-            console.log("尝试从模板中构建테이블数据")
+            console.log("템플릿에서 테이블 데이터를 생성")
             const {piece: currentPiece} = USER.getChatPiece()
             buildSheetsByTemplates(currentPiece)
             if (currentPiece?.hash_sheets) {
@@ -305,7 +305,7 @@ export const EDITOR = {
         try {
             return cb(...args);
         } catch (e) {
-            EDITOR.error(errorMsg ?? '执行代码块실패', e.message, e);
+            EDITOR.error(errorMsg ?? '코드블록 실행 실패', e.message, e);
             return null;
         }
     },
@@ -331,8 +331,8 @@ export const EDITOR = {
 
 /**
  * @description `DerivedData` 项目派生数据管理器
- * @description 该管理器用于管理运行时的派生数据，包括但不限于中间用户数据、系统数据、库数据等
- * @description 请注意，敏感数据不能使用该派生数据管理器进行存储或中转
+ * @description 该管理器用于管理运행时的派生数据，包括但不限于中间用户数据、系统数据、库数据等
+ * @description 请注意，敏感数据不能使用该派生数据管理器进행存储或中转
  * */
 export const DERIVED = {
     get any() {

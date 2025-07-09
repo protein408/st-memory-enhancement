@@ -25,17 +25,17 @@
         <label>삭제 프롬프트</label><small> (언제 행을 삭제해야 하는지 설명)</small>
         <textarea id="dataTable_tableSetting_deleteNode" class="wide100p" rows="2"></textarea>
 
-        <!-- 开启时将该테이블推送至对话 -->
+        <!-- 활성화 시 해당 테이블을 채팅에 전송합니다. -->
         <div class="checkbox flex-container" style="margin-bottom: 10px;">
             <input type="checkbox" id="dataTable_tableSetting_toChat">
-            <span>대화로 푸시</span>
-            <small> (활성화 시 해당 테이블을 대화로 푸시합니다)</small>
+            <span>채팅으로 푸시</span>
+            <small> (활성화 시 해당 테이블을 채팅으로 푸시합니다)</small>
         </div>
         <div class="checkbox flex-container">
-            <label>푸시 스타일</label><small> (대화로 푸시되는 테이블 스타일 편집)</small>
+            <label>푸시 스타일</label><small> (채팅으로 푸시되는 테이블 스타일 편집)</small>
         </div>
         <textarea id="dataTable_tableSetting_tableRender" class="wide100p" rows="2"></textarea>
-        <!-- 대화로 푸시되는 테이블 스타일 편집 -->
+        <!-- 채팅으로 푸시되는 테이블 스타일 편집 -->
         <i class="menu_button menu_button_icon fa-solid fa-bug tableEditor_renderButton" data-index="${tableIndex}">
             <a>테스트 모드에서 이 테이블 스타일 편집</a>
         </i>

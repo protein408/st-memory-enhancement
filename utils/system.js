@@ -20,7 +20,7 @@ export class taskTiming {
         const currentTime = new Date();
         const duration = currentTime - this.task.startTime;
         this.timer ++;
-        console.log(`${this.id} [${this.timer}] 任务耗时: ${duration}ms`);
+        console.log(`${this.id} [${this.timer}] 작업 소요 시간: ${duration}ms`);
     }
 
     end() {

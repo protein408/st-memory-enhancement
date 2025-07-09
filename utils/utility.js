@@ -34,18 +34,18 @@ export function cssColorToRgba(name, opacity = 1) {
  * 创建一个只读属性
  * @param {object} obj 要在其上定义属性的对象
  * @param {string} propertyName 属性名称
- * @param {function} getter 获取属性值的函数
+ * @param {function} getter 获取属性值的함수
  */
 export function readonly(obj, propertyName, getter) {
     Object.defineProperty(obj, propertyName, {
         get: getter,
         set(value) {
-            throw new Error(`${propertyName} 属性是只读的，不允许写入。`);
+            throw new Error(`${propertyName} 속성은 읽기 전용입니다，쓰기 허용 안 됨。`);
         }
     });
 }
 
-let step = 0;  // 保证每次调用该函数时绝对能生成不一样的随机数
+let step = 0;  // 保证每次调用该함수时绝对能生成不一样的随机数
 function stepRandom(bias = step) {
     // console.log('stepRandom');
     let r = 100000 / (100000 / Math.random() + bias++);
@@ -54,7 +54,7 @@ function stepRandom(bias = step) {
 
 /**
  * 生成一个随机字符串
- * @description 请注意，该函数不适用于安全敏感的场景，在长度低于 12 时有碰撞的风险
+ * @description 请注意，该함수不适用于安全敏感的场景，在长度低于 12 时有碰撞的风险
  * @description 在 length = 8 时有 0.000023% (1,000,000次实验) 的可能性会出现重复
  * @param length
  * @param bias
@@ -71,7 +71,7 @@ export function generateRandomString(length = 12, bias = step, characters = 'ABC
 
 /**
  * 生成一个随机数字
- * @description 请注意，该函数不适用于安全敏感的场景，且在 length = 8 时有 0.00005% (1,000,000次实验) 的可能性会出现重复
+ * @description 请注意，该함수不适用于安全敏感的场景，且在 length = 8 时有 0.00005% (1,000,000次实验) 的可能性会出现重复
  * @param length
  * @param forceLength
  * @returns {number}
@@ -109,7 +109,7 @@ export function generateDeviceId() {
 
 let antiShakeTimers = {};
 /**
- * 防抖函数，控制某个 작업的执行频率
+ * 防抖함수，控制某个 작업的执行频率
  * @param {string} uid 唯一标识符，用于区分不同的防抖 작업
  * @param {number} interval 时间间隔，单位毫秒，在这个间隔内只允许执行一次
  * @returns {boolean} 如果允许执行返回 true，否则返回 false

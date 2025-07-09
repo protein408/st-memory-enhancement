@@ -17,12 +17,12 @@ class PlaceholderManager {
 
         return template.replace(this.placeholderRegex, (match, singleAddress, sheetIdentifier, cellAddress) => {
             if (singleAddress) {
-                // 处理当前工作表的单元格引用，例如 $A1
+                // 处理当前工作테이블的单元格引用，例如 $A1
                 const { row, col } = this.parseCellAddress(singleAddress);
                 const cell = currentSheet.findCellByPosition(row, col);
                 return cell ? cell.data.value : '';
             } else if (sheetIdentifier && cellAddress) {
-                // 处理对其他工作表的引用，例如 S[工作表名称][A1] 或 S[0][A1]
+                // 处理对其他工作테이블的引用，例如 S[工作테이블名称][A1] 或 S[0][A1]
                 const targetSheet = this.findSheet(sheetIdentifier);
                 if (!targetSheet) {
                     return `[Sheet "${sheetIdentifier}" not found]`;
@@ -37,12 +37,12 @@ class PlaceholderManager {
     }
 
     /**
-     * 根据标识符（名称或索引）查找工作表
-     * @param {string} identifier - 工作表名称或索引
-     * @returns {object|null} - 找到的工作表对象，如果未找到则返回 null
+     * 根据标识符（名称或인덱스）查找工作테이블
+     * @param {string} identifier - 工作테이블名称或인덱스
+     * @returns {object|null} - 找到的工作테이블对象，如果未找到则返回 null
      */
     findSheet(identifier) {
-        // 检查标识符是否为数字索引
+        // 检查标识符是否为数字인덱스
         const sheetIndex = parseInt(identifier, 10);
         if (!isNaN(sheetIndex)) {
             const sheets = BASE.getChatSheets();
@@ -51,14 +51,14 @@ class PlaceholderManager {
             }
         }
         
-        // 否则，按名称查找工作表
+        // 否则，按名称查找工作테이블
         return BASE.getSheetByName(identifier);
     }
 
     /**
-     * 将单元格地址（例如 "A1"）파싱为行和열索引
+     * 将单元格地址（例如 "A1"）파싱为행和열 인덱스
      * @param {string} address - 单元格地址
-     * @returns {{row: number, col: number}} - 行和열索引
+     * @returns {{row: number, col: number}} - 행和열 인덱스
      */
     parseCellAddress(address) {
         const colStrMatch = address.match(/[A-Z]+/);

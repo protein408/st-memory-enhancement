@@ -112,10 +112,10 @@ async function reloadCellHistory(cell, historyCell, container) {
         }
     </style>
     <div class="cell-history">
-        <h3>确认回溯셀 기록</h3>
+        <h3>회신한 셀 기록</h3>
         <div class="cell-history-confirm">
             <textarea class="cell-history-confirm-last" readonly>${currentValue}</textarea>
-            <span>修改为:</span>
+            <span>수정할 내용:</span>
             <textarea class="cell-history-confirm-value" rows="8">${targetValue}</textarea>
         </div>
     </div>
@@ -131,7 +131,7 @@ async function reloadCellHistory(cell, historyCell, container) {
     if (tracebackCellHistoryPopup.result) {
         cell.newAction(cell.CellAction.editCell, { value: resultValue }, true)
         const targetCell = cell.parent.cellHistory[cell.parent.cellHistory.length - 1]
-        updateCellHistoryData(container, targetCell);  // 更新历史记录
+        updateCellHistoryData(container, targetCell);  // 업데이트历史记录
         scrollToBottom(container);
         BASE.refreshContextView();
     }
@@ -160,7 +160,7 @@ function updateCellHistoryData(container, cell) {
 
     // 如果没有历史数据，显示提示
     if (!selfHistory || selfHistory.length === 0) {
-        sheetsContainer.append('<div class="history-empty">此单元格没有历史数据</div>');
+        sheetsContainer.append('<div class="history-empty">과거 데이터가 없습니다</div>');
         return;
     }
 

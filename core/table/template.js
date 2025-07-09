@@ -15,7 +15,7 @@ export class SheetTemplate extends SheetBase {
 
     /**
      * 渲染테이블
-     * @description 接受 cellEventHandler 参数，提供一个 `Cell` 对象作为回调函数参数，用于处理单元格事件
+     * @description 接受 cellEventHandler 参数，提供一个 `Cell` 对象作为回调함수参数，用于处理单元格事件
      * @description 可以通过 `cell.parent` 获取 Sheet 对象，因此不再需要传递 Sheet 对象
      * @description 如果不传递 cellEventHandler 参数，则使用上一次的 cellEventHandler
      * @param {Function} cellEventHandler
@@ -66,14 +66,14 @@ export class SheetTemplate extends SheetBase {
     createNewTemplate(column = 2, row = 2, isSave = true) {
         this.init(column, row); // 初始化基本数据结构
         this.uid = `template_${SYSTEM.generateRandomString(8)}`;
-        this.name = `新模板_${this.uid.slice(-4)}`;
+        this.name = `New template_${this.uid.slice(-4)}`;
         this.loadCells();
         isSave && this.save(); // 저장新创建的 Sheet
         return this; // 返回 Sheet 实例自身
     }
 
     /**
-     * 저장테이블数据
+     * 저장테이블 데이터
      * @returns {SheetTemplate}
      */
     save(manualSave = false) {
@@ -86,17 +86,17 @@ export class SheetTemplate extends SheetBase {
             } else {
                 templates.push(sheetDataToSave);
             }
-            console.log("저장模板数据", templates)
+            console.log("템플릿 데이터 저장", templates)
             USER.getSettings().table_database_templates = templates;
             if(!manualSave) USER.saveSettings();
             return this;
         } catch (e) {
-            EDITOR.error(`저장模板실패：${e}`);
+            EDITOR.error(`템플릿 저장 실패`, e.message, e);
             return null;
         }
     }
     /**
-     * 删除테이블数据，根据 domain 决定删除的位置
+     * 删除테이블 데이터，根据 domain 决定删除的位置
      * @returns {*}
      */
     delete() {
@@ -106,7 +106,7 @@ export class SheetTemplate extends SheetBase {
         return templates;
     }
 
-    /** _______________________________________ 以下函数不进行外部调用 _______________________________________ */
+    /** _______________________________________ 以下함수不进行外部调用 _______________________________________ */
 
     #load(target) {
         if (target === null) {
@@ -124,11 +124,11 @@ export class SheetTemplate extends SheetBase {
             return this;
         }
 
-        throw new Error('未找到对应的模板');
+        throw new Error('찾을 수 없는 템플릿');
         // if (target instanceof Sheet) {
         //     // 从 Sheet 实例模板化
         //     this.uid = `template_${SYSTEM.generateRandomString(8)}`;
-        //     this.name = target.name.replace('테이블', '模板');
+        //     this.name = target.name.replace('테이블', '템플릿');
         //     this.hashSheet = [target.hashSheet[0]];
         //     this.cellHistory = target.cellHistory.filter(c => this.hashSheet[0].includes(c.uid));
         //     this.loadCells();

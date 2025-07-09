@@ -66,7 +66,7 @@
             </div>
         </div>
         <div id="current-important-characters" class="current-partners-section hidden">
-             <div class="section-title"><i class="fas fa-star"></i> 현재 지도 중요 인물</div>
+             <div class="section-title"><i class="fas fa-star"></i> 현재 맵 중요 인물</div>
              <div id="important-character-buttons" class="partner-button-list"></div>
         </div>
         <div id="visual-map-container"><svg id="visual-map" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg"></svg></div>
@@ -127,18 +127,18 @@
             const shopSheetUid = Object.keys(json).find(key => json[key].name === '상점 아이템 표');
             json[shopSheetUid].content.slice(1).forEach(row => data.shop.push({ name: row[1], price: parseInt(row[2]), description: row[3] }));
             
-            const inventorySheetUid = Object.keys(json).find(key => json[key].name === '背包物品表');
+            const inventorySheetUid = Object.keys(json).find(key => json[key].name === '인벤토리 아이템 표');
             json[inventorySheetUid].content.slice(1).forEach(row => data.inventory.push({ name: row[1], description: row[2] }));
 
             const subLocationsMap = new Map();
-            const subLocationSheetUid = Object.keys(json).find(key => json[key].name === '次级地点表');
+            const subLocationSheetUid = Object.keys(json).find(key => json[key].name === '하위 장소 표');
             json[subLocationSheetUid].content.slice(1).forEach(row => {
                 const subName = row[1], mainName = row[2];
                 if (!subLocationsMap.has(mainName)) subLocationsMap.set(mainName, []);
                 subLocationsMap.get(mainName).push({ name: subName, characters: [] });
             });
             
-            const mapElementSheetUid = Object.keys(json).find(key => json[key].name === '地图元素表');
+            const mapElementSheetUid = Object.keys(json).find(key => json[key].name === '맵 요소 표');
             json[mapElementSheetUid].content.slice(1).forEach(row => {
                 const char = { name: row[1], description: row[2], interactions: [row[4], row[5], row[6], row[7]] };
                 for (let subs of subLocationsMap.values()) {
@@ -147,13 +147,13 @@
                 }
             });
 
-            const mainLocationSheetUid = Object.keys(json).find(key => json[key].name === '主要地点表');
+            const mainLocationSheetUid = Object.keys(json).find(key => json[key].name === '주요 장소 표');
             json[mainLocationSheetUid].content.slice(1).forEach(row => {
                 const name = row[1];
                 data.locations.push({ name, x: parseInt(row[2]), y: parseInt(row[3]), width: parseInt(row[4]), height: parseInt(row[5]), subLocations: subLocationsMap.get(name) || [] });
             });
             
-            const roadSheetUid = Object.keys(json).find(key => json[key].name === '道路表');
+            const roadSheetUid = Object.keys(json).find(key => json[key].name === '경로 표');
             json[roadSheetUid].content.slice(1).forEach(row => {
                 data.roads.push({ points: row[1].replace(/\//g, ',').replace(/;/g, ' '), width: parseInt(row[2]), color: row[3] });
             });
@@ -204,24 +204,24 @@
         function displayShopItems(items){
             const container = document.getElementById('shop-items-container');
             container.innerHTML = '';
-            if(!items || items.length === 0) { container.innerHTML = "<p>商店里什么都没有.</p>"; return; }
+            if(!items || items.length === 0) { container.innerHTML = "<p>상점에 아무것도 없습니다.</p>"; return; }
             items.forEach(item => {
                 const el = document.createElement('div');
                 el.className = 'shop-item';
                 el.innerHTML = `<div>${item.name} - ${item.description}</div><div>${item.price}G</div>`;
-                el.addEventListener('click', ()=> alert(`购买 ${item.name}`));
+                el.addEventListener('click', ()=> alert(`${item.name} 구매`));
                 container.appendChild(el);
             });
         }
          function displayInventoryItems(items){
             const container = document.getElementById('inventory-items-container');
             container.innerHTML = '';
-            if(!items || items.length === 0) { container.innerHTML = "<p>你的背包是空的.</p>"; return; }
+            if(!items || items.length === 0) { container.innerHTML = "<p>당신의 인벤토리는 비어 있습니다.</p>"; return; }
             items.forEach(item => {
                 const el = document.createElement('div');
                 el.className = 'inventory-item';
                 el.innerHTML = `<div>${item.name} - ${item.description}</div>`;
-                el.addEventListener('click', ()=> alert(`使用 ${item.name}`));
+                el.addEventListener('click', ()=> alert(`${item.name} 사용`));
                 container.appendChild(el);
             });
         }
@@ -258,7 +258,7 @@
                     btn.addEventListener('click', () => selectCharacter(char));
                     charContainer.appendChild(btn);
                 });
-            } else { charContainer.innerHTML = '<p>这里没有人</p>'; }
+            } else { charContainer.innerHTML = '<p>여기엔 아무도 없습니다</p>'; }
             document.getElementById('location-details').classList.remove('hidden');
         }
 
@@ -273,7 +273,7 @@
                 const btn = document.createElement('button');
                 btn.className = 'interaction-button';
                 btn.textContent = opt;
-                btn.addEventListener('click', () => { alert(`选择了: ${opt}`); modal.classList.add('hidden'); });
+                btn.addEventListener('click', () => { alert(`선택: ${opt}`); modal.classList.add('hidden'); });
                 optionsContainer.appendChild(btn);
             });
             modal.classList.remove('hidden');

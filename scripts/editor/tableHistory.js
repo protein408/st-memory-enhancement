@@ -138,9 +138,9 @@ async function updateTableHistoryData(container) {
     tabsContainer.empty();
     sheetsContainer.empty();
 
-    // 如果没有테이블数据，显示提示
+    // 如果没有테이블 데이터，显示提示
     if (!sheetsData || sheetsData.length === 0) {
-        sheetsContainer.append('<div class="history-empty">没有可显示的历史数据</div>');
+        sheetsContainer.append('<div class="history-empty">표시할 수 있는 과거 데이터가 없습니다</div>');
         return;
     }
 
@@ -162,7 +162,7 @@ async function updateTableHistoryData(container) {
         }
         tabsContainer.append(tab);
 
-        // 创建테이블内容区域
+        // 创建테이블 내용区域
         const sheetContainer = $(`<div id="${sheetId}" class="history-sheet-container ${validSheetCount === 1 ? 'active' : ''}"></div>`);
         const cellListContainer = $('<div class="history-cell-list"></div>');
 
@@ -183,15 +183,15 @@ async function updateTableHistoryData(container) {
             // 创建位置显示
             const positionDisplay = () => {
                 if (rowIndex === 0 && colIndex === 0) {
-                    return `<span style="color: var(--SmartThemeEmColor);">테이블源</span>`;
+                    return `<span style="color: var(--SmartThemeEmColor);">테이블 소스</span>`;
                 } else if (rowIndex === 0) {
                     return `열 <span style="color: var(--SmartThemeQuoteColor);">${colIndex}</span>`;
                 } else if (colIndex === 0) {
-                    return `行 <span style="color: var(--SmartThemeQuoteColor);">${rowIndex}</span>`;
+                    return `행 <span style="color: var(--SmartThemeQuoteColor);">${rowIndex}</span>`;
                 } else if (rowIndex > 0 && colIndex > 0) {
                     return `<span style="color: #4C8BF5;">${getColumnLetter(colIndex-1)}</span><span style="color: #34A853;">${rowIndex}</span>`;
                 }
-                return '<span style="color: #EA4335;">旧数据</span>';
+                return '<span style="color: #EA4335;">이전 데이터</span>';
             }
 
             // 创建历史条目
@@ -210,7 +210,7 @@ async function updateTableHistoryData(container) {
 
         // 如果没有历史条目，显示提示
         if (validHistoryCount === 0) {
-            cellListContainer.append('<div class="history-empty">此테이블没有历史数据</div>');
+            cellListContainer.append('<div class="history-empty">이 표에는 과거 데이터가 없습니다</div>');
         }
 
         sheetContainer.append(cellListContainer);
@@ -219,7 +219,7 @@ async function updateTableHistoryData(container) {
 
     // 如果没有任何테이블有历史数据，显示提示
     if (validSheetCount === 0) {
-        sheetsContainer.append('<div class="history-empty">没有可显示的历史数据</div>');
+        sheetsContainer.append('<div class="history-empty">표시할 수 있는 과거 데이터가 없습니다</div>');
     }
 
     // 添加标签切换事件

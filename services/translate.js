@@ -153,7 +153,7 @@ export async function switchLanguage(targetScope, source) {
 }
 
 /**
- * 对初始化加载的html应用翻译和本地化的主函数
+ * 对初始化加载的html应用翻译和本地化的主함수
  */
 export async function executeTranslation() {
     const { translations, lang } = await getTranslationsConfig();

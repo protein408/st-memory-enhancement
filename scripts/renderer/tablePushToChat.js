@@ -8,7 +8,7 @@ import { replaceUserTag } from "../../utils/stringUtil.js";
 /**
  * 将自定义样式替换为符合HTML格式的样式
  * @param {string} replace -自定义样式字符串
- * @param {string} _viewSheetsContainer -DOM元素，作为工作表的容器
+ * @param {string} _viewSheetsContainer -DOM元素，作为工作테이블的容器
  * @returns {string} -替换后的样式字符串
  */
 function divideCumstomReplace(replace, _viewSheetsContainer) {
@@ -34,7 +34,7 @@ function divideCumstomReplace(replace, _viewSheetsContainer) {
 
     // 3. 将样式和脚本追加到容器
     $(_viewSheetsContainer).append(viewSheetsContainer);
-    // console.log('分离后的函数内的样式数据:', dividedContent);
+    // console.log('分离后的함수内的样式数据:', dividedContent);
     return dividedContent;
 }
 
@@ -42,16 +42,16 @@ function divideCumstomReplace(replace, _viewSheetsContainer) {
  *  穿插及嵌入渲染
  * @param {@table} tableRole -按同名行提取后的嵌套数组
  * @param {Array} insertMark -是否嵌入的标记
- * @param {Array} indexForTableRole -嵌套数组元素对应的索引
+ * @param {Array} indexForTableRole -嵌套数组元素对应的인덱스
  * @param {Array} _sheets -테이블
- * @param {HTMLElement} _viewSheetsContainer -DOM元素，作为工作表的容器
+ * @param {HTMLElement} _viewSheetsContainer -DOM元素，作为工作테이블的容器
  */
 function insertCustomRender(tableRole, insertMark, cycleMark, indexForTableRole, _sheets, _viewSheetsContainer) {
     let customStyle = '';
     let index = 0;
     for (let i = 0; i < tableRole.length; i++) {
         index = indexForTableRole[i]
-        // console.log("穿插及嵌入渲染테이블角色索引：" + index);
+        // console.log("穿插及嵌入渲染테이블角色인덱스：" + index);
         // console.log(_sheets[index].name, "穿插及嵌入渲染테이블角色：" + tableRole[i]);
         _sheets[index].tableSheet = tableRole[i];
         // console.log("穿插及嵌入渲染테이블角色赋值给sheet：", _sheets[index].name, _sheets[index].tableSheet);
@@ -67,30 +67,30 @@ function insertCustomRender(tableRole, insertMark, cycleMark, indexForTableRole,
         }
     }
     // console.log("穿插及嵌入最终返回文本customStyle：" + customStyle);
-    const sheetContainer = document.createElement('div')    //DOM元素，作为工作表的容器
+    const sheetContainer = document.createElement('div')    //DOM元素，作为工作테이블的容器
     sheetContainer.innerHTML = replaceUserTag(customStyle) //替换掉自定义样式中的<user>标签
     $(_viewSheetsContainer).append(sheetContainer)
 }
 
 
 /**
- * 使用自定义样式渲染工作表
- * @param {@table} sheet -工作表数据
- * @param {HTMLElement} _viewSheetsContainer -DOM元素，作为工作表的容器
+ * 使用自定义样式渲染工作테이블
+ * @param {@table} sheet -工作테이블 데이터
+ * @param {HTMLElement} _viewSheetsContainer -DOM元素，作为工作테이블的容器
  */
 function ordinarycustomStyleRender(sheet, _viewSheetsContainer) {
-    // console.log('普通테이블数据:', sheet.tableSheet);
-    const customStyle = parseSheetRender(sheet)             //使用 parseSheetRender 파싱工作表
-    const sheetContainer = document.createElement('div')    //DOM元素，作为工作表的容器
+    // console.log('普通테이블 데이터:', sheet.tableSheet);
+    const customStyle = parseSheetRender(sheet)             //使用 parseSheetRender 파싱工作테이블
+    const sheetContainer = document.createElement('div')    //DOM元素，作为工作테이블的容器
     sheetContainer.innerHTML = replaceUserTag(customStyle) //替换掉自定义样式中的<user>标签
     $(_viewSheetsContainer).append(sheetContainer)
 }
 
 /**
- * 使用默认样式渲染工作表
- * @param {*} index -工作表索引
- * @param {*} sheet -工作表数据
- * @param {*} _viewSheetsContainer -DOM元素，作为工作表的容器
+ * 使用默认样式渲染工作테이블
+ * @param {*} index -工作테이블인덱스
+ * @param {*} sheet -工作테이블 데이터
+ * @param {*} _viewSheetsContainer -DOM元素，作为工作테이블的容器
  */
 function defaultStyleRender(index, sheet, _viewSheetsContainer) {
     const instance = sheet
@@ -109,9 +109,9 @@ function defaultStyleRender(index, sheet, _viewSheetsContainer) {
     $(_viewSheetsContainer).append(sheetContainer)
     $(_viewSheetsContainer).append(`<hr>`)
 }
-/** 辅助函数，判定排序后的数组的当前第i行与第i+1行是否为同一테이블的循环行，如果是，则返回true，否则返回false。
+/** 辅助함수，判定排序后的数组的当前第i行与第i+1行是否为同一테이블的循环行，如果是，则返回true，否则返回false。
  * @param {*} cycleDivideMark  -循环标记
- * @param {*} indexForRowAlternate -对应原테이블的索引
+ * @param {*} indexForRowAlternate -对应原테이블的인덱스
  * @param {*} i - 行号
  * @returns - 真假值
  */
@@ -119,57 +119,57 @@ function cycleJudge(cycleDivideMark, indexForRowAlternate, i) {
     if (i < 0) return false;
     return cycleDivideMark[indexForRowAlternate[i]] === true && cycleDivideMark[indexForRowAlternate[i + 1]] === true && indexForRowAlternate[i] === indexForRowAlternate[i + 1];
 }
-/**根据工作表的配置(是否使用自定义样式)，将多个工作表渲染到指定的DOM容器中，支持两种渲染方式：自定义样式渲染和默认样式渲染,自定义样式又分为普通渲染和穿插渲染
+/**根据工作테이블的配置(是否使用自定义样式)，将多个工作테이블渲染到指定的DOM容器中，支持两种渲染方式：自定义样式渲染和默认样式渲染,自定义样式又分为普通渲染和穿插渲染
  *
- * @param {*table} _sheets -工作表数组，包含多个工作表数据
- * @param {*} _viewSheetsContainer -DOM元素，作为工作表的容器
+ * @param {*table} _sheets -工作테이블数组，包含多个工作테이블 데이터
+ * @param {*} _viewSheetsContainer -DOM元素，作为工作테이블的容器
  */
 async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer) {
     let sumAlternateLevel = 0;          // 计数器，统计需要穿插的테이블数量
-    let levelIndexAlternate = [];       // 统计需要穿插的层级索引
-    let indexOriginary = [];      // 记录使用普通自定义定样式的테이블索引
+    let levelIndexAlternate = [];       // 统计需要穿插的层级인덱스
+    let indexOriginary = [];      // 记录使用普通自定义定样式的테이블 인덱스
     let cycleDivideMark = [];       // 是否具有테이블内循环输出的标记
-    console.log("穿插模式是否开启：" + USER.tableBaseSetting.alternate_switch)
-    if (USER.tableBaseSetting.alternate_switch) {    //首先判断是否开启了穿插模式，再看是否有必要进入穿插模型
+    console.log("교대 모드 활성화 여부：" + USER.tableBaseSetting.alternate_switch)
+    if (USER.tableBaseSetting.alternate_switch) {    //首先判断是否활성화了穿插模式，再看是否有必要进入穿插模型
         for (let [index, sheet] of _sheets.entries()) {
             if (sheet.config.useCustomStyle === true) {
                 _sheets[index].config.customStyles[sheet.config.selectedCustomStyleKey].replaceDivide = divideCumstomReplace(sheet.config.customStyles[sheet.config.selectedCustomStyleKey].replace, _viewSheetsContainer); //对CSS代码进行整理使得最后的文本更符合html格式
             }
             if (sheet.config.toChat === true && sheet.config.useCustomStyle === true && sheet.config.alternateTable === true && sheet.config.alternateLevel > 0) {
                 sumAlternateLevel++;        // 符合条件的计数器增加
-                levelIndexAlternate.push([Number(sheet.config.alternateLevel), index]); // 加入层级和索引对应数组，强制转换成数字类型，提高健壮性
-                sheet.config.skipTop = false;  //穿擦模式只对테이블内容进行渲染，且不需要跳过header行
+                levelIndexAlternate.push([Number(sheet.config.alternateLevel), index]); // 加入层级和인덱스对应数组，强制转换成数字类型，提高健壮性
+                sheet.config.skipTop = false;  //穿擦模式只对테이블 내용进行渲染，且不需要跳过header行
                 cycleDivideMark[index] = sheet.config.customStyles[sheet.config.selectedCustomStyleKey].replace.includes('<cycleDivide>');
             }
             else if (sheet.config.toChat === true) {
-                indexOriginary.push(index); // 加入普通自定义样式테이블索引
+                indexOriginary.push(index); // 加入普通自定义样式테이블 인덱스
             }
         }
     }
     if (sumAlternateLevel > 0) {
         // console.log('穿插模式');
         let tableAlternate = [];  // 用于存储需要穿插的테이블
-        let indexForRowAlternate = [];  // 用于记录排序后테이블的行对应的原테이블索引
-        // console.log('初始的层级索引对应：', levelIndexAlternate);
+        let indexForRowAlternate = [];  // 用于记录排序后테이블的行对应的原테이블 인덱스
+        // console.log('初始的层级인덱스对应：', levelIndexAlternate);
         levelIndexAlternate.sort((a, b) => {  // 保证稳定排序
             if (a[0] !== b[0]) {
                 return a[0] - b[0]; // 层级不同，按层级排序
             } else {
-                return a[1] - b[1]; // 层级相同，按原索引排序（确保稳定）
+                return a[1] - b[1]; // 层级相同，按原인덱스排序（确保稳定）
             }
         });
-        // 获得待排序的테이블并记录原索引
+        // 获得待排序的테이블并记录原인덱스
         for (const [level, index] of levelIndexAlternate) {
             const sheetData = loadValueSheetBySheetHashSheet(_sheets[index]).slice(1);
-            // 将每张表的所有行平铺到tableAlternate中
+            // 将每张테이블的所有行平铺到tableAlternate中
             sheetData.forEach(row => {
                 tableAlternate.push(row);
-                indexForRowAlternate.push(index); // 记录原테이블索引
+                indexForRowAlternate.push(index); // 记录原테이블 인덱스
             });
         }
 
 
-        // 创建包含行数据、原테이블索引和当前索引的对象数组
+        // 创建包含行数据、原테이블 인덱스和当前인덱스的对象数组
         const indexedTable = tableAlternate.map((row, currentIndex) => ({
             row,
             originalIndex: indexForRowAlternate[currentIndex],
@@ -182,7 +182,7 @@ async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer) {
             const roleA = clean(a.row[1]) || "";
             const roleB = clean(b.row[1]) || "";
 
-            // 创建角色首次出现的索引映射
+            // 创建角色首次出现的인덱스映射
             const firstAppearance = new Map();
             indexedTable.forEach((item, idx) => {
                 const role = clean(item.row[1]);
@@ -197,7 +197,7 @@ async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer) {
             }
         });
 
-        // 提取排序后的行和对应的原테이블索引
+        // 提取排序后的行和对应的原테이블 인덱스
         tableAlternate = indexedTable.map(item => item.row);
         indexForRowAlternate = indexedTable.map(item => item.originalIndex);
         let tableRole = [];     //按同名行分组熏染的临时辅助数组
@@ -266,11 +266,11 @@ async function renderEditableSheetsDOM(_sheets, _viewSheetsContainer) {
         }
 
         // 对普通테이블进行渲染
-        // console.log('普通테이블的索引:', indexOriginary, '普通테이블的长度', indexOriginary.length);
+        // console.log('普通테이블的인덱스:', indexOriginary, '普通테이블的长度', indexOriginary.length);
         for (let i = 0; i < indexOriginary.length; i++) {
             let sheet = _sheets[indexOriginary[i]];
             sheet.tableSheet = loadValueSheetBySheetHashSheet(sheet);
-            // console.log('进行普通渲染当前普通테이블内容：',sheet.tableSheet);
+            // console.log('进行普通渲染当前普通테이블 내용：',sheet.tableSheet);
             if (sheet.config.toChat === false) continue; // 如果不需要推送到聊天，则跳过
             if (sheet.config.useCustomStyle === true) {
                 // 确保 customStyles 存在且选中的样式有 replace 属性
@@ -326,7 +326,7 @@ function replaceTableToStatusTag(sheets) {
 
     }
 
-    // 定义具名的事件监听器函数
+    // 定义具名的事件监听器함수
     const touchstartHandler = function (event) {
         event.stopPropagation();
     };
@@ -357,7 +357,7 @@ function replaceTableToStatusTag(sheets) {
         // 获取新创建的 tableStatusContainer
         const newTableStatusContainer = chatContainer?.querySelector('#tableStatusContainer');
         if (newTableStatusContainer) {
-            // 添加事件监听器，使用具名函数
+            // 添加事件监听器，使用具名함수
             newTableStatusContainer.addEventListener('touchstart', touchstartHandler, { passive: false });
             newTableStatusContainer.addEventListener('touchmove', touchmoveHandler, { passive: false });
             newTableStatusContainer.addEventListener('touchend', touchendHandler, { passive: false });
@@ -367,17 +367,17 @@ function replaceTableToStatusTag(sheets) {
 }
 
 /**
- * 更新最后一条 System 消息的 <tableStatus> 标签内容
+ * 업데이트最后一条 System 消息的 <tableStatus> 标签内容
  */
 export function updateSystemMessageTableStatus(force = false) {
-    console.log("更新最后一条 System 消息的 <tableStatus> 标签内容", USER.tableBaseSetting.isTableToChat)
+    console.log("마지막 시스템 메시지의 <tableStatus> 태그 내용 업데이트", USER.tableBaseSetting.isTableToChat)
     if (force === false) {
         if (USER.tableBaseSetting.isExtensionAble === false || USER.tableBaseSetting.isTableToChat === false) {
             window.document.querySelector('#tableStatusContainer')?.remove();
             return;
         }
     }
-    // console.log("更新最后一条 System ")
+    // console.log("업데이트最后一条 System ")
     const sheets = BASE.hashSheetsToSheets(BASE.getLastSheetsPiece()?.piece.hash_sheets);
 
     replaceTableToStatusTag(sheets);
@@ -420,8 +420,8 @@ export async function openTableRendererPopup() {
     const $tableRendererDisplay = $dlg.find('#tableRendererDisplay');
 
     // 修改中实时渲染
-    console.log("openTableRendererPopup-elements.rendererDisplay 是否存在:", !!elements.rendererDisplay);
-    console.log("jQuery 对象长度:", elements.rendererDisplay?.length || 0);
+    console.log("openTableRendererPopup-elements.rendererDisplay 존재 여부:", !!elements.rendererDisplay);
+    console.log("jQuery 객체 길이:", elements.rendererDisplay?.length || 0);
     const renderHTML = () => {
         $tableRendererDisplay.html(sheetElements);
     };

@@ -4,9 +4,9 @@ let config = {};
 let selectedCustomStyle = null;
 
 function staticPipeline(target) {
-    console.log("进入静态渲染테이블");
+    console.log("렌더링 테이블 진입 정지 상태");
     let regexReplace = selectedCustomStyle.replace || '';
-    if (!regexReplace || regexReplace === '') return target?.element || '<div>테이블数据未加载</div>';
+    if (!regexReplace || regexReplace === '') return target?.element || '<div>테이블 데이터 로드하지 않음</div>';
     if (!target) return regexReplace;
 
     // 新增：处理 {{GET::...}} 宏
@@ -14,16 +14,16 @@ function staticPipeline(target) {
         const sheets = BASE.getChatSheets();
         const sheet = sheets.find(s => s.name === tableName);
         if (!sheet) {
-            return `<span style="color: red">[GET: 未找到테이블 "${tableName}"]</span>`;
+            return `<span style="color: red">[GET: 찾을 수 없는 테이블 "${tableName}"]</span>`;
         }
 
         try {
             const cell = sheet.getCellFromAddress(cellAddress);
             const cellValue = cell ? cell.data.value : undefined;
-            return cellValue !== undefined ? cellValue : `<span style="color: orange">[GET: 在 "${tableName}" 中未找到单元格 "${cellAddress}"]</span>`;
+            return cellValue !== undefined ? cellValue : `<span style="color: orange">[GET: 존재하는 "${tableName}" 중 찾을 수 없는 셀 "${cellAddress}"]</span>`;
         } catch (error) {
             console.error(`Error resolving GET macro for ${tableName}:${cellAddress}`, error);
-            return `<span style="color: red">[GET: 处理时出错]</span>`;
+            return `<span style="color: red">[GET: 처리 중 오류 발생]</span>`;
         }
     });
 
@@ -32,29 +32,29 @@ function staticPipeline(target) {
         const sheets = BASE.getChatSheets();
         const sheet = sheets.find(s => s.name === tableName);
         if (!sheet) {
-            return `<span style="color: red">未找到테이블: ${tableName}</span>`;
+            return `<span style="color: red">찾을 수 없는 테이블: ${tableName}</span>`;
         }
         
         const cell = sheet.getCellFromAddress(cellAddress);
         return cell ? (cell.data.value || `?`) :
-            `<span style="color: red">无单元格: ${cellAddress}</span>`;
+            `<span style="color: red">셀 없음: ${cellAddress}</span>`;
     });
 
     // 原有的处理逻辑
     return regexReplace.replace(/\$(\w)(\d+)/g, (match, colLetter, rowNumber) => {
         const colIndex = colLetter.toUpperCase().charCodeAt(0) - 'A'.charCodeAt(0);
         const rowIndex = parseInt(rowNumber);
-        console.log("静态渲染行:", rowIndex, "静态渲染열:", colIndex);
+        console.log("행 렌더링 정지 상태:", rowIndex, "열 렌더링 정지 상태:", colIndex);
         const c = target.findCellByPosition(rowIndex, colIndex);
-        console.log("获取单元格位置：", c, '\n获取单元格内容：', c.data.value);
+        console.log("임포트 셀 위치：", c, '\n셀 내용 가져오기：', c.data.value);
         return c ? (c.data.value || `<span style="color: red">?</span>`) :
-            `<span style="color: red">无单元格</span>`;
+            `<span style="color: red">셀 없음</span>`;
     });
 }
 /** 从테이블实例中提取数据值
  *
  * @param {*} instance - 테이블实例对象
- * @returns  -二维数组테이블数据
+ * @returns  -二维数组테이블 데이터
  */
 export function loadValueSheetBySheetHashSheet(instance) {
     if (!instance) return;
@@ -65,14 +65,14 @@ export function loadValueSheetBySheetHashSheet(instance) {
 }
 
 function toArray(valueSheet, skipTop) {
-    return skipTop ? valueSheet.slice(1) : valueSheet; //新增判定是否跳过表头
+    return skipTop ? valueSheet.slice(1) : valueSheet; //新增判定是否跳过테이블头
 }
 
 // 提高兼容性，可以处理非二位数组的情况
 /**
  *
- * @param {*table} valueSheet 数据型数据表
- * @param {*boolean} skipTop 是否跳过表头
+ * @param {*table} valueSheet 数据型数据테이블
+ * @param {*boolean} skipTop 是否跳过테이블头
  * @returns html格式文本
  */
 function toHtml(valueSheet, skipTop = false) {
@@ -107,8 +107,8 @@ function toHtml(valueSheet, skipTop = false) {
 }
 /**
  *
- * @param {*table} valueSheet 数据型数据表
- * @param {*boolean} skipTop 是否跳过表头
+ * @param {*table} valueSheet 数据型数据테이블
+ * @param {*boolean} skipTop 是否跳过테이블头
  * @returns cvs 格式文本
  */
 function toCSV(valueSheet, skipTop = false) {
@@ -225,7 +225,7 @@ function getLastPlot() {
 }
 function triggerValueSheet(valueSheet = [], skipTop, alternateTable) {
     if (!Array.isArray(valueSheet)) {
-        return Promise.reject(new Error("valueSheet必须为array类型!"));
+        return Promise.reject(new Error("valueSheet은 반드시 array 타입으로!"));
     }
     const lastchat = getLastPlot();
     let triggerArray = [];
@@ -246,7 +246,7 @@ function triggerValueSheet(valueSheet = [], skipTop, alternateTable) {
     }
     return triggerArray;
 }
-/** 用于初始化文本数据的函数，根据不同的格式要求将테이블数据转换为指定格式的文本。
+/** 用于初始化文本数据的함수，根据不同的格式要求将테이블 데이터转换为指定格式的文本。
  *
  * @param {*table} target - 单个테이블对象
  * @param {*string} selectedStyle  - 格式配置的对象
@@ -255,7 +255,7 @@ function triggerValueSheet(valueSheet = [], skipTop, alternateTable) {
 export function initializeText(target, selectedStyle) {
     let initialize = '';
     // console.log("瞅瞅target是："+target.config.triggerSendToChat); //调试用，正常不开启
-    let valueSheet = target.tableSheet;  // 获取테이블数据，二维数组
+    let valueSheet = target.tableSheet;  // 获取테이블 데이터，二维数组
     // console.log(target.name,"初始化文本테이블：" , valueSheet);
     // 新增，判断是否需要触发sendToChat
     if (target.config.triggerSendToChat) {
@@ -281,13 +281,13 @@ export function initializeText(target, selectedStyle) {
             initialize = toJSON(valueSheet);
             break;
         default:
-            console.error('不支持的格式:', method);
+            console.error('지원하지 않는 형식:', method);
     }
     // console.log('初始化值:', method, initialize);
     return initialize;
 }
 
-/**用于处理正则表达式替换流程的管道函数
+/**用于处理正则테이블达式替换流程的管道함수
  *
  * @param {Object} target - 单个테이블对象
  * @param {Object} rendererConfig 渲染配置
@@ -302,16 +302,16 @@ function regexPipeline(target, selectedStyle = selectedCustomStyle) {
     // console.log("替换后的结果：",r)
     return r
 }
-/** 根据不同的自定义样式模式来渲染目标元素的函数
+/** 根据不同的自定义样式模式来渲染目标元素的함수
  *
  * @param {*table} target - 单个테이블，要渲染的目标对象，包含需要渲染的元素
  * @returns {*Html} 处理后的HTML字符串
  */
 function executeRendering(target) {
-    let resultHtml = target?.element || '<div>테이블数据未加载</div>';
+    let resultHtml = target?.element || '<div>테이블 데이터 로드하지 않음</div>';
     if (config.useCustomStyle === false) {
-        // resultHtml = target?.element || '<div>테이블数据未加载</div>';
-        throw new Error('未启用自定义样式，你需要在 parseSheetRender 外部排除 config.useCustomStyle === false 的情况');
+        // resultHtml = target?.element || '<div>테이블 데이터未加载</div>';
+        throw new Error('사용자 정의 스타일이 비활성화되었습니다. parseSheetRender 외부에서 config.useCustomStyle === false를 제외해야 합니다.');
     }
     if (selectedCustomStyle.mode === 'regex') {
         resultHtml = regexPipeline(target);
@@ -322,7 +322,7 @@ function executeRendering(target) {
 }
 
 /**
- * 파싱테이블渲染样式
+ * 파싱테이블렌더링 样式
  * @param {Object} instance 테이블对象
  * @param {Object} rendererConfig 渲染配置
  * @returns {string} 渲染后的HTML

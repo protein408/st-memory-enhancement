@@ -2,11 +2,11 @@
 import {BASE, DERIVED, EDITOR, SYSTEM, USER} from '../core/manager.js';
 
 /**
- * @description 拖拽管理器 - 用于管理拖拽 작업
+ * @description 드래그 관리기 - 드래그 작업 관리를 위한 도구
  */
 export class Drag {
     constructor() {
-        // 初始化变换参数
+        // 변환 매개변수 초기화
         this.translateX = 0;
         this.translateY = 0;
         this.scale = 1;
@@ -19,7 +19,7 @@ export class Drag {
         this.elements = new Map();
 
         // 新增阈值变量
-        this.dragThreshold = 5; // 移动超过5px视为拖拽
+        this.dragThreshold = 5; // 5px를 이상 움직이면 드래그로 간주
         this.initialPosition = { x: 0, y: 0 };
         this.shouldDrag = false;
 
@@ -113,7 +113,7 @@ export class Drag {
     }
 
 
-    /** ------------------ 以下为拖拽功能实现，为事件处理函数，不需要手动调用 ------------------ */
+    /** ------------------ 아래는 드래그 기능 구현을 위한 이벤트 처리 함수들로, 수동 호출할 필요가 없습니다 ------------------ */
         // 鼠标按下事件
     handleMouseDown = (e) => {
         // 获取点击位置的所有元素
@@ -193,8 +193,8 @@ export class Drag {
             if (e.touches.length === 0) return;
             this.translateX = e.touches[0].clientX - this.canvasStartX
             this.translateY = e.touches[0].clientY - this.canvasStartY
-            this.updateTransform(); // 更新位移
-            e.preventDefault();     // 阻止默认行为减少卡顿
+            this.updateTransform(); // 업데이트位移
+            e.preventDefault();     // 阻止默认행为减少卡顿
         } else {
             const deltaX = (e.clientX - this.translateX) / this.scale - this.canvasStartX;
             const deltaY = (e.clientY - this.translateY) / this.scale - this.canvasStartY;

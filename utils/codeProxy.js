@@ -1,7 +1,7 @@
 import {BASE, DERIVED, EDITOR, SYSTEM, USER} from '../core/manager.js';
 
 /**
- * @description 辅助函数，递归创建 Proxy
+ * @description 辅助함수，递归创建 Proxy
  * @param {Object} obj - 要代理的对象
  * @returns {Object} - 创建的 Proxy 对象
  */
@@ -28,7 +28,7 @@ export const createProxyWithUserSetting = (target, allowEmpty = false) => {
             }
             // 尝试从老版本的数据位置 USER.getExtensionSettings().muyoo_dataTable 中获取
             if (USER.getExtensionSettings()[target] && property in USER.getExtensionSettings()[target]) {
-                console.log(`变量 ${property} 未在用户配置中找到, 已从老版本数据中获取`)
+                console.log(`변수 ${property} 사용자 설정에서 찾을 수 없음, 이전 버전 데이터에서 이미 가져옴`)
                 const value = USER.getExtensionSettings()[target][property];
                 if (!USER.getSettings()[target]) {
                     USER.getSettings()[target] = {}; // 初始化，如果不存在
@@ -36,9 +36,9 @@ export const createProxyWithUserSetting = (target, allowEmpty = false) => {
                 USER.getSettings()[target][property] = value;
                 return value;
             }
-            // 如果 USER.getExtensionSettings().muyoo_dataTable 中也不存在，则从 defaultSettings 中获取
+            // 如果 USER.getExtensionSettings().muyoo_dataTable 中也不存在，则从 defaultSettings 中가져오다
             if (USER.tableBaseDefaultSettings && property in USER.tableBaseDefaultSettings) {
-                console.log(`变量 ${property} 未找到, 已从默认设置中获取`)
+                console.log(`변수 ${property} 찾을 수 없음, 기본 설정에서 가져옴`)
                 return USER.tableBaseDefaultSettings[property];
             }
             // 如果 defaultSettings 中也不存在，则检查是否允许为空
@@ -46,11 +46,11 @@ export const createProxyWithUserSetting = (target, allowEmpty = false) => {
                 return undefined;
             }
             // 如果 defaultSettings 中也不存在，则报错
-            EDITOR.error(`变量 ${property} 未在默认设置中找到, 请检查代码`)
+            EDITOR.error(`변수 ${property} 기본 설정에서 찾을 수 없습니다, 코드를 확인해 주세요`)
             return undefined;
         },
         set: (_, property, value) => {
-            console.log(`设置变量 ${property} 为 ${value}`)
+            console.log(`변수 ${property} 을(를) ${value} (으)로 설정`)
             if (!USER.getSettings()[target]) {
                 USER.getSettings()[target] = {}; // 初始化，如果不存在
             }
