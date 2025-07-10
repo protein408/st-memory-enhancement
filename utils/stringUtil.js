@@ -46,7 +46,7 @@ export function truncateAfterLastParenthesis(str) {
  */
 export function parseLooseDict(str) {
     const result = {};
-    const content = str.slice(1, -1); // 去除最外层 {}
+    const content = str.replace(/\s+/g,'').slice(1, -1); // 去除最外层 {}
     console.log("파싱",content)
     let i = 0;
     const len = content.length;
